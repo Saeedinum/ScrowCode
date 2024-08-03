@@ -1,9 +1,5 @@
-import React from 'react'
-
 const FindTeam = () => {
-  return (
-    <div>findTeam</div>
-  )
-}
+	return <div>findTeam</div>;
+};
 
-export default FindTeam
+export default FindTeam;

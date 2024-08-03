@@ -5,4 +5,4 @@ export const findPartnerAPI = createApi({
 	endpoints: () => ({}),
 });
 
-export const { } = findPartnerAPI;
+// export const { } = findPartnerAPI;

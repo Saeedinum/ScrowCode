@@ -5,4 +5,4 @@ export const authAPI = createApi({
 	endpoints: () => ({}),
 });
 
-export const { } = authAPI;
+// export const { } = authAPI;

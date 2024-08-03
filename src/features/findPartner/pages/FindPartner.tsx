@@ -1,9 +1,5 @@
-import React from 'react'
-
 const FindPartner = () => {
-  return (
-    <div>FindPartner</div>
-  )
-}
+	return <div>FindPartner</div>;
+};
 
-export default FindPartner
+export default FindPartner;
