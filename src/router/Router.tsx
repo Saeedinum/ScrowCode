@@ -12,7 +12,7 @@ import CreateTeam from "../features/createTeam/pages/CreateTeam";
 import FindTeam from "../features/findTeam/pages/FindTeam";
 import FindPartner from "../features/findPartner/pages/FindPartner";
 
-const auth = false; // come from authslice
+const auth = true; // come from authslice
 
 const Router = () => {
 	return (
