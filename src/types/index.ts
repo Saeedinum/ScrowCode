@@ -13,6 +13,14 @@ type TSignUPData = {
 	github: string;
 	behance: string;
 	bio: string;
-}
+};
 
-export { type TSignUPData };
+type TCreateTeamData = {
+	members: number;
+	teamName: string;
+	projectIdea: string;
+	userName: string[];
+	requirement: string[];
+};
+
+export {type TSignUPData, type TCreateTeamData};
