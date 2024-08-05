@@ -5,7 +5,7 @@ import NotFound from "../pages/NotFound/NotFound";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-import Home from "../features/auth/pages/home/Home";
+import Home from "../pages/home/Home";
 import Login from "../features/auth/pages/login/Login";
 import SignUp from "../features/auth/pages/signup/SignUp";
 import CreateTeam from "../features/createTeam/pages/CreateTeam";
