@@ -1,4 +1,4 @@
-import {createBrowserRouter, Outlet, redirect, RouterProvider} from "react-router-dom";
+import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-router-dom";
 
 import NotFound from "../pages/NotFound/NotFound";
 
@@ -11,10 +11,11 @@ import SignUp from "../features/auth/pages/signup/SignUp";
 import CreateTeam from "../features/createTeam/pages/CreateTeam";
 import FindTeam from "../features/findTeam/pages/FindTeam";
 import FindPartner from "../features/findPartner/pages/FindPartner";
-
-const auth = true; // come from authslice
+import {useAppSelector} from "../store/hooks";
 
 const Router = () => {
+	const auth = useAppSelector((state) => state.auth.user);
+
 	return (
 		<RouterProvider
 			router={createBrowserRouter([
@@ -33,20 +34,15 @@ const Router = () => {
 						{index: true, element: <Home />},
 						{
 							path: "CreateTeam",
-							element: <CreateTeam />,
-							loader: async () => (auth ? <CreateTeam /> : redirect("/login")),
+							element: auth?.token != undefined ? <CreateTeam /> : <Navigate to='/login' />,
 						},
 						{
 							path: "FindTeam",
-							element: <FindTeam />,
-							loader: async () => (auth ? <FindTeam /> : redirect("/login")),
-							// will have a children array
+							element: auth?.token != undefined ? <FindTeam /> : <Navigate to='/login' />,
 						},
 						{
 							path: "FindPartner",
-							element: <FindPartner />,
-							loader: async () => (auth ? <FindPartner /> : redirect("/login")),
-							// will have a children array
+							element: auth?.token != undefined ? <FindPartner /> : <Navigate to='/login' />,
 						},
 					],
 				},
