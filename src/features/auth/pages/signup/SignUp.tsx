@@ -8,14 +8,11 @@ import SignUpStudent from "./SignUpStudent";
 
 import {useSignupUserMutation} from "../../api/authAPI";
 import {useState} from "react";
-import {useAppSelector} from "../../../../store/hooks";
 
 const SignUp = () => {
-	const user = useAppSelector((state) => state.auth.user);
-
 	const [signupUser, {data, error, isLoading, isSuccess, isError}] = useSignupUserMutation();
 
-	const [section, setSection] = useState(1);
+	const [section, setSection] = useState(2);
 
 	const handleSection = (section: number) => {
 		setSection(section);
@@ -29,7 +26,7 @@ const SignUp = () => {
 	} = useForm<TsignupUser>({
 		defaultValues: {
 			fullName: "fdsafds",
-			phone: "+2018824294",
+			phone: "+201018824294",
 			email: "ffadsf@gmail.com",
 			password: "test123Q!",
 			confirmPassword: "test123Q!",
@@ -39,14 +36,14 @@ const SignUp = () => {
 	});
 
 	const onSubmit = async (data: TsignupUser) => {
-		await signupUser({
+		const response = await signupUser({
 			fullName: data.fullName,
 			phone: data.phone,
 			Email: data.email,
 			password: data.password,
 			passwordConfirm: data.confirmPassword,
-		});
-		if (user?.token) {
+		}).unwrap();
+		if (response?.token) {
 			handleSection(2);
 		}
 	};
@@ -90,8 +87,7 @@ const SignUp = () => {
 								</div>
 							)}
 						</Form>
-						{section == 2 && <SignUpStudent section={2} handleSection={handleSection} />}
-						{section == 3 && <SignUpStudent section={3} handleSection={handleSection} />}
+						{section == 2 && <SignUpStudent />}
 					</div>
 				</div>
 			</section>

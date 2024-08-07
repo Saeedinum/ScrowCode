@@ -1,17 +1,19 @@
+import {useState} from "react";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
+import {signupStudentSchema} from "./schema";
+
 import tracks from "../../../../constants/tracks";
 import universities from "../../../../constants/university";
-import {useForm} from "react-hook-form";
 import {TsignupStudent} from "../../../../types";
-import {zodResolver} from "@hookform/resolvers/zod";
+import {useAppSelector} from "../../../../store/hooks";
+import {useSignupStudentMutation} from "../../api/authAPI";
 
-import {signupStudentSchema} from "./schema";
-import { useAppSelector } from "../../../../store/hooks";
-import { useSignupStudentMutation } from "../../api/authAPI";
+const SignUpStudent = () => {
+	const [section, setSection] = useState(2);
+	const user = useAppSelector((state) => state.auth.user);
 
-const SignUpStudent = ({section, handleSection}) => {
-  const user = useAppSelector((state) => state.auth.user);
-  
-  const [signupStudent, {data, error, isLoading, isSuccess, isError}] = useSignupStudentMutation();
+	const [signupStudent, {data, error, isLoading, isSuccess, isError}] = useSignupStudentMutation();
 
 	const {
 		register,
@@ -23,22 +25,14 @@ const SignUpStudent = ({section, handleSection}) => {
 		resolver: zodResolver(signupStudentSchema),
 	});
 
-  const onSubmit = async (data: TsignupStudent) => {
-    if (user) {
-       signupStudent({
-        token: user?.token,
-        university: data.university,
-        collage: data.collage,
-        level: data.level,
-        department: data.department,
-        universityEmail: data.universityEmail,
-        track: data.track,
-        linkedin: data.linkedin,
-        github: data.github,
-        behance: data.behance,
-      });
-    }
-
+	const onSubmit = async (data: TsignupStudent) => {
+		console.log(data);
+		if (user) {
+			signupStudent({
+				token: user?.token,
+				...data,
+			});
+		}
 	};
 
 	return (
@@ -55,12 +49,7 @@ const SignUpStudent = ({section, handleSection}) => {
 					</select>
 					<br />
 					<label htmlFor='collage'>Collage</label>
-					<select
-						id='collage'
-						{...register("collage", {
-							disabled: true,
-						})}
-					>
+					<select id='collage' {...register("collage", {})}>
 						<option value='FCI'>FCI</option>
 					</select>
 					<br />
@@ -89,11 +78,10 @@ const SignUpStudent = ({section, handleSection}) => {
 					<br />
 					<label htmlFor='univesityEmail'>univesityEmail</label>
 					<input type='text' {...register("universityEmail", {})} />
-					<br />
-					<button onClick={() => handleSection(1)}>Prev Step</button>
+
 					<button
 						onClick={() => {
-							handleSection(3);
+							setSection(3);
 						}}
 					>
 						Next Step
@@ -103,24 +91,25 @@ const SignUpStudent = ({section, handleSection}) => {
 			{section == 3 && (
 				<div>
 					<label htmlFor='track'> Track </label>
-					<select id='track' {...register("track", {})}>
+					<div>
 						{tracks.map((track) => (
-							<option key={track._id} value={track._id}>
-								{track.name}
-							</option>
+							<div key={track._id}>
+								<input {...register("track")} type='radio' id={track.slug} value={track.slug} />
+								<label htmlFor={track.slug}> {track.name}</label>
+							</div>
 						))}
-					</select>
+					</div>
 					<br />
 					<label htmlFor='linkedin'>Linkedin</label>
-					<input type='url' {...register("linkedin", {})} />
+					<input type='url' {...register("linkedin")} />
 					<br />
 					<label htmlFor='github'>github</label>
-					<input id='github' type='url' {...register("github", {})} />
+					<input id='github' type='url' {...register("github")} />
 					<br />
 					<label htmlFor='behance'>behance</label>
-					<input id='behance' type='url' {...register("behance", {})} />
+					<input id='behance' type='url' {...register("behance")} />
 					<br />
-					<button onClick={() => handleSection(2)}>Prev Step</button>
+					<button onClick={() => setSection(2)}>Prev Step</button>
 					<button type='submit'>Submit</button>
 				</div>
 			)}
