@@ -2,6 +2,7 @@ import {Link, Form} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
+import {useLoginUserMutation} from "../../api/authAPI";
 
 type TLoginData = {
 	email: string;
@@ -14,6 +15,8 @@ const schema = z.object({
 });
 
 const Login = () => {
+	const [loginUser] = useLoginUserMutation();
+
 	const {
 		register,
 		handleSubmit,
@@ -23,7 +26,7 @@ const Login = () => {
 	});
 
 	const onSubmit = async (data: TLoginData) => {
-		console.log(data);
+		console.log(loginUser(data).unwrap());
 	};
 
 	return (
@@ -65,9 +68,7 @@ const Login = () => {
 
 					<Link to={"/forgetPassword"}>forgetPassword</Link>
 
-					<button type='submit' disabled={!isDirty}>
-						Login
-					</button>
+					<button type='submit'>Login</button>
 				</Form>
 				<p>created by scrow team</p>
 				<Link to={"/contact"}>contact us</Link>

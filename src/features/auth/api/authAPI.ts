@@ -1,5 +1,6 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import {login} from "../authSlice";
+import {TsignupStudent} from "../../../types";
 
 export const authAPI = createApi({
 	reducerPath: "api",
@@ -14,7 +15,7 @@ export const authAPI = createApi({
 			async onQueryStarted(arg, {queryFulfilled, dispatch}) {
 				try {
 					const {data} = await queryFulfilled;
-					dispatch(login({token: data.token}));
+					dispatch(login({token: data.token, id: data.data._id, fullName: data.data.fullName}));
 					console.log("Request completed:", data);
 				} catch (error) {
 					console.error("Request failed:", error);
@@ -22,10 +23,25 @@ export const authAPI = createApi({
 			},
 		}),
 		signupStudent: builder.mutation({
-			query: (userData) => ({
+			query: ({token, ...data}) => ({
 				url: "authen/signupStudent",
 				method: "POST",
-				body: userData,
+				body: {
+					Username: "username", // requiredd in request but not in schema
+					university: "suez canal",
+					college: data.collage,
+					universityemail: data.universityEmail,
+					department: data.department,
+					level: data.level,
+					track: data.track,
+					skills: data.skills,
+					linkedin: data.linkedin,
+					github: data.github,
+					behance: data.behance,
+				},
+				headers: {
+					Authorization: token,
+				},
 			}),
 			async onQueryStarted(arg, {queryFulfilled, dispatch}) {
 				try {
@@ -38,12 +54,12 @@ export const authAPI = createApi({
 		}),
 		loginUser: builder.mutation({
 			query: (userData) => ({
-				url: "auth/login",
+				url: "authen/login",
 				method: "POST",
 				body: {
-					Email: "saeed@gmail.com",
-					password: "Saeed@123",
-				},
+					Email: userData.email,
+					password : userData.password
+				}
 			}),
 		}),
 	}),
