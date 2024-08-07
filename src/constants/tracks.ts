@@ -1,16 +1,46 @@
- const tracks = [
-  { id: 1, name: 'Frontend Development', technologies: ['HTML', 'CSS', 'JavaScript', 'React', 'Vue.js', 'Angular'] },
-  { id: 2, name: 'Backend Development', technologies: ['Node.js', 'Express.js', 'Django', 'Ruby on Rails', 'Spring Boot'] },
-  { id: 3, name: 'Full Stack Development', technologies: ['HTML', 'CSS', 'JavaScript', 'React', 'Node.js', 'Express.js', 'MongoDB', 'MySQL'] },
-  { id: 4, name: 'Mobile App Development', technologies: ['React Native', 'Flutter', 'Swift', 'Kotlin'] },
-  { id: 5, name: 'UI/UX Design', technologies: ['Adobe XD', 'Figma', 'Sketch', 'InVision', 'User Research', 'Wireframing', 'Prototyping'] },
-  { id: 6, name: 'Cybersecurity', technologies: ['Firewalls', 'Encryption', 'Intrusion Detection Systems (IDS)', 'Penetration Testing', 'Security Information and Event Management (SIEM)'] },
-  // { id: , name: 'Data Science', technologies: ['Python', 'R', 'SQL', 'Pandas', 'NumPy', 'Matplotlib', 'TensorFlow', 'Scikit-learn'] },
-  // { id: , name: 'Machine Learning', technologies: ['Python', 'TensorFlow', 'PyTorch', 'Scikit-learn'] },
-  // { id: , name: 'DevOps', technologies: ['Docker', 'Kubernetes', 'Jenkins', 'GitLab CI/CD', 'AWS', 'Azure', 'Google Cloud Platform'] },
-  // { id: , name: 'Cloud Computing', technologies: ['Amazon Web Services (AWS)', 'Microsoft Azure', 'Google Cloud Platform (GCP)', 'Docker', 'Kubernetes', 'Serverless Computing'] },
-  // { id: , name: 'Game Development', technologies: ['Unity', 'Unreal Engine', 'C#', 'C++', 'Game Design', '3D Modeling'] },
-  // { id: , name: 'Embedded Systems', technologies: ['Arduino', 'Raspberry Pi', 'C', 'C++', 'Microcontrollers', 'Embedded C'] },
+const tracks = [
+	{
+		_id: "66b01be4d3e25dc283ef24b2",
+		name: "Other",
+		slug: "other",
+		createdAt: "2024-08-05T00:25:08.306Z",
+		updatedAt: "2024-08-05T00:27:38.359Z",
+	},
+	{
+		_id: "66b01bd1d3e25dc283ef24af",
+		name: "Mobile devloper",
+		slug: "mobile-devloper",
+		createdAt: "2024-08-05T00:24:49.324Z",
+		updatedAt: "2024-08-05T00:24:49.324Z",
+	},
+	{
+		_id: "66b01ba4d3e25dc283ef24ac",
+		name: "Ui Ux",
+		slug: "ui-ux",
+		createdAt: "2024-08-05T00:24:04.618Z",
+		updatedAt: "2024-08-05T00:24:04.618Z",
+	},
+	{
+		_id: "66b01b8bd3e25dc283ef24a9",
+		name: "Ai",
+		slug: "ai",
+		createdAt: "2024-08-05T00:23:39.823Z",
+		updatedAt: "2024-08-05T00:23:39.823Z",
+	},
+	{
+		_id: "66b01b79d3e25dc283ef24a6",
+		name: "front end",
+		slug: "front-end",
+		createdAt: "2024-08-05T00:23:21.625Z",
+		updatedAt: "2024-08-05T00:23:21.625Z",
+	},
+	{
+		_id: "66b01b43d3e25dc283ef24a3",
+		name: "Back end",
+		slug: "back-end",
+		createdAt: "2024-08-05T00:22:27.565Z",
+		updatedAt: "2024-08-05T00:22:27.565Z",
+	},
 ];
 
-export default tracks
+export default tracks;
