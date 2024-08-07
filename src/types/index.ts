@@ -1,18 +1,22 @@
-type TSignUPData = {
-	firstName: string;
-	lastName: string;
+type TsignupUser = {
+	fullName: string;
 	phone: string;
 	email: string;
 	password: string;
+	confirmPassword: string;
+};
+type TsignupStudent = {
 	university: string;
 	collage: string;
 	level: string;
 	department: string;
+	universityEmail: string;
+
 	track: string;
+	skills: string[];
 	linkedin: string;
 	github: string;
 	behance: string;
-	bio: string;
 };
 
 type TCreateTeamData = {
@@ -23,4 +27,4 @@ type TCreateTeamData = {
 	requirement: string[];
 };
 
-export {type TSignUPData, type TCreateTeamData};
+export {type TsignupStudent, type TsignupUser, type TCreateTeamData};
