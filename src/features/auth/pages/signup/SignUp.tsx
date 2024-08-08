@@ -12,7 +12,7 @@ import {useState} from "react";
 const SignUp = () => {
 	const [signupUser, {data, error, isLoading, isSuccess, isError}] = useSignupUserMutation();
 
-	const [section, setSection] = useState(2);
+	const [section, setSection] = useState(1);
 
 	const handleSection = (section: number) => {
 		setSection(section);

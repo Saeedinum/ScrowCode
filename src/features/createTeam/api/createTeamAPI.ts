@@ -1,26 +1,27 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TCreateTeamData } from "../../../types";
+import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
+import {TCreateTeamData} from "../../../types";
 
 export const createTeamAPI = createApi({
 	baseQuery: fetchBaseQuery({
 		baseUrl: import.meta.env.VITE_API_BASE_URL,
-		prepareHeaders: (headers) => {
-			const token = localStorage.getItem("token");
-			if (token) {
-				headers.set("Authorization", `Bearer ${token}`);
-			}
-			return headers;
-		},
 	}),
 	endpoints: (builder) => ({
 		createTeam: builder.mutation<void, TCreateTeamData>({
 			query: (data) => ({
 				url: "team",
 				method: "POST",
-				body: data,
+				body: {
+					teamName: data.teamName,
+					projectIdea: data.projectIdea,
+					userName: data.userName.map((user) => user.name),
+					requirement: data.requirement,
+				},
+				headers: {
+					authentication: data.token,
+				},
 			}),
 		}),
 	}),
 });
 
-export const { useCreateTeamMutation } = createTeamAPI;
+export const {useCreateTeamMutation} = createTeamAPI;
