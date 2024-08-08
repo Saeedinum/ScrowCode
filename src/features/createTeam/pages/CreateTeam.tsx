@@ -1,5 +1,6 @@
-import {useState} from "react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import {useForm, SubmitHandler, useFieldArray} from "react-hook-form";
+
+import {useCreateTeamMutation} from "../api/createTeamAPI";
 
 import {TCreateTeamData} from "../../../types";
 import {useAppSelector} from "../../../store/hooks";
@@ -7,11 +8,23 @@ import tracks from "../../../constants/tracks";
 
 const CreateTeam = () => {
 	const user = useAppSelector((state) => state.auth.user);
-	const [teamMembers, setTeamMembers] = useState<string[]>([]);
 
-	const {register, handleSubmit, getValues, watch} = useForm<TCreateTeamData>();
+	const [createTeam] = useCreateTeamMutation();
 
-	const onSubmit: SubmitHandler<TCreateTeamData> = (data) => console.log(data);
+	const {register, handleSubmit, control, watch} = useForm<TCreateTeamData>({
+		shouldUnregister: true,
+	});
+
+	const {fields, append, remove} = useFieldArray({
+		control,
+		name: "userName",
+	});
+
+	const onSubmit: SubmitHandler<TCreateTeamData> = (data) => {
+		if (user?.token) createTeam({...data, token: user?.token});
+	};
+
+	console.log(watch());
 
 	return (
 		<form onSubmit={handleSubmit(onSubmit)}>
@@ -19,6 +32,7 @@ const CreateTeam = () => {
 				type='number'
 				max={8}
 				min={1}
+				defaultValue={1}
 				{...register("members", {
 					required: true,
 				})}
@@ -28,7 +42,7 @@ const CreateTeam = () => {
 				<div>
 					{tracks.map((track) => (
 						<div key={track._id}>
-							<input {...register("requirement")} type='checkbox' id={track.slug} value={track.slug} />
+							<input {...register("requirement")} type='checkbox' id={track.slug} value={track._id} />
 							<label htmlFor={track.slug}> {track.name}</label>
 						</div>
 					))}
@@ -41,16 +55,19 @@ const CreateTeam = () => {
 			</div>
 
 			<div>
-				<h2>Add memebers</h2>
-				{/* add user as default team leader */}
-				{/* button to add  */}
+				<h2>Add members</h2>
 				<div>
 					<input type='text' value={`${user?.fullName}`} disabled />
-					{teamMembers.map((member, index) => (
-						<input key={index} type='text' {...register(`userName.${index}`)} />
+					{fields.map((field, index) => (
+						<div key={field.id}>
+							<input type='text' {...register(`userName.${index}.name`)} />
+							<button type='button' onClick={() => remove(index)}>
+								Remove
+							</button>
+						</div>
 					))}
 				</div>
-				<button onClick={() => setTeamMembers([...teamMembers, ""])} disabled={teamMembers.length >= watch("members")}>
+				<button type='button' onClick={() => append({name: ""})} disabled={fields.length >= watch("members")}>
 					Add Member
 				</button>
 			</div>

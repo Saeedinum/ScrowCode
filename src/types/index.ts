@@ -23,8 +23,9 @@ type TCreateTeamData = {
 	members: number;
 	teamName: string;
 	projectIdea: string;
-	userName: string[];
+	userName: {name:string}[];
 	requirement: string[];
+	token: string;
 };
 
 export {type TsignupStudent, type TsignupUser, type TCreateTeamData};
