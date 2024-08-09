@@ -12,6 +12,7 @@ import CreateTeam from "../features/createTeam/pages/CreateTeam";
 import FindTeam from "../features/findTeam/pages/FindTeam";
 import FindPartner from "../features/findPartner/pages/FindPartner";
 import {useAppSelector} from "../store/hooks";
+import ForgetPassword from "../features/auth/pages/forget/ForgetPassword";
 
 const Router = () => {
 	const auth = useAppSelector((state) => state.auth.user);
@@ -48,6 +49,7 @@ const Router = () => {
 				},
 				{path: "login", element: <Login />},
 				{path: "signup", element: <SignUp />},
+				{path: "forgetPassword", element: <ForgetPassword />},
 				{path: "*", element: <NotFound />},
 			])}
 		/>
