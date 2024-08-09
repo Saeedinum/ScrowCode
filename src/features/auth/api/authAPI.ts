@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
-import {login} from "../authSlice";
-import {TsignupStudent} from "../../../types";
+import {login, reset} from "../authSlice";
 
 export const authAPI = createApi({
 	reducerPath: "api",
@@ -43,7 +42,7 @@ export const authAPI = createApi({
 					Authorization: token,
 				},
 			}),
-			async onQueryStarted(arg, {queryFulfilled, dispatch}) {
+			async onQueryStarted(arg, {queryFulfilled}) {
 				try {
 					const {data} = await queryFulfilled;
 					console.log("Request completed:", data);
@@ -58,11 +57,62 @@ export const authAPI = createApi({
 				method: "POST",
 				body: {
 					Email: userData.email,
-					password : userData.password
+					password: userData.password,
+				},
+			}),
+		}),
+		forgetpass: builder.mutation({
+			query: (email) => ({
+				url: "authen/forgetpass",
+				method: "POST",
+				body: {
+					Email: email,
+				},
+			}),
+			async onQueryStarted(arg, {queryFulfilled, dispatch}) {
+				try {
+					await queryFulfilled;
+					dispatch(reset({email: arg}));
+				} catch (error) {
+					console.error("Request failed:", error);
 				}
+			},
+		}),
+		verifycode: builder.mutation({
+			query: (code) => ({
+				url: "authen/verifycode",
+				method: "POST",
+				body: {
+					resetCode: code,
+				},
+			}),
+			async onQueryStarted(arg, {queryFulfilled, dispatch}) {
+				try {
+					await queryFulfilled;
+					dispatch(reset({otp: arg}));
+				} catch (error) {
+					console.error("Request failed:", error);
+				}
+			},
+		}),
+		resetpassword: builder.mutation({
+			query: (data) => ({
+				url: "authen/resetpassword",
+				method: "PUT",
+				body: {
+					Email: data.email,
+					newPassword: data.password,
+				},
 			}),
 		}),
 	}),
 });
 
-export const {useSignupUserMutation, useSignupStudentMutation, useLoginUserMutation} = authAPI;
+export const {
+	useSignupUserMutation,
+	useSignupStudentMutation,
+	useLoginUserMutation,
+	useForgetpassMutation,
+	useResetpasswordMutation,
+	useVerifycodeMutation,
+} = authAPI;
