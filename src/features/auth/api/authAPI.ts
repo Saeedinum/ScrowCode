@@ -27,10 +27,10 @@ export const authAPI = createApi({
 				method: "POST",
 				body: {
 					Username: "username", // requiredd in request but not in schema
-					university: "suez canal",
-					college: data.collage,
+					university: "Suez canal university",
+					college: "computer and information",
 					universityemail: data.universityEmail,
-					department: data.department,
+					department: "CS",
 					level: data.level,
 					track: data.track,
 					skills: data.skills,
@@ -60,6 +60,15 @@ export const authAPI = createApi({
 					password: userData.password,
 				},
 			}),
+			async onQueryStarted(arg, {queryFulfilled, dispatch}) {
+				try {
+					const {data} = await queryFulfilled;
+					dispatch(login({token: data.token, id: data.data._id, fullName: data.data.fullName}));
+					console.log("Request completed:", data);
+				} catch (error) {
+					console.error("Request failed:", error);
+				}
+			},
 		}),
 		forgetpass: builder.mutation({
 			query: (email) => ({

@@ -1,4 +1,4 @@
-import {Link, Form} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import {useForm} from "react-hook-form";
 import {z} from "zod";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -15,6 +15,7 @@ const schema = z.object({
 });
 
 const Login = () => {
+	const navigate = useNavigate();
 	const [loginUser] = useLoginUserMutation();
 
 	const {
@@ -26,7 +27,8 @@ const Login = () => {
 	});
 
 	const onSubmit = async (data: TLoginData) => {
-		console.log(loginUser(data).unwrap());
+		await loginUser(data).unwrap();
+		navigate("/");
 	};
 
 	return (
@@ -37,12 +39,11 @@ const Login = () => {
 				<p>
 					Don't have an account? <Link to={"/signup"}>sign up</Link>
 				</p>
-				<h1>Welcome Back </h1>
+				<h1>Welcome Back</h1>
 				<p>log in to Be Attached with your team</p>
 
-				<div>Login with google</div>
-
-				<Form onSubmit={handleSubmit(onSubmit)} className='flex flex-col'>
+				<div>Login with Google</div>
+				<form onSubmit={handleSubmit(onSubmit)} className='flex flex-col'>
 					<label htmlFor='email'>Email</label>
 					<input
 						id='email'
@@ -63,17 +64,18 @@ const Login = () => {
 					<br />
 					<div>
 						<input type='checkbox' name='remember' id='remember' />
-						<label htmlFor='remember'> remeber me </label>
+						<label htmlFor='remember'>remember me</label>
 					</div>
 
-					<Link to={"/forgetPassword"}>forgetPassword</Link>
+					<Link to={"/forgetPassword"}>Forget Password?</Link>
 
 					<button type='submit'>Login</button>
-				</Form>
+				</form>
 				<p>created by scrow team</p>
 				<Link to={"/contact"}>contact us</Link>
 			</section>
 		</>
 	);
 };
+
 export default Login;
