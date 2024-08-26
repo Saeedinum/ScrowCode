@@ -7,7 +7,7 @@ import {Provider} from "react-redux";
 
 import {ThemeProvider} from "@/components/theme-provider";
 
-// import "../src/styles/index.css";
+import "../src/styles/index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
 	<Provider store={store}>

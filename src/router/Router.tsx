@@ -3,7 +3,7 @@ import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-route
 import NotFound from "../pages/NotFound/NotFound";
 
 import Header from "../components/Header";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 import Home from "../pages/home/Home";
 import Login from "../features/auth/pages/login/Login";
@@ -25,10 +25,8 @@ const Router = () => {
 					element: (
 						<>
 							<Header />
-							<main>
-								<Outlet />
-							</main>
-							<Footer />
+							<Outlet />
+							{/* <Footer /> */}
 						</>
 					),
 					children: [
