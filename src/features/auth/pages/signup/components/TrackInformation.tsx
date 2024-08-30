@@ -24,15 +24,14 @@ const TrackInformation = () => {
     console.log(data);
   };
 
-
   return (
-    <section className="px- flex w-[calc(100%-5rem)] flex-grow flex-col items-center">
+    <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full flex-col items-center gap-5"
+        className="flex w-full flex-col items-center gap-5 px-10"
       >
         {/* ------------------------------------------------------------------------------------------------------------------------ */}
-        <div className="p-4">
+        <div className="w-full">
           <label htmlFor="track" className="mb-2 block font-bold">
             Select Your Track
           </label>
@@ -61,7 +60,7 @@ const TrackInformation = () => {
           </div>
         </div>
 
-        <div className="p-4">
+        {/* <div className="p-4">
           <label htmlFor="track" className="mb-2 block font-bold">
             Skills
           </label>
@@ -88,11 +87,12 @@ const TrackInformation = () => {
               </div>
             ))}
           </div>
-        </div>
+        </div> */}
 
         {/* ------------------------------------------------------------------------------------------------------------------------ */}
+
         <label htmlFor="linkedin" className="relative w-full">
-          <span className="ml-2 text-primary-first">linkedin</span>
+          <span className="ml-2 text-primary-first">Linked in link</span>
 
           <svg
             className={`absolute left-3 top-[37px] ${watch().linkedin ? "hidden" : ""} transition-all`}
@@ -118,13 +118,13 @@ const TrackInformation = () => {
             placeholder={
               errors.linkedin
                 ? "eg: https://linkedin.com/in/example"
-                : "linkedin"
+                : "linked in link"
             }
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-8 placeholder:text-sm placeholder:text-Grey-third ${errors.linkedin ? "border-red-500" : ""} `}
           />
         </label>
         <label htmlFor="github" className="relative w-full">
-          <span className="ml-2 text-primary-first">github</span>
+          <span className="ml-2 text-primary-first">Github link</span>
 
           <svg
             className={`absolute left-3 top-[37px] ${watch().github ? "hidden" : ""} transition-all`}
@@ -147,13 +147,16 @@ const TrackInformation = () => {
               required: "required",
             })}
             placeholder={
-              errors.github ? "eg: https://github.com/example" : "github"
+              errors.github ? "eg: https://github.com/example" : "github link"
             }
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-8 placeholder:text-sm placeholder:text-Grey-third ${errors.github ? "border-red-500" : ""} `}
           />
         </label>
         <label htmlFor="behance" className="relative w-full">
-          <span className="ml-2 text-primary-first">behance</span>
+          <span className="ml-2 text-primary-first">
+            Behance link{" "}
+            <span className="text-sm text-[#A0A1A3]">( Ui/Ux avability )</span>
+          </span>
 
           <svg
             className={`absolute left-3 top-[37px] ${watch().behance ? "hidden" : ""} transition-all`}
@@ -177,11 +180,26 @@ const TrackInformation = () => {
               required: "required",
             })}
             placeholder={
-              errors.behance ? "eg: https://behance.net/example" : "behance"
+              errors.behance
+                ? "eg: https://behance.net/example"
+                : "behance link"
             }
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-8 placeholder:text-sm placeholder:text-Grey-third ${errors.behance ? "border-red-500" : ""} `}
           />
         </label>
+
+        <button
+          type="submit"
+          className="mt-10 flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-[#002ABA] py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
+        >
+          Sign Up
+        </button>
+
+        <p className="text-sm text-[#A0A1A3]">
+          By signing up , you agree to our
+          <span className="text-primary-second"> Terms Of Use</span> and
+          <span className="text-primary-second"> Privacy Police</span>
+        </p>
       </form>
     </section>
   );

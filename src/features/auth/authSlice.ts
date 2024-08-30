@@ -63,14 +63,14 @@ const initialState: AuthState = {
   },
   signup: {
     PersonalInformation: {
-      fullName: "null",
+      fullName: null,
       phone: null,
       email: null,
       password: null,
       confirmPassword: null,
     },
     UniversityInformation: {
-      university: "null",
+      university: null,
       college: null,
       level: null,
       department: null,

@@ -17,6 +17,7 @@ const SignUp = () => {
   const dispatch = useAppDispatch();
   const signup = useAppSelector((state) => state.auth.signup);
   const [section, setSection] = useState(<></>);
+  const [backgroundStep, setBackgroundStep] = useState<number>();
 
   useEffect(() => {
     if (
@@ -25,13 +26,16 @@ const SignUp = () => {
       signup.TrackInformation.github === null
     ) {
       setSection(<PersonalInformation />);
+      setBackgroundStep(1);
     } else if (
       signup?.UniversityInformation.university === null &&
       signup.TrackInformation.github === null
     ) {
       setSection(<UniversityInformation />);
+      setBackgroundStep(2);
     } else {
       setSection(<TrackInformation />);
+      setBackgroundStep(3);
     }
   }, [signup]);
 
@@ -56,12 +60,37 @@ const SignUp = () => {
           alt=""
           className="absolute left-9 top-3 w-16 select-none"
         />
+
         <div className="absolute top-72 flex items-end gap-5 text-center text-[32px] font-bold">
           <p className="flex flex-col">
             <span>Sign up to Discovering Your</span>
             <span> Team work.. </span>
           </p>
         </div>
+
+        <div className="absolute flex flex-col items-center gap-2 text-center font-bold">
+          <h2 className="text-xl text-[#001354]">
+            {" "}
+            {backgroundStep === 1 && "1. Personal Information"}
+            {backgroundStep === 2 && "2. University Information"}
+            {backgroundStep === 3 && "3. Track Information"}
+          </h2>
+          <p className="text-[#6679BE]">Step {backgroundStep} of 3</p>
+          <div className="flex gap-2">
+            {backgroundStep === 1 && (
+              <p className="h-[3px] w-[53px] bg-primary-second"></p>
+            )}
+            <p className="h-[3px] w-[31px] bg-primary-first"></p>
+            {backgroundStep === 2 && (
+              <p className="h-[3px] w-[53px] bg-primary-second"></p>
+            )}
+            <p className="h-[3px] w-[24px] bg-primary-first"></p>
+            {backgroundStep === 3 && (
+              <p className="h-[3px] w-[53px] bg-primary-second"></p>
+            )}
+          </div>
+        </div>
+
         <div className="absolute bottom-10 flex flex-col gap-1 text-center font-bold text-primary-first">
           <p className="">created by scrow team</p>
           <Link to={"/contact"} className="text-Grey-first underline">
