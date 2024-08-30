@@ -49,7 +49,7 @@ const personalInformationSchema = z
 
 const universityInformationSchema = z.object({
   university: z.string(),
-  collage: z.string(),
+  college: z.string(),
   level: z.number(),
   department: z.string(),
   universityEmail: z.string().regex(universityEmailRegex, {

@@ -118,7 +118,7 @@ const SignUp = () => {
         </h1>
         <p className="flex flex-col items-center text-[14px] text-[#6679BE]">
           Register to Your Account
-          <hr className="m-2 h-[2px] w-[calc(100%+2rem)] bg-[#6679BE]" />
+          <span className="m-2 h-[1px] w-[calc(100%+2rem)] bg-[#6679BE]"></span>
         </p>
         {section}
       </section>

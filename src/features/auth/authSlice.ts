@@ -7,9 +7,9 @@ type User = {
 };
 
 type Reset = {
-  email?: string | null;
-  otp?: string | null;
-  newPassword?: string | null;
+  email: string | null;
+  otp: string | null;
+  newPassword: string | null;
 };
 
 type Signup = {
@@ -44,9 +44,9 @@ type Ttracks = {
 }[];
 
 interface AuthState {
-  user?: User;
-  reset?: Reset;
-  signup?: Signup;
+  user: User;
+  reset: Reset;
+  signup: Signup;
   tracks: Ttracks;
 }
 
@@ -63,7 +63,7 @@ const initialState: AuthState = {
   },
   signup: {
     PersonalInformation: {
-      fullName: null,
+      fullName: "null",
       phone: null,
       email: null,
       password: null,
@@ -93,25 +93,46 @@ export const authslice = createSlice({
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
     },
+
     logout: () => initialState,
+
     reset: (state, action: PayloadAction<Reset>) => {
       state.reset = {
         ...state.reset,
         ...action.payload,
       };
     },
-    signup: (state, action: PayloadAction<Signup>) => {
+
+    signup: (state, action: PayloadAction<Partial<Signup>>) => {
       state.signup = {
         ...state.signup,
-        ...action.payload,
+        PersonalInformation: action.payload.PersonalInformation
+          ? {
+              ...state.signup.PersonalInformation,
+              ...action.payload.PersonalInformation,
+            }
+          : state.signup.PersonalInformation,
+        UniversityInformation: action.payload.UniversityInformation
+          ? {
+              ...state.signup.UniversityInformation,
+              ...action.payload.UniversityInformation,
+            }
+          : state.signup.UniversityInformation,
+        TrackInformation: action.payload.TrackInformation
+          ? {
+              ...state.signup.TrackInformation,
+              ...action.payload.TrackInformation,
+            }
+          : state.signup.TrackInformation,
       };
     },
+
     getTracks: (state, action: PayloadAction<Ttracks>) => {
       state.tracks = action.payload;
     },
   },
 });
 
-export const { login, logout, reset, signup , getTracks } = authslice.actions;
+export const { login, logout, reset, signup, getTracks } = authslice.actions;
 
 export default authslice.reducer;

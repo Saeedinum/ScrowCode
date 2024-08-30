@@ -5,9 +5,11 @@ import { trackInformationSchema } from "@/schema/signup";
 import { TtrackInformation } from "@/types";
 
 import "../index.css";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { signup } from "@/features/auth/authSlice";
 
 const TrackInformation = () => {
+  const dispatch = useAppDispatch();
   const tracks = useAppSelector((state) => state.auth.tracks);
   console.log(tracks);
 
@@ -21,7 +23,11 @@ const TrackInformation = () => {
   });
 
   const onSubmit = async (data: TtrackInformation) => {
-    console.log(data);
+    dispatch(
+      signup({
+        TrackInformation: data,
+      }),
+    );
   };
 
   return (

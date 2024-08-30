@@ -20,7 +20,7 @@ type TpersonalInformation = {
 type TuniversityInformation = {
   university: string;
   college: string;
-  level: string;
+  level: number;
   department: string;
   universityEmail: string;
 };

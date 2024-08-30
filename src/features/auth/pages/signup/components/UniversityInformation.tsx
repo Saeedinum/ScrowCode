@@ -3,8 +3,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { universityInformationSchema } from "@/schema/signup";
 import { TuniversityInformation } from "@/types";
+import { signup } from "@/features/auth/authSlice";
+import { useAppDispatch } from "@/store/hooks";
 
 const UniversityInformation = () => {
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -14,7 +18,11 @@ const UniversityInformation = () => {
   });
 
   const onSubmit = async (data: TuniversityInformation) => {
-    console.log(data);
+    dispatch(
+      signup({
+        UniversityInformation: data,
+      }),
+    );
   };
 
   console.log(errors);
@@ -27,66 +35,59 @@ const UniversityInformation = () => {
       >
         <label htmlFor="university" className="relative w-full">
           <span className="ml-2 text-primary-first">University</span>
-          <input
-            autoComplete="false"
-            id="email"
-            type="text"
-            {...register("university", {
-              required: "required",
-            })}
-            placeholder="university"
+          <select
+            id="university"
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
-          />
+            {...register("university")}
+          >
+            <option value="SCU_234567">Suez Canal University</option>
+          </select>
         </label>
-
         <label htmlFor="college" className="relative w-full">
           <span className="ml-2 text-primary-first">College</span>
-
-          <input
-            autoComplete="false"
-            id="college"
-            type="text"
+          <select
+            id="collage"
             {...register("college", {
               required: "required",
             })}
-            placeholder="college"
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
-          />
+          >
+            <option value="fci">Computers and Informatics</option>
+          </select>
         </label>
-
         <label htmlFor="level" className="relative w-full">
           <span className="ml-2 text-primary-first">Level</span>
-
-          <input
-            autoComplete="false"
+          <select
+            defaultValue="1"
             id="level"
-            type="text"
             {...register("level", {
-              required: "required",
+              valueAsNumber: true,
             })}
-            placeholder="level"
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
-          />
+          >
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+          </select>
         </label>
-
         <label htmlFor="department" className="relative w-full">
           <span className="ml-2 text-primary-first">Department</span>
-
-          <input
-            autoComplete="false"
+          <select
             id="department"
-            type="text"
-            {...register("department", {
-              required: "required",
-            })}
-            placeholder="department"
+            {...register("department", {})}
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
-          />
+          >
+            <option value="general">General</option>
+            <option value="bio">BioInformatics</option>
+            <option value="soft">Software</option>
+            <option value="cs">Computer Science </option>
+            <option value="is">Information Systems</option>
+            <option value="ai">Artificial Inteligence</option>
+          </select>
         </label>
-
         <label htmlFor="universityEmail" className="relative w-full">
           <span className="ml-2 text-primary-first">University Email</span>
-
           <input
             autoComplete="false"
             id="universityEmail"
@@ -125,7 +126,7 @@ const UniversityInformation = () => {
               <path
                 d="M0.833008 7.5H14.1663M14.1663 7.5L8.16634 1.5M14.1663 7.5L8.16634 13.5"
                 stroke="white"
-                stroke-width="2"
+                strokeWidth="2"
               />
             </svg>
           </button>
