@@ -1,4 +1,4 @@
-type TCreateTeamData = {
+export type TCreateTeamData = {
   members: number;
   teamName: string;
   projectIdea: string;
@@ -7,7 +7,7 @@ type TCreateTeamData = {
   token: string;
 };
 
-type TpersonalInformation = {
+export type TpersonalInformation = {
   firstname: string;
   lastname: string;
   username: string;
@@ -17,7 +17,7 @@ type TpersonalInformation = {
   confirmPassword: string;
 };
 
-type TuniversityInformation = {
+export type TuniversityInformation = {
   university: string;
   college: string;
   level: number;
@@ -25,16 +25,10 @@ type TuniversityInformation = {
   universityEmail: string;
 };
 
-type TtrackInformation = {
+export type TtrackInformation = {
   track: string;
+  skills: string[];
   linkedin: string;
   github: string;
   behance: string;
-};
-
-export {
-  type TCreateTeamData,
-  type TpersonalInformation,
-  type TuniversityInformation,
-  type TtrackInformation,
 };
