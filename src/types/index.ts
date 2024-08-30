@@ -10,6 +10,7 @@ export type TCreateTeamData = {
 export type TpersonalInformation = {
   firstname: string;
   lastname: string;
+  fullName: string;
   username: string;
   phone: string;
   email: string;

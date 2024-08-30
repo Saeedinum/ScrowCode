@@ -1,3 +1,9 @@
+import {
+  TpersonalInformation,
+  TtrackInformation,
+  TuniversityInformation,
+} from ".";
+
 export type User = {
   token: string | null;
   id: string | null;
@@ -11,26 +17,9 @@ export type Reset = {
 };
 
 export type Signup = {
-  PersonalInformation: {
-    fullName: string | null;
-    phone: string | null;
-    email: string | null;
-    password: string | null;
-    confirmPassword: string | null;
-  };
-  UniversityInformation: {
-    university: string | null;
-    college: string | null;
-    level: number | null;
-    department: string | null;
-    universityEmail: string | null;
-  };
-  TrackInformation: {
-    track: string | null;
-    linkedin: string | null;
-    github: string | null;
-    behance: string | null;
-  };
+  PersonalInformation: TpersonalInformation;
+  UniversityInformation: TuniversityInformation;
+  TrackInformation: TtrackInformation;
 };
 
 export type skill = {

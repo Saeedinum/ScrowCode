@@ -11,25 +11,23 @@ import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 
 import { useGetTracksQuery } from "../../api/authAPI";
-// import { getTracks } from "../../authSlice";
 
 const SignUp = () => {
-  // const dispatch = useAppDispatch();
   const signup = useAppSelector((state) => state.auth.signup);
   const [section, setSection] = useState(<></>);
   const [backgroundStep, setBackgroundStep] = useState<number>();
 
   useEffect(() => {
     if (
-      signup?.PersonalInformation.fullName === null &&
-      signup.UniversityInformation.universityEmail === null &&
-      signup.TrackInformation.github === null
+      signup?.PersonalInformation.fullName === "" &&
+      signup.UniversityInformation.universityEmail === "" &&
+      signup.TrackInformation.github === ""
     ) {
       setSection(<PersonalInformation />);
       setBackgroundStep(1);
     } else if (
-      signup?.UniversityInformation.university === null &&
-      signup.TrackInformation.github === null
+      signup?.UniversityInformation.university === "" &&
+      signup.TrackInformation.github === ""
     ) {
       setSection(<UniversityInformation />);
       setBackgroundStep(2);
@@ -45,14 +43,6 @@ const SignUp = () => {
     refetchOnFocus: false,
   });
 
-  // console.log(data);
-
-  // useEffect(() => {
-  //   if (data) {
-  //     dispatch(getTracks(data.data));
-  //   }
-  // }, [data, dispatch]);
-
   return (
     <main className="relative flex select-none justify-start">
       <section className="relative flex items-center justify-center bg-Grey-fourth text-primary-first">
@@ -62,14 +52,12 @@ const SignUp = () => {
           alt=""
           className="absolute left-9 top-3 w-16 select-none"
         />
-
         <div className="absolute top-72 flex items-end gap-5 text-center text-[32px] font-bold">
           <p className="flex flex-col">
             <span>Sign up to Discovering Your</span>
             <span> Team work.. </span>
           </p>
         </div>
-
         <div className="absolute flex flex-col items-center gap-2 text-center font-bold">
           <h2 className="text-xl text-[#001354]">
             {" "}
@@ -92,7 +80,6 @@ const SignUp = () => {
             )}
           </div>
         </div>
-
         <div className="absolute bottom-10 flex flex-col gap-1 text-center font-bold text-primary-first">
           <p className="">created by scrow team</p>
           <Link to={"/contact"} className="text-Grey-first underline">

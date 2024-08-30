@@ -59,6 +59,7 @@ const universityInformationSchema = z.object({
 
 const trackInformationSchema = z.object({
   track: z.string(),
+  skills: z.array(z.any()),
   linkedin: z
     .string()
     .regex(linkedinRegex, { message: "Please enter a valid LinkedIn URL" }),
