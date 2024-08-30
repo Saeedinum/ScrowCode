@@ -36,7 +36,6 @@ const TrackInformation = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-5 px-10"
       >
-        {/* ------------------------------------------------------------------------------------------------------------------------ */}
         <div className="w-full">
           <label htmlFor="track" className="mb-2 block font-bold">
             Select Your Track
@@ -65,41 +64,38 @@ const TrackInformation = () => {
             ))}
           </div>
         </div>
-
-        {/* <div className="p-4">
+        <div className="p-4">
           <label htmlFor="track" className="mb-2 block font-bold">
             Skills
           </label>
-          <div className="grid grid-cols-3 gap-2">
-            {tracks.map((track) => (
-              <div
-                key={track._id}
-                className={`relative flex h-[51px] w-[185px] items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm text-gray-600 ${watch().track == track._id ? "border-[#407BFF] bg-blue-100 text-[#407BFF]" : ""}`}
-              >
-                <input
-                  {...register("track")}
-                  type="radio"
-                  id={track.slug}
-                  value={track._id}
-                  className="radio-hidden"
-                />
-                <label
-                  htmlFor={track.slug}
-                  className="relative flex flex-1 cursor-pointer items-center pl-4"
+          <div className="flex flex-wrap gap-2">
+            {tracks
+              .find((track) => track._id == watch().track)
+              ?.skills.map((skill) => (
+                <div
+                  key={skill._id}
+                  className={`relative flex h-[51px] w-fit items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm lowercase text-gray-600 ${watch().skills?.some((e) => e === skill._id) ? "border-[#407BFF] bg-blue-100 text-blue-600" : ""}`}
                 >
-                  <span className="radio-custom"></span>
-                  {track.name}
-                </label>
-              </div>
-            ))}
+                  <input
+                    {...register("skills")}
+                    type="checkbox"
+                    id={skill.slug}
+                    value={skill._id}
+                    className="hidden"
+                  />
+                  <label
+                    htmlFor={skill.slug}
+                    className="relative flex flex-1 cursor-pointer items-center pl-1"
+                  >
+                    <span className="radio-custom"></span>
+                    {skill.name}
+                  </label>
+                </div>
+              ))}
           </div>
-        </div> */}
-
-        {/* ------------------------------------------------------------------------------------------------------------------------ */}
-
+        </div>
         <label htmlFor="linkedin" className="relative w-full">
           <span className="ml-2 text-primary-first">Linked in link</span>
-
           <svg
             className={`absolute left-3 top-[37px] ${watch().linkedin ? "hidden" : ""} transition-all`}
             width="24"

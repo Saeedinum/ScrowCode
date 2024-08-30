@@ -8,11 +8,7 @@ import background from "/src/assets//auth//login.png";
 import logo from "/src/assets/logo.svg";
 import mainlogo from "/src/assets/MainLogo.svg";
 import googleIcon from "/src/assets/auth/google.svg";
-
-type TLoginData = {
-  email: string;
-  password: string;
-};
+import { TLoginData } from "@/types/auth"
 
 const schema = z.object({
   email: z

@@ -7,14 +7,14 @@ import UniversityInformation from "./components/UniversityInformation";
 import background from "/src/assets//auth//signup.png";
 import logo from "/src/assets/logo.svg";
 import mainlogo from "/src/assets/MainLogo.svg";
-import { useAppSelector, useAppDispatch } from "@/store/hooks";
+import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 
 import { useGetTracksQuery } from "../../api/authAPI";
-import { getTracks } from "../../authSlice";
+// import { getTracks } from "../../authSlice";
 
 const SignUp = () => {
-  const dispatch = useAppDispatch();
+  // const dispatch = useAppDispatch();
   const signup = useAppSelector((state) => state.auth.signup);
   const [section, setSection] = useState(<></>);
   const [backgroundStep, setBackgroundStep] = useState<number>();
@@ -39,17 +39,19 @@ const SignUp = () => {
     }
   }, [signup]);
 
-  const { data } = useGetTracksQuery(undefined, {
+  useGetTracksQuery(undefined, {
     refetchOnMountOrArgChange: false,
     refetchOnReconnect: false,
     refetchOnFocus: false,
   });
 
-  useEffect(() => {
-    if (data) {
-      dispatch(getTracks(data.data));
-    }
-  }, [data, dispatch]);
+  // console.log(data);
+
+  // useEffect(() => {
+  //   if (data) {
+  //     dispatch(getTracks(data.data));
+  //   }
+  // }, [data, dispatch]);
 
   return (
     <main className="relative flex select-none justify-start">

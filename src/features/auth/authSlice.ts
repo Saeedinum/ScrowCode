@@ -1,53 +1,11 @@
+import { Reset, Signup, Ttracks, User } from "@/types/auth";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-
-type User = {
-  token: string | null;
-  id: string | null;
-  fullName: string | null;
-};
-
-type Reset = {
-  email: string | null;
-  otp: string | null;
-  newPassword: string | null;
-};
-
-type Signup = {
-  PersonalInformation: {
-    fullName: string | null;
-    phone: string | null;
-    email: string | null;
-    password: string | null;
-    confirmPassword: string | null;
-  };
-  UniversityInformation: {
-    university: string | null;
-    college: string | null;
-    level: number | null;
-    department: string | null;
-    universityEmail: string | null;
-  };
-  TrackInformation: {
-    track: string | null;
-    linkedin: string | null;
-    github: string | null;
-    behance: string | null;
-  };
-};
-
-type Ttracks = {
-  _id: string | undefined;
-  name: string | undefined;
-  slug: string | undefined;
-  createdAt: string | undefined;
-  updatedAt: string | undefined;
-}[];
 
 interface AuthState {
   user: User;
   reset: Reset;
   signup: Signup;
-  tracks: Ttracks;
+  tracks: Ttracks[];
 }
 
 const initialState: AuthState = {
@@ -70,7 +28,7 @@ const initialState: AuthState = {
       confirmPassword: null,
     },
     UniversityInformation: {
-      university: null,
+      university: "null",
       college: null,
       level: null,
       department: null,
@@ -127,7 +85,7 @@ export const authslice = createSlice({
       };
     },
 
-    getTracks: (state, action: PayloadAction<Ttracks>) => {
+    getTracks: (state, action: PayloadAction<Ttracks[]>) => {
       state.tracks = action.payload;
     },
   },
