@@ -33,7 +33,8 @@ const Router = () => {
 						{index: true, element: <Home />},
 						{
 							path: "CreateTeam",
-							element: auth?.token != undefined ? <CreateTeam /> : <Navigate to='/login' />,
+							element:  <CreateTeam /> 
+							// element: auth?.token != undefined ? <CreateTeam /> : <Navigate to='/login' />,
 						},
 						{
 							path: "FindTeam",

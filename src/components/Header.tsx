@@ -36,7 +36,7 @@ const Header = () => {
           <DropdownMenuContent className="w-full">
             <DropdownMenuItem>
               <Link
-                to={""}
+                to={"/"}
                 className="block w-full py-2 hover:text-primary-third"
               >
                 Home
@@ -44,7 +44,7 @@ const Header = () => {
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
-                to={"about"}
+                to={"/about"}
                 className="block w-full py-2 hover:text-primary-third"
               >
                 About
@@ -52,18 +52,18 @@ const Header = () => {
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>
-              <Link to={"FindTeam"} className="block w-full py-2">
+              <Link to={"/FindTeam"} className="block w-full py-2">
                 Join Team
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
-              <Link to={"createTeam"} className="block w-full py-2">
+              <Link to={"/createTeam"} className="block w-full py-2">
                 Create Team
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem>
               <Link
-                to={"findPartner"}
+                to={"/findPartner"}
                 className="block w-full py-2 hover:text-primary-third"
               >
                 Find Partner
@@ -83,13 +83,13 @@ const Header = () => {
               ) : (
                 <>
                   <DropdownMenuItem>
-                    <Link to={"login"} className="block w-full py-2">
+                    <Link to={"/login"} className="block w-full py-2">
                       Log in
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link
-                      to={"signup"}
+                      to={"/signup"}
                       className="block w-full rounded-lg bg-primary-first px-[10px] py-2 text-center text-primary-fourth"
                     >
                       Sign Up
@@ -139,15 +139,15 @@ const Header = () => {
           </div>
         ) : (
           <div className="flex items-center gap-5">
-            <NavLink to={"login"} className="hover:text-primary-third">
+            <Link to={"/login"} className="hover:text-primary-third">
               Log in
-            </NavLink>
-            <NavLink
-              to={"signup"}
-              className="rounded-lg bg-primary-first px-[12px] py-1 text-primary-fourth"
+            </Link>
+            <Link
+              to={"/signup"}
+              className="rounded-lg bg-primary-first px-[12px] py-1 text-primary-fourth cursor-pointer"
             >
               Sign Up
-            </NavLink>
+            </Link>
           </div>
         )}
       </div>

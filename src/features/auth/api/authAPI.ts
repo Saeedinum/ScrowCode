@@ -5,52 +5,55 @@ export const authAPI = createApi({
 	reducerPath: "api",
 	baseQuery: fetchBaseQuery({baseUrl: import.meta.env.VITE_API_BASE_URL}),
 	endpoints: (builder) => ({
-		signupUser: builder.mutation({
-			query: (userData) => ({
-				url: "authen/signupUser",
-				method: "POST",
-				body: userData,
-			}),
-			async onQueryStarted(arg, {queryFulfilled, dispatch}) {
-				try {
-					const {data} = await queryFulfilled;
-					dispatch(login({token: data.token, id: data.data._id, fullName: data.data.fullName}));
-					console.log("Request completed:", data);
-				} catch (error) {
-					console.error("Request failed:", error);
-				}
-			},
-		}),
-		signupStudent: builder.mutation({
-			query: ({token, ...data}) => ({
-				url: "authen/signupStudent",
-				method: "POST",
-				body: {
-					Username: "username", // requiredd in request but not in schema
-					university: "Suez canal university",
-					college: "computer and information",
-					universityemail: data.universityEmail,
-					department: "CS",
-					level: data.level,
-					track: data.track,
-					skills: data.skills,
-					linkedin: data.linkedin,
-					github: data.github,
-					behance: data.behance,
-				},
-				headers: {
-					Authorization: token,
-				},
-			}),
-			async onQueryStarted(arg, {queryFulfilled}) {
-				try {
-					const {data} = await queryFulfilled;
-					console.log("Request completed:", data);
-				} catch (error) {
-					console.error("Request failed:", error);
-				}
-			},
-		}),
+    getTracks: builder.query({
+      query: () => 'track',
+    }),
+		// signupUser: builder.mutation({
+		// 	query: (userData) => ({
+		// 		url: "authen/signupUser",
+		// 		method: "POST",
+		// 		body: userData,
+		// 	}),
+		// 	async onQueryStarted(arg, {queryFulfilled, dispatch}) {
+		// 		try {
+		// 			const {data} = await queryFulfilled;
+		// 			dispatch(login({token: data.token, id: data.data._id, fullName: data.data.fullName}));
+		// 			console.log("Request completed:", data);
+		// 		} catch (error) {
+		// 			console.error("Request failed:", error);
+		// 		}
+		// 	},
+		// }),
+		// signupStudent: builder.mutation({
+		// 	query: ({token, ...data}) => ({
+		// 		url: "authen/signupStudent",
+		// 		method: "POST",
+		// 		body: {
+		// 			Username: "username", // requiredd in request but not in schema
+		// 			university: "Suez canal university",
+		// 			college: "computer and information",
+		// 			universityemail: data.universityEmail,
+		// 			department: "CS",
+		// 			level: data.level,
+		// 			track: data.track,
+		// 			skills: data.skills,
+		// 			linkedin: data.linkedin,
+		// 			github: data.github,
+		// 			behance: data.behance,
+		// 		},
+		// 		headers: {
+		// 			Authorization: token,
+		// 		},
+		// 	}),
+		// 	async onQueryStarted(arg, {queryFulfilled}) {
+		// 		try {
+		// 			const {data} = await queryFulfilled;
+		// 			console.log("Request completed:", data);
+		// 		} catch (error) {
+		// 			console.error("Request failed:", error);
+		// 		}
+		// 	},
+		// }),
 		loginUser: builder.mutation({
 			query: (userData) => ({
 				url: "authen/login",
@@ -118,8 +121,9 @@ export const authAPI = createApi({
 });
 
 export const {
-	useSignupUserMutation,
-	useSignupStudentMutation,
+	// useSignupUserMutation,
+	// useSignupStudentMutation,
+	useGetTracksQuery,
 	useLoginUserMutation,
 	useForgetpassMutation,
 	useResetpasswordMutation,
