@@ -7,11 +7,22 @@ import { TtrackInformation } from "@/types";
 import "../index.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signup } from "@/features/auth/authSlice";
+import {
+  useSignupUserMutation,
+  useSignupStudentMutation,
+  useCollectDataMutation,
+} from "@/features/auth/api/authAPI";
 
 const TrackInformation = () => {
   const dispatch = useAppDispatch();
   const tracks = useAppSelector((state) => state.auth.tracks);
-  console.log(tracks);
+  const signupData = useAppSelector((state) => state.auth.signup);
+  const [signupUser, { data: signupUserData, error: error1 }] =
+    useSignupUserMutation();
+  const [signupStudent, { data: signupStudentData, error: error2 }] =
+    useSignupStudentMutation();
+  const [collectData, { data: collectDataData, error: error3 }] =
+    useCollectDataMutation();
 
   const {
     register,
@@ -28,6 +39,18 @@ const TrackInformation = () => {
         TrackInformation: data,
       }),
     );
+    await signupUser(signupData.PersonalInformation);
+    console.log(signupUserData, error1);
+    await signupStudent({
+      token: localStorage.getItem("token")!,
+      data: signupData.UniversityInformation,
+    });
+    console.log(signupStudentData, error2);
+    await collectData({
+      token: localStorage.getItem("token")!,
+      data: signupData.TrackInformation,
+    });
+    console.log(collectDataData, error3);
   };
 
   return (

@@ -2,6 +2,11 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getTracks, login, reset } from "../authSlice";
 
 import { Ttracks } from "@/types/auth.ts";
+import {
+  TpersonalInformation,
+  TuniversityInformation,
+  TtrackInformation,
+} from "@/types";
 
 export const authAPI = createApi({
   reducerPath: "api",
@@ -29,55 +34,81 @@ export const authAPI = createApi({
         }
       },
     }),
+
     getSkills: builder.query({
       query: ({ trackId }) => `track/${trackId}/skills`,
     }),
-    // signupUser: builder.mutation({
-    // 	query: (userData) => ({
-    // 		url: "authen/signupUser",
-    // 		method: "POST",
-    // 		body: userData,
-    // 	}),
-    // 	async onQueryStarted(arg, {queryFulfilled, dispatch}) {
-    // 		try {
-    // 			const {data} = await queryFulfilled;
-    // 			dispatch(login({token: data.token, id: data.data._id, fullName: data.data.fullName}));
-    // 			console.log("Request completed:", data);
-    // 		} catch (error) {
-    // 			console.error("Request failed:", error);
-    // 		}
-    // 	},
-    // }),
-    // signupStudent: builder.mutation({
-    // 	query: ({token, ...data}) => ({
-    // 		url: "authen/signupStudent",
-    // 		method: "POST",
-    // 		body: {
-    // 			Username: "username", // requiredd in request but not in schema
-    // 			university: "Suez canal university",
-    // 			college: "computer and information",
-    // 			universityemail: data.universityEmail,
-    // 			department: "CS",
-    // 			level: data.level,
-    // 			track: data.track,
-    // 			skills: data.skills,
-    // 			linkedin: data.linkedin,
-    // 			github: data.github,
-    // 			behance: data.behance,
-    // 		},
-    // 		headers: {
-    // 			Authorization: token,
-    // 		},
-    // 	}),
-    // 	async onQueryStarted(arg, {queryFulfilled}) {
-    // 		try {
-    // 			const {data} = await queryFulfilled;
-    // 			console.log("Request completed:", data);
-    // 		} catch (error) {
-    // 			console.error("Request failed:", error);
-    // 		}
-    // 	},
-    // }),
+
+    signupUser: builder.mutation({
+      query: (userData: TpersonalInformation) => ({
+        url: "authen/signupUser",
+        method: "POST",
+        body: {
+          fullName: userData.fullName,
+          Email: userData.email,
+          password: userData.password,
+          passwordConfirm: userData.confirmPassword,
+          Username: userData.username,
+          phone: userData.phone,
+        },
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        console.log(arg);
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            login({
+              token: data.token,
+              id: data.data._id,
+              fullName: data.data.fullName,
+            }),
+          );
+        } catch (error) {
+          console.error("Request failed:", error);
+        }
+      },
+    }),
+
+    signupStudent: builder.mutation({
+      query: ({
+        token,
+        data,
+      }: {
+        token: string;
+        data: TuniversityInformation;
+      }) => ({
+        url: "authen/signupStudent",
+        method: "POST",
+        body: {
+          university: data.university,
+          college: data.college,
+          universityemail: data.universityEmail,
+          department: data.department,
+          level: data.level,
+        },
+        headers: {
+          Authorization: token,
+        },
+      }),
+    }),
+
+    collectData: builder.mutation({
+      query: ({ token, data }: { token: string; data: TtrackInformation }) => ({
+        url: "authen/collectData",
+        method: "POST",
+        body: {
+          trackId: [data.track],
+          skillId: data.skills,
+          linkedin: data.linkedin,
+          github: data.github,
+          behance: data.behance,
+        },
+        headers: {
+          Authorization: token,
+        },
+      }),
+    }),
+
     loginUser: builder.mutation({
       query: (userData) => ({
         url: "authen/login",
@@ -87,7 +118,7 @@ export const authAPI = createApi({
           password: userData.password,
         },
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
           dispatch(
@@ -103,6 +134,7 @@ export const authAPI = createApi({
         }
       },
     }),
+
     forgetpass: builder.mutation({
       query: (email) => ({
         url: "authen/forgetpass",
@@ -120,6 +152,7 @@ export const authAPI = createApi({
         }
       },
     }),
+
     verifycode: builder.mutation({
       query: (code) => ({
         url: "authen/verifycode",
@@ -137,6 +170,7 @@ export const authAPI = createApi({
         }
       },
     }),
+
     resetpassword: builder.mutation({
       query: (data) => ({
         url: "authen/resetpassword",
@@ -151,8 +185,9 @@ export const authAPI = createApi({
 });
 
 export const {
-  // useSignupUserMutation,
-  // useSignupStudentMutation,
+  useSignupUserMutation,
+  useSignupStudentMutation,
+  useCollectDataMutation,
   useGetTracksQuery,
   useLoginUserMutation,
   useForgetpassMutation,

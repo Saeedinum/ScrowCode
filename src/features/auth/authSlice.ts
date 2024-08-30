@@ -10,7 +10,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: {
-    token: null,
+    token: localStorage.getItem("token") || null,
     id: null,
     fullName: null,
   },
@@ -21,24 +21,28 @@ const initialState: AuthState = {
   },
   signup: {
     PersonalInformation: {
-      fullName: "null",
-      phone: null,
-      email: null,
-      password: null,
-      confirmPassword: null,
+      firstname: "",
+      lastname: "",
+      fullName: "",
+      username: "",
+      phone: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
     },
     UniversityInformation: {
-      university: "null",
-      college: null,
-      level: null,
-      department: null,
-      universityEmail: null,
+      university: "",
+      college: "",
+      level: 0,
+      department: "",
+      universityEmail: "",
     },
     TrackInformation: {
-      track: null,
-      linkedin: null,
-      github: null,
-      behance: null,
+      track: "",
+      skills: [],
+      linkedin: "",
+      github: "",
+      behance: "",
     },
   },
   tracks: [],
@@ -50,9 +54,14 @@ export const authslice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
+      action.payload.token &&
+        localStorage.setItem("token", action.payload.token);
     },
 
-    logout: () => initialState,
+    logout: () => {
+      localStorage.removeItem("token");
+      return initialState;
+    },
 
     reset: (state, action: PayloadAction<Reset>) => {
       state.reset = {

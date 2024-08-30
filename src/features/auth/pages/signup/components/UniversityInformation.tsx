@@ -40,7 +40,7 @@ const UniversityInformation = () => {
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
             {...register("university")}
           >
-            <option value="SCU_234567">Suez Canal University</option>
+            <option value="Suez canal university">Suez Canal University</option>
           </select>
         </label>
         <label htmlFor="college" className="relative w-full">
@@ -52,7 +52,9 @@ const UniversityInformation = () => {
             })}
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
           >
-            <option value="fci">Computers and Informatics</option>
+            <option value="computer and information">
+              Computers and Informatics
+            </option>
           </select>
         </label>
         <label htmlFor="level" className="relative w-full">
@@ -81,7 +83,7 @@ const UniversityInformation = () => {
             <option value="general">General</option>
             <option value="bio">BioInformatics</option>
             <option value="soft">Software</option>
-            <option value="cs">Computer Science </option>
+            <option value="CS">Computer Science </option>
             <option value="is">Information Systems</option>
             <option value="ai">Artificial Inteligence</option>
           </select>

@@ -20,10 +20,18 @@ const PersonalInformation = () => {
   });
 
   const onSubmit = async (data: TpersonalInformation) => {
-    const { firstname, lastname, ...rest } = data;
     dispatch(
       signup({
-        PersonalInformation: { fullName: `${firstname} ${lastname}`, ...rest },
+        PersonalInformation: {
+          fullName: `${data.firstname}${data.lastname}`,
+          firstname: data.firstname,
+          lastname: data.lastname,
+          username: data.username,
+          phone: data.phone,
+          email: data.email,
+          password: data.password,
+          confirmPassword: data.confirmPassword,
+        },
       }),
     );
   };
