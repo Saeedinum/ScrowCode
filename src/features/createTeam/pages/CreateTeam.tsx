@@ -23,7 +23,7 @@ const CreateTeam = () => {
     register,
     handleSubmit,
     control,
-    watch,
+    setValue,
     formState: { errors },
   } = useForm<TCreateTeamData>({
     shouldUnregister: true,
@@ -31,12 +31,21 @@ const CreateTeam = () => {
 
   const { fields, append, remove } = useFieldArray({
     control,
+    //@ts-expect-error  can't see what's wrong here , while I'am using teamMembers TS ecpect requirement
     name: "teamMembers",
   });
-
   const onSubmit: SubmitHandler<TCreateTeamData> = (data) => {
     console.log(data);
     if (user?.token) createTeam({ data, token: user?.token });
+  };
+
+  const handleTrackNeeds = (
+    index: number,
+    value: number,
+    teck: string,
+  ): void => {
+    setValue(`requirement.${index}.number`, value);
+    setValue(`requirement.${index}.tech`, teck);
   };
 
   return (
@@ -144,13 +153,13 @@ const CreateTeam = () => {
               </h2>
 
               <div className="my-6 grid grid-cols-1 gap-5 text-nowrap sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-                {tracks?.map((track: Ttracks) => (
+                {tracks?.map((track: Ttracks, index) => (
                   <div
                     key={track._id}
                     className="relative my-5 flex items-center"
                   >
                     <input
-                      {...register("requirement")}
+                      {...register(`requirement.${index}.trackID`)}
                       type="checkbox"
                       id={track.slug}
                       value={track._id}
@@ -177,7 +186,11 @@ const CreateTeam = () => {
                       {track.name}
                     </label>
 
-                    <Track styles="hidden peer-checked:flex" />
+                    <Track
+                      styles="hidden peer-checked:flex"
+                      index={index}
+                      handleNeeds={handleTrackNeeds}
+                    />
                   </div>
                 ))}
               </div>
@@ -190,8 +203,10 @@ const CreateTeam = () => {
                 3.Add Team Members
               </h2>
               <button
-                onClick={() => append({ name: "", number: 0, tech: "" })}
+                //@ts-expect-error  can't see what's wrong here , while I'am using teamMembers TS ecpect requirement
+                onClick={() => append("")}
                 type="button"
+                disabled={fields.length >= 7}
                 className="flex h-[45px] w-[93px] items-center justify-center gap-[6px] rounded-[20px] bg-primary-third p-[10px] text-primary-fourth"
               >
                 <svg
@@ -222,9 +237,9 @@ const CreateTeam = () => {
                     autoComplete="off"
                     id="teamMembers"
                     type="text"
-                    {...register(`teamMembers.${index}.name`)}
+                    {...register(`teamMembers.${index}`)}
                     placeholder="@Saeed"
-                    className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third ${errors ? "border-red-500" : ""}`}
+                    className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
                   />
                   <svg
                     onClick={() => remove(index)}

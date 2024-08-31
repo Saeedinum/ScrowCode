@@ -2,12 +2,12 @@ export type TCreateTeamData = {
   projectName: string;
   projectCategorie: string;
   projectDescription: string;
+  teamMembers: string[]
   requirement: {
     trackID: string;
     number: number;
     tech: string;
   }[];
-  teamMembers: string[]
 };
 
 export type TpersonalInformation = {

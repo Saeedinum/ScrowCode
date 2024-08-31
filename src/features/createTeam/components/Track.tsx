@@ -1,6 +1,14 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 
-const Track = ({ styles }: { styles: string }) => {
+const Track = ({
+  styles,
+  index,
+  handleNeeds,
+}: {
+  styles: string;
+  index: number;
+  handleNeeds: (index: number, value: number, teck: string) => void;
+}) => {
   const [count, setCount] = useState<number>(1);
   const [selectedOption, setSelectedOption] = useState<string>("react");
 
@@ -15,6 +23,10 @@ const Track = ({ styles }: { styles: string }) => {
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedOption(event.target.value);
   };
+
+  useEffect(() => {
+    handleNeeds(index, count, selectedOption);
+  }, [count, selectedOption, handleNeeds, index]);
 
   return (
     <div
