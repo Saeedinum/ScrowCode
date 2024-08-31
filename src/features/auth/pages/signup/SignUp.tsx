@@ -11,9 +11,11 @@ import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 
 import { useGetTracksQuery } from "../../api/authAPI";
+import ContinueSigningIn from "./components/ContinueSigningIn";
 
 const SignUp = () => {
   const signup = useAppSelector((state) => state.auth.signup);
+  const google = useAppSelector((state) => state.auth.google);
   const [section, setSection] = useState(<></>);
   const [backgroundStep, setBackgroundStep] = useState<number>();
 
@@ -23,7 +25,9 @@ const SignUp = () => {
       signup.UniversityInformation.universityEmail === "" &&
       signup.TrackInformation.github === ""
     ) {
-      setSection(<PersonalInformation />);
+      google.user === null
+        ? setSection(<PersonalInformation />)
+        : setSection(<ContinueSigningIn />);
       setBackgroundStep(1);
     } else if (
       signup?.UniversityInformation.university === "" &&
@@ -35,7 +39,7 @@ const SignUp = () => {
       setSection(<TrackInformation />);
       setBackgroundStep(3);
     }
-  }, [signup]);
+  }, [signup, google]);
 
   useGetTracksQuery(undefined, {
     refetchOnMountOrArgChange: false,
@@ -92,15 +96,27 @@ const SignUp = () => {
           <Link to={"/"}>
             <img src={logo} alt="logo" />
           </Link>
-          <p className="font-bold text-[#6679BE]">
-            Already Have An Account ?
-            <Link
-              to={"/login"}
-              className="pl-1 text-primary-first underline decoration-2 underline-offset-4"
-            >
-              Log in
-            </Link>
-          </p>
+          {google.profile ? (
+            <div className="flex items-center gap-1 text-primary-first">
+              <img
+                src={google.profile.picture}
+                alt=" "
+                className="w-10 rounded-full"
+                onError={() => console.error("Image failed to load")}
+              />
+              {google.profile.name}
+            </div>
+          ) : (
+            <p className="font-bold text-[#6679BE]">
+              Already Have An Account ?
+              <Link
+                to={"/login"}
+                className="pl-1 text-primary-first underline decoration-2 underline-offset-4"
+              >
+                Log in
+              </Link>
+            </p>
+          )}
         </div>
         <h1 className="mt-5 text-[32px] text-primary-first">
           Welcome To Scrow code

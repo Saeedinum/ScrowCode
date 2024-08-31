@@ -1,4 +1,5 @@
 import { Reset, Signup, Ttracks, User } from "@/types/auth";
+import { Tprofile, Tuser } from "@/types/google";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
@@ -6,6 +7,10 @@ interface AuthState {
   reset: Reset;
   signup: Signup;
   tracks: Ttracks[];
+  google: {
+    user: Tuser | null;
+    profile: Tprofile | null;
+  };
 }
 
 const initialState: AuthState = {
@@ -45,6 +50,10 @@ const initialState: AuthState = {
       behance: "",
     },
   },
+  google: {
+    user: null,
+    profile: null,
+  },
   tracks: [],
 };
 
@@ -56,6 +65,15 @@ export const authslice = createSlice({
       state.user = action.payload;
       action.payload.token &&
         localStorage.setItem("token", action.payload.token);
+    },
+
+    loginWithGoogle: (
+      state,
+      action: PayloadAction<{ user: Tuser; profile: Tprofile }>,
+    ) => {
+      state.google.profile = action.payload.profile;
+      state.google.user = action.payload.user;
+      localStorage.setItem("token", action.payload.user.access_token);
     },
 
     logout: () => {
@@ -100,6 +118,7 @@ export const authslice = createSlice({
   },
 });
 
-export const { login, logout, reset, signup, getTracks } = authslice.actions;
+export const { login, logout, reset, signup, getTracks, loginWithGoogle } =
+  authslice.actions;
 
 export default authslice.reducer;

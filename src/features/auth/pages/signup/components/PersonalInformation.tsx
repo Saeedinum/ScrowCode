@@ -1,11 +1,11 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import googleIcon from "/src/assets/auth/google.svg";
 import { personalInformationSchema } from "@/schema/signup";
 import { TpersonalInformation } from "@/types";
 import { useAppDispatch } from "@/store/hooks";
 import { signup } from "@/features/auth/authSlice";
+import Google from "@/features/auth/google/Google";
 
 const PersonalInformation = () => {
   const dispatch = useAppDispatch();
@@ -38,10 +38,7 @@ const PersonalInformation = () => {
 
   return (
     <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center px-20">
-      <div className="my-8 flex w-[calc(100%-3rem)] cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border-[1px] border-solid border-[#002ABA] bg-[#002ABA] px-[83px] py-[7px] text-primary-fourth duration-300 hover:bg-primary-first hover:text-primary-fourth">
-        <img src={googleIcon} alt="" />
-        <p>Sign in with Google</p>
-      </div>
+      <Google />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-5"

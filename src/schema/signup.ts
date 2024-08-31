@@ -12,7 +12,7 @@ const linkedinRegex =
 const behanceRegex = /^(https?:\/\/)?(www\.)?behance\.net\/[a-zA-Z0-9_-]+\/?$/;
 const universityEmailRegex = /^ugs\.\d{4}@ci\.suez\.edu\.eg$/;
 
-const personalInformationSchema = z
+export const personalInformationSchema = z
   .object({
     firstname: z
       .string()
@@ -47,7 +47,17 @@ const personalInformationSchema = z
     }
   });
 
-const universityInformationSchema = z.object({
+export const continueWithGoogleSchema = z.object({
+  username: z
+    .string()
+    .min(1, { message: "username is required" })
+    .regex(username, { message: "Please enter a valid username" }),
+  phone: z
+    .string()
+    .regex(phone, { message: "Please enter a valid phone number" }),
+});
+
+export const universityInformationSchema = z.object({
   university: z.string(),
   college: z.string(),
   level: z.number(),
@@ -57,7 +67,7 @@ const universityInformationSchema = z.object({
   }),
 });
 
-const trackInformationSchema = z.object({
+export const trackInformationSchema = z.object({
   track: z.string(),
   skills: z.array(z.any()),
   linkedin: z
@@ -70,9 +80,3 @@ const trackInformationSchema = z.object({
     .string()
     .regex(behanceRegex, { message: "Please enter a valid Behance URL" }),
 });
-
-export {
-  personalInformationSchema,
-  universityInformationSchema,
-  trackInformationSchema,
-};

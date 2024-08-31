@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getTracks, login, reset } from "../authSlice";
+import { getTracks, login, reset, loginWithGoogle } from "../authSlice";
 
 import { Ttracks } from "@/types/auth.ts";
 import {
@@ -7,6 +7,7 @@ import {
   TuniversityInformation,
   TtrackInformation,
 } from "@/types";
+import { Tprofile, Tuser } from "@/types/google";
 
 export const authAPI = createApi({
   reducerPath: "api",
@@ -37,6 +38,30 @@ export const authAPI = createApi({
 
     getSkills: builder.query({
       query: ({ trackId }) => `track/${trackId}/skills`,
+    }),
+
+    googleSignup: builder.query({
+      query: (user: Tuser) => ({
+        url: `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${user.access_token}`,
+          Accept: "application/json",
+        },
+      }),
+      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+        try {
+          const { data }: { data: Tprofile } = await queryFulfilled;
+          dispatch(
+            loginWithGoogle({
+              user: arg,
+              profile: data,
+            }),
+          );
+        } catch (error) {
+          console.error("Request failed:", error);
+        }
+      },
     }),
 
     signupUser: builder.mutation({
@@ -193,4 +218,5 @@ export const {
   useForgetpassMutation,
   useResetpasswordMutation,
   useVerifycodeMutation,
+  useGoogleSignupQuery,
 } = authAPI;
