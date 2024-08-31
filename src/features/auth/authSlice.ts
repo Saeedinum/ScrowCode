@@ -1,35 +1,124 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-
-type User = {
-	token: string;
-	id: string;
-	fullName: string;
-};
+import { Reset, Signup, Ttracks, User } from "@/types/auth";
+import { Tprofile, Tuser } from "@/types/google";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface AuthState {
-	user?: User;
+  user: User;
+  reset: Reset;
+  signup: Signup;
+  tracks: Ttracks[];
+  google: {
+    user: Tuser | null;
+    profile: Tprofile | null;
+  };
 }
 
 const initialState: AuthState = {
-	user: {
-		id: "",
-		fullName: "",
-		token:
-			"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmI0OTNkMzNkZDBlNzkxN2I5NTFiOTMiLCJpYXQiOjE3MjMxMTAzNTcsImV4cCI6MTczMDg4NjM1N30.kyrPCstAIp8B6Rs17-y1MOy6HEnvm5rwm175mO2egGI",
-	},
+  user: {
+    token: localStorage.getItem("token") || null,
+    id: null,
+    fullName: null,
+  },
+  reset: {
+    email: null,
+    otp: null,
+    newPassword: null,
+  },
+  signup: {
+    PersonalInformation: {
+      firstname: "",
+      lastname: "",
+      fullName: "",
+      username: "",
+      phone: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    UniversityInformation: {
+      university: "",
+      college: "",
+      level: 0,
+      department: "",
+      universityEmail: "",
+    },
+    TrackInformation: {
+      track: "",
+      skills: [],
+      linkedin: "",
+      github: "",
+      behance: "",
+    },
+  },
+  google: {
+    user: null,
+    profile: null,
+  },
+  tracks: [],
 };
 
 export const authslice = createSlice({
-	name: "auth",
-	initialState,
-	reducers: {
-		login: (state, action: PayloadAction<User>) => {
-			state.user = action.payload;
-		},
-		logout: () => initialState,
-	},
+  name: "auth",
+  initialState,
+  reducers: {
+    login: (state, action: PayloadAction<User>) => {
+      state.user = action.payload;
+      action.payload.token &&
+        localStorage.setItem("token", action.payload.token);
+    },
+
+    loginWithGoogle: (
+      state,
+      action: PayloadAction<{ user: Tuser; profile: Tprofile }>,
+    ) => {
+      state.google.profile = action.payload.profile;
+      state.google.user = action.payload.user;
+      localStorage.setItem("token", action.payload.user.access_token);
+    },
+
+    logout: () => {
+      localStorage.removeItem("token");
+      return initialState;
+    },
+
+    reset: (state, action: PayloadAction<Reset>) => {
+      state.reset = {
+        ...state.reset,
+        ...action.payload,
+      };
+    },
+
+    signup: (state, action: PayloadAction<Partial<Signup>>) => {
+      state.signup = {
+        ...state.signup,
+        PersonalInformation: action.payload.PersonalInformation
+          ? {
+              ...state.signup.PersonalInformation,
+              ...action.payload.PersonalInformation,
+            }
+          : state.signup.PersonalInformation,
+        UniversityInformation: action.payload.UniversityInformation
+          ? {
+              ...state.signup.UniversityInformation,
+              ...action.payload.UniversityInformation,
+            }
+          : state.signup.UniversityInformation,
+        TrackInformation: action.payload.TrackInformation
+          ? {
+              ...state.signup.TrackInformation,
+              ...action.payload.TrackInformation,
+            }
+          : state.signup.TrackInformation,
+      };
+    },
+
+    getTracks: (state, action: PayloadAction<Ttracks[]>) => {
+      state.tracks = action.payload;
+    },
+  },
 });
 
-export const {login, logout} = authslice.actions;
+export const { login, logout, reset, signup, getTracks, loginWithGoogle } =
+  authslice.actions;
 
 export default authslice.reducer;

@@ -2,9 +2,9 @@ import {useForm, SubmitHandler, useFieldArray} from "react-hook-form";
 
 import {useCreateTeamMutation} from "../api/createTeamAPI";
 
-import {TCreateTeamData} from "../../../types";
-import {useAppSelector} from "../../../store/hooks";
-import tracks from "../../../constants/tracks";
+import {TCreateTeamData} from "@/types";
+import {useAppSelector} from "@/store/hooks";
+// import tracks from "../../../constants/tracks";
 
 const CreateTeam = () => {
 	const user = useAppSelector((state) => state.auth.user);

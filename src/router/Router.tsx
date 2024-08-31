@@ -3,7 +3,7 @@ import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-route
 import NotFound from "../pages/NotFound/NotFound";
 
 import Header from "../components/Header";
-import Footer from "../components/Footer";
+// import Footer from "../components/Footer";
 
 import Home from "../pages/home/Home";
 import Login from "../features/auth/pages/login/Login";
@@ -12,6 +12,7 @@ import CreateTeam from "../features/createTeam/pages/CreateTeam";
 import FindTeam from "../features/findTeam/pages/FindTeam";
 import FindPartner from "../features/findPartner/pages/FindPartner";
 import {useAppSelector} from "../store/hooks";
+import ForgetPassword from "../features/auth/pages/forget/ForgetPassword";
 
 const Router = () => {
 	const auth = useAppSelector((state) => state.auth.user);
@@ -24,17 +25,16 @@ const Router = () => {
 					element: (
 						<>
 							<Header />
-							<main>
-								<Outlet />
-							</main>
-							<Footer />
+							<Outlet />
+							{/* <Footer /> */}
 						</>
 					),
 					children: [
 						{index: true, element: <Home />},
 						{
 							path: "CreateTeam",
-							element: auth?.token != undefined ? <CreateTeam /> : <Navigate to='/login' />,
+							element:  <CreateTeam /> 
+							// element: auth?.token != undefined ? <CreateTeam /> : <Navigate to='/login' />,
 						},
 						{
 							path: "FindTeam",
@@ -48,6 +48,7 @@ const Router = () => {
 				},
 				{path: "login", element: <Login />},
 				{path: "signup", element: <SignUp />},
+				{path: "forgetPassword", element: <ForgetPassword />},
 				{path: "*", element: <NotFound />},
 			])}
 		/>
