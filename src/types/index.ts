@@ -1,31 +1,38 @@
-type TsignupUser = {
-	fullName: string;
-	phone: string;
-	email: string;
-	password: string;
-	confirmPassword: string;
-};
-type TsignupStudent = {
-	university: string;
-	collage: string;
-	level: string;
-	department: string;
-	universityEmail: string;
-
-	track: string;
-	skills: string[];
-	linkedin: string;
-	github: string;
-	behance: string;
+export type TCreateTeamData = {
+  projectName: string;
+  projectCategorie: string;
+  projectDescription: string;
+  teamMembers: string[]
+  requirement: {
+    trackID: string;
+    number: number;
+    tech: string;
+  }[];
 };
 
-type TCreateTeamData = {
-	members: number;
-	teamName: string;
-	projectIdea: string;
-	userName: {name:string}[];
-	requirement: string[];
-	token: string;
+export type TpersonalInformation = {
+  firstname: string;
+  lastname: string;
+  fullName: string;
+  username: string;
+  phone: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
 };
 
-export {type TsignupStudent, type TsignupUser, type TCreateTeamData};
+export type TuniversityInformation = {
+  university: string;
+  college: string;
+  level: number;
+  department: string;
+  universityEmail: string;
+};
+
+export type TtrackInformation = {
+  track: string;
+  skills: string[];
+  linkedin: string;
+  github: string;
+  behance: string;
+};
