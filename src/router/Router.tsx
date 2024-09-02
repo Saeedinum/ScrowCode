@@ -38,7 +38,8 @@ const Router = () => {
 						},
 						{
 							path: "FindTeam",
-							element: auth?.token != undefined ? <FindTeam /> : <Navigate to='/login' />,
+							element:  <FindTeam /> 
+							// element: auth?.token != undefined ? <FindTeam /> : <Navigate to='/login' />,
 						},
 						{
 							path: "FindPartner",

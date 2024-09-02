@@ -3,7 +3,7 @@ import {useFetchTeamsQuery} from "../api/findTeamAPI";
 
 const FindTeam = () => {
 	const token = useAppSelector((state) => state.auth.user?.token);
-	// console.log(token)
+	console.log(token)
 
 	const {data, error, isLoading} = useFetchTeamsQuery({token});
 	const teams = data?.data;
