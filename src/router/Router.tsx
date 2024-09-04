@@ -1,4 +1,6 @@
 import {createBrowserRouter, Navigate, Outlet, RouterProvider} from "react-router-dom";
+import { User } from "@/types/auth"
+import {useAppSelector} from "../store/hooks";
 
 import NotFound from "../pages/NotFound/NotFound";
 
@@ -11,11 +13,11 @@ import SignUp from "../features/auth/pages/signup/SignUp";
 import CreateTeam from "../features/createTeam/pages/CreateTeam";
 import FindTeam from "../features/findTeam/pages/FindTeam";
 import FindPartner from "../features/findPartner/pages/FindPartner";
-import {useAppSelector} from "../store/hooks";
 import ForgetPassword from "../features/auth/pages/forget/ForgetPassword";
 
+
 const Router = () => {
-	const auth = useAppSelector((state) => state.auth.user);
+	const auth:User = useAppSelector((state) => state.auth.user);
 
 	return (
 		<RouterProvider
@@ -43,7 +45,8 @@ const Router = () => {
 						},
 						{
 							path: "FindPartner",
-							element: auth?.token != undefined ? <FindPartner /> : <Navigate to='/login' />,
+							element:  <FindPartner /> 
+							// element: auth?.token != undefined ? <FindPartner /> : <Navigate to='/login' />,
 						},
 					],
 				},

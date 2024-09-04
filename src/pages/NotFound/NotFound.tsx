@@ -1,4 +1,4 @@
-import mainLogo from "@/assets/MainLogo.svg";
+import mainLogo from "@/assets/global/MainLogo.svg";
 import Lottie from "lottie-react";
 import lottie from "./lottie.json";
 
