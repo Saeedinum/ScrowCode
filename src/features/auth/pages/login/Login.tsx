@@ -5,8 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginUserMutation } from "../../api/authAPI";
 
 import background from "/src/assets//auth//login.png";
-import logo from "/src/assets/logo.svg";
-import mainlogo from "/src/assets/MainLogo.svg";
+import logo from "/src/assets/global/logo.svg";
+import mainlogo from "/src/assets/global/MainLogo.svg";
 import googleIcon from "/src/assets/auth/google.svg";
 import { TLoginData } from "@/types/auth"
 

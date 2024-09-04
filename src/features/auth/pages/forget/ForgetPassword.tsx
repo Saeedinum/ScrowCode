@@ -6,7 +6,7 @@ import ResetPassword from "./components/ResetPassword";
 
 import { useAppSelector } from "../../../../store/hooks";
 
-import logo from "/src/assets/logo.svg";
+import logo from "/src/assets/global/logo.svg";
 
 const ForgetPassword = () => {
   const reset = useAppSelector((state) => state.auth.reset);

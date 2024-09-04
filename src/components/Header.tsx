@@ -1,5 +1,5 @@
 import { Link, NavLink } from "react-router-dom";
-import Logo from "/src/assets/logo.svg";
+import Logo from "/src/assets/global/logo.svg";
 import {
   DropdownMenu,
   DropdownMenuContent,

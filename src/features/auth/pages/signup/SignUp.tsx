@@ -5,8 +5,8 @@ import TrackInformation from "./components/TrackInformation";
 import UniversityInformation from "./components/UniversityInformation";
 
 import background from "/src/assets//auth//signup.png";
-import logo from "/src/assets/logo.svg";
-import mainlogo from "/src/assets/MainLogo.svg";
+import logo from "/src/assets/global/logo.svg";
+import mainlogo from "/src/assets/global/MainLogo.svg";
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 import { Ttracks } from "@/types/auth";
 
 import background from "/src/assets/create.png";
-import mainlogo from "/src/assets/MainLogo.svg";
+import mainlogo from "/src/assets/global/MainLogo.svg";
 
 import "../index.css";
 import Track from "../components/Track";
