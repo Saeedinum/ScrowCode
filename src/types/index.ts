@@ -22,6 +22,30 @@ export type Tpartner = {
   }[];
 };
 
+export type Tteam = {
+  id: string;
+  name: {
+    english: string;
+    arabic: string;
+  };
+  status: "available" | "notAvailable" | "pending";
+  description: string;
+  members: {
+    max:  5|6|7|8;
+    current: number;
+  };
+  tracks: {
+    id: string;
+    name: string;
+    maxmembers: number;
+    members: {
+      id: string;
+      name: string;
+      imageURL: string;
+    }[];
+  }[];
+};
+
 export type TpersonalInformation = {
   firstname: string;
   lastname: string;
