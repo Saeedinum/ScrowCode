@@ -86,6 +86,7 @@ export const authAPI = createApi({
               token: data.token,
               id: data.data._id,
               fullName: data.data.fullName,
+              username: data.data.usename,
             }),
           );
         } catch (error) {
@@ -151,6 +152,7 @@ export const authAPI = createApi({
               token: data.token,
               id: data.data._id,
               fullName: data.data.fullName,
+              username: data.data.usename,
             }),
           );
           console.log("Request completed:", data);

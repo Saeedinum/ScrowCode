@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const name = /^[a-zA-Z]+$/;
+const name = /^[\u0600-\u06FF\s]+$/;
 const username = /^[a-zA-Z0-9_-]{3,16}$/;
 const email = /^[a-zA-Z0-9._%+-]+@(?:gmail\.com)$/i;
 const password =
@@ -14,13 +14,9 @@ const universityEmailRegex = /^ugs\.\d{4}@ci\.suez\.edu\.eg$/;
 
 export const personalInformationSchema = z
   .object({
-    firstname: z
+    arabicName: z
       .string()
       .min(1, { message: "first Name is required" })
-      .regex(name, { message: "Please enter a valid name" }),
-    lastname: z
-      .string()
-      .min(1, { message: "last Name is required" })
       .regex(name, { message: "Please enter a valid name" }),
     username: z
       .string()

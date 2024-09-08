@@ -37,7 +37,7 @@ export type Tteam = {
   status: "available" | "notAvailable" | "pending";
   description: string;
   members: {
-    max: 5 | 6 | 7 | 8;
+    max: 8;
     current: number;
   };
   tracks: {
@@ -50,12 +50,12 @@ export type Tteam = {
       imageURL: string;
     }[];
   }[];
+  supervisor: string;
+  assistantSupervisor: string;
 };
 
 export type TpersonalInformation = {
-  firstname: string;
-  lastname: string;
-  fullName: string;
+  arabicName: string;
   username: string;
   phone: string;
   email: string;

@@ -9,7 +9,6 @@ import Vector from "/src/assets//home/Vector.png";
 import background3 from "/src/assets/home//background3.png";
 import grayshadow1 from "/src/assets/home/grayshadow1.png";
 import grayshadow2 from "/src/assets/home/grayshadow2.png";
-import grayshadow3 from "/src/assets/home/grayshadow3.png";
 import teams from "/src/assets/home/teams.png";
 import create from "/src/assets/home/create.png";
 import partners from "/src/assets/home/partners.png";
@@ -225,7 +224,7 @@ const Home = () => {
               </button>
             </div>
           </section>
-
+{/* 
           <section className="relative mt-44 hidden w-full items-start justify-start gap-20 pl-32 lg:flex">
             <img
               src={grayshadow3}
@@ -257,7 +256,7 @@ const Home = () => {
                 Contact US
               </button>
             </form>
-          </section>
+          </section> */}
         </section>
       </main>
       <footer className="mt-64 flex flex-col items-center  md:items-start justify-center bg-primary-first p-20  pt-10 font-bold text-[#95A3D5]">
