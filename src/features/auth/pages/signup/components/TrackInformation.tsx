@@ -219,11 +219,12 @@ const TrackInformation = () => {
         >
           Sign Up
         </button>
-
         <p className="text-sm text-[#A0A1A3]">
-          By signing up , you agree to our
-          <span className="text-primary-second"> Terms Of Use</span> and
-          <span className="text-primary-second"> Privacy Police</span>
+          من خلال التسجيل، فإنك توافق على
+          <span className="text-primary-second">
+            شروط الاستخدام وسياسة الخصوصية{" "}
+          </span>
+          الخاصة بنا
         </p>
       </form>
     </section>

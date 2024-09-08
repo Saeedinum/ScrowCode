@@ -4,9 +4,8 @@ import PersonalInformation from "./components/PersonalInformation";
 import TrackInformation from "./components/TrackInformation";
 import UniversityInformation from "./components/UniversityInformation";
 
-import background from "/src/assets//auth//signup.png";
+import background from "/src/assets//auth//login.png";
 import logo from "/src/assets/global/logo.svg";
-import mainlogo from "/src/assets/global/MainLogo.svg";
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
 
@@ -21,7 +20,7 @@ const SignUp = () => {
 
   useEffect(() => {
     if (
-      signup?.PersonalInformation.fullName === "" &&
+      signup?.PersonalInformation.arabicName === "" &&
       signup.UniversityInformation.universityEmail === "" &&
       signup.TrackInformation.github === ""
     ) {
@@ -49,27 +48,24 @@ const SignUp = () => {
 
   return (
     <main className="relative flex select-none justify-start">
-      <section className="relative flex items-center justify-center bg-Grey-fourth text-primary-first">
+      <section
+        dir="rtl"
+        className="relative flex max-h-screen w-[calc(40%)] flex-col items-center justify-center bg-Grey-fourth text-primary-first"
+      >
         <img src={background} alt="" className="" />
-        <img
-          src={mainlogo}
-          alt=""
-          className="absolute left-9 top-3 w-16 select-none"
-        />
-        <div className="absolute top-72 flex items-end gap-5 text-center text-[32px] font-bold">
-          <p className="flex flex-col">
-            <span>Sign up to Discovering Your</span>
-            <span> Team work.. </span>
+        <img src={background} alt="" className="bg-Grey-fourth" />
+        <div className=" absolute flex flex-col items-center gap-5 text-center text-[32px]">
+          <p className="flex flex-col font-bold">
+            <span>انشئ حسابك لتكتشف</span>
+            <span> التيمات المناسبة لك </span>
           </p>
-        </div>
-        <div className="absolute flex flex-col items-center gap-2 text-center font-bold">
-          <h2 className="text-xl text-[#001354]">
-            {" "}
-            {backgroundStep === 1 && "1. Personal Information"}
-            {backgroundStep === 2 && "2. University Information"}
-            {backgroundStep === 3 && "3. Track Information"}
+          <div className=" flex flex-col items-center gap-2 text-center ">
+          <h2 className="text-xl font-medium text-[#001354]">
+            {backgroundStep === 1 && "1. البيانات الشخصية"}
+            {backgroundStep === 2 && "2. البيانات الجامعية"}
+            {backgroundStep === 3 && "3. التراك الخاص بك"}
           </h2>
-          <p className="text-[#6679BE]">Step {backgroundStep} of 3</p>
+          <p className="text-[#6679BE] text-[13px]">خطوة {backgroundStep} من 3</p>
           <div className="flex gap-2">
             {backgroundStep === 1 && (
               <p className="h-[3px] w-[53px] bg-primary-second"></p>
@@ -84,15 +80,17 @@ const SignUp = () => {
             )}
           </div>
         </div>
-        <div className="absolute bottom-10 flex flex-col gap-1 text-center font-bold text-primary-first">
-          <p className="">created by scrow team</p>
-          <Link to={"/contact"} className="text-Grey-first underline">
-            contact us
-          </Link>
         </div>
+        {/* <div dir="rtl" className="absolute bottom-0 flex flex-row gap-2 text-center font-bold text-primary-first">
+          <p className="">تم الانشاء عن طريق تيم سكرو</p>
+          <Link to={"/contact"} className="text-Grey-first underline">
+            تواصل معنا
+          </Link>
+        </div> */}
       </section>
-      <section className="flex flex-grow flex-col items-center justify-start px-0 py-0 font-bold">
-        <div className="flex w-full items-center justify-between px-20 pr-10 pt-5">
+
+      <section className="flex flex-grow flex-col items-center justify-start font-bold">
+        <div className="flex w-full items-center justify-between px-16 pr-10 pt-5">
           <Link to={"/"}>
             <img src={logo} alt="logo" />
           </Link>
@@ -100,7 +98,7 @@ const SignUp = () => {
             <div className="flex items-center gap-1 text-primary-first">
               <img
                 src={google.profile.picture}
-                alt=" "
+                alt="profile"
                 className="w-10 rounded-full"
                 onError={() => console.error("Image failed to load")}
               />
@@ -108,24 +106,25 @@ const SignUp = () => {
             </div>
           ) : (
             <p className="font-bold text-[#6679BE]">
-              Already Have An Account ?
+              لديك حساب بالفعل؟
               <Link
                 to={"/login"}
                 className="pl-1 text-primary-first underline decoration-2 underline-offset-4"
               >
-                Log in
+                تسجيل الدخول
               </Link>
             </p>
           )}
         </div>
-        <h1 className="mt-5 text-[32px] text-primary-first">
-          Welcome To Scrow code
+        <h1 className="mt-2 text-[32px] text-primary-first">
+          مرحبا بك في سكرو
         </h1>
         <p className="flex flex-col items-center text-[14px] text-[#6679BE]">
-          Register to Your Account
+          ! انشئ حسابك الان لتسطيع الدخول في تيم بسرعه
           <span className="m-2 h-[1px] w-[calc(100%+2rem)] bg-[#6679BE]"></span>
         </p>
         {section}
+
       </section>
     </main>
   );

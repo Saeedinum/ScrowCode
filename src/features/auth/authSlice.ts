@@ -27,9 +27,7 @@ const initialState: AuthState = {
   },
   signup: {
     PersonalInformation: {
-      firstname: "",
-      lastname: "",
-      fullName: "",
+      arabicName: "",
       username: "",
       phone: "",
       email: "",
@@ -90,6 +88,7 @@ export const authslice = createSlice({
     },
 
     signup: (state, action: PayloadAction<Partial<Signup>>) => {
+      console.log("first");
       state.signup = {
         ...state.signup,
         PersonalInformation: action.payload.PersonalInformation

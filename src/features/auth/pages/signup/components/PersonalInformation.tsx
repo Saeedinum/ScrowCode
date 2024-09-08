@@ -23,9 +23,7 @@ const PersonalInformation = () => {
     dispatch(
       signup({
         PersonalInformation: {
-          fullName: `${data.firstname}${data.lastname}`,
-          firstname: data.firstname,
-          lastname: data.lastname,
+          arabicName: data.arabicName,
           username: data.username,
           phone: data.phone,
           email: data.email,
@@ -37,45 +35,33 @@ const PersonalInformation = () => {
   };
 
   return (
-    <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center px-20">
-      <Google />
+    <section
+      dir="rtl"
+      className="flex w-[calc(100%-5rem)]  flex-grow flex-col items-center px-20"
+    >
+      <Google type="sign" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-5"
       >
-        <div className="flex items-center justify-between gap-5">
-          <label htmlFor="firstname" className="relative">
-            <span className="ml-1 text-primary-first">First name</span>
-            <input
-              autoComplete="false"
-              id="firstname"
-              type="text"
-              {...register("firstname", {
-                required: "required",
-              })}
-              placeholder="First name"
-              className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third ${errors.firstname ? "border-red-500" : ""} `}
-            />
-          </label>
+        <label htmlFor="arabicName" className="relative w-full max-w-[515px]">
+          <span className="ml-1 text-primary-first">
+            الاسم الرباعي باللغة العربية{" "}
+          </span>
+          <input
+            autoComplete="false"
+            id="arabicName"
+            type="text"
+            {...register("arabicName", {
+              required: "required",
+            })}
+            placeholder="الاسم الرباعي"
+            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pr-2 placeholder:text-sm placeholder:text-Grey-third ${errors.arabicName ? "border-red-500" : ""} `}
+          />
+        </label>
 
-          <label htmlFor="lastname" className="relative">
-            <span className="ml-1 text-primary-first">Last name</span>
-
-            <input
-              autoComplete="false"
-              id="lastname"
-              type="text"
-              {...register("lastname", {
-                required: "required",
-              })}
-              placeholder="Last name"
-              className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third ${errors.lastname ? "border-red-500" : ""} `}
-            />
-          </label>
-        </div>
-
-        <label htmlFor="username" className="relative w-full">
-          <span className="ml-2 text-primary-first">username</span>
+        <label htmlFor="username" className="relative w-full max-w-[515px]">
+          <span className="ml-2 text-primary-first">اسم المستخدم</span>
           <svg
             className={`absolute left-3 top-[42px] ${watch().username ? "hidden" : ""} transition-all`}
             width="24"
@@ -93,6 +79,7 @@ const PersonalInformation = () => {
             />
           </svg>
           <input
+            dir="ltr"
             autoComplete="false"
             id="username"
             type="text"
@@ -104,8 +91,8 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <label htmlFor="phone" className="relative w-full">
-          <span className="ml-2 text-primary-first">Phone number</span>
+        <label htmlFor="phone" className="relative w-full max-w-[515px]">
+          <span className="ml-2 text-primary-first">رقم الهاتف</span>
           <svg
             className={`absolute left-3 top-[42px] ${watch().phone ? "hidden" : ""} transition-all`}
             width="15"
@@ -120,19 +107,20 @@ const PersonalInformation = () => {
             />
           </svg>
           <input
+            dir="ltr"
             autoComplete="false"
             id="phone"
             type="text"
             {...register("phone", {
               required: "required",
             })}
-            placeholder={errors.phone ? "eg: +201012345678" : " Phone number"}
+            placeholder="eg: +201012345678"
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.phone ? "border-red-500" : ""} `}
           />
         </label>
 
-        <label htmlFor="email" className="relative w-full">
-          <span className="ml-2 text-primary-first">Email</span>
+        <label htmlFor="email" className="relative w-full max-w-[515px]">
+          <span className="ml-2 text-primary-first">البريد الالكتروني</span>
           <svg
             className={`absolute left-3 top-[42px] ${watch().email ? "hidden" : ""} transition-all`}
             width="16"
@@ -149,6 +137,7 @@ const PersonalInformation = () => {
             />
           </svg>
           <input
+            dir="ltr"
             autoComplete="false"
             id="email"
             type="text"
@@ -160,8 +149,8 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <label htmlFor="password" className="relative w-full">
-          <span className="ml-2 text-primary-first">Password</span>
+        <label htmlFor="password" className="relative w-full max-w-[515px]">
+          <span className="ml-2 text-primary-first">كلمة المرور</span>
           <svg
             className={`absolute left-3 top-[42px] ${watch().password ? "hidden" : ""} transition-all`}
             width="16"
@@ -176,6 +165,7 @@ const PersonalInformation = () => {
             />
           </svg>
           <input
+            dir="ltr"
             autoComplete="false"
             id="password"
             type="password"
@@ -187,8 +177,11 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <label htmlFor="confirmPassword" className="relative w-full">
-          <span className="ml-2 text-primary-first">Password</span>
+        <label
+          htmlFor="confirmPassword"
+          className="relative w-full max-w-[515px]"
+        >
+          <span className="ml-2 text-primary-first">تأكيد كلمة المرور</span>
           <svg
             className={`absolute left-3 top-[42px] ${watch().confirmPassword ? "hidden" : ""} transition-all`}
             width="16"
@@ -203,6 +196,7 @@ const PersonalInformation = () => {
             />
           </svg>
           <input
+            dir="ltr"
             autoComplete="false"
             id="confirmPassword"
             type="password"
@@ -216,12 +210,11 @@ const PersonalInformation = () => {
 
         <button
           type="submit"
-          className="mt-10 flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
+          className="my-4 flex h-[48px] w-full max-w-[480px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
         >
-          Next Step
           <svg
             width="16"
-            height="15"
+            height="16"
             viewBox="0 0 16 15"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
@@ -232,8 +225,10 @@ const PersonalInformation = () => {
               strokeWidth="2"
             />
           </svg>
+          الخطوة التالية
         </button>
       </form>
+
     </section>
   );
 };

@@ -28,37 +28,40 @@ const UniversityInformation = () => {
   console.log(errors);
 
   return (
-    <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center px-20">
+    <section
+      dir="rtl"
+      className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center px-20"
+    >
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-7"
       >
         <label htmlFor="university" className="relative w-full">
-          <span className="ml-2 text-primary-first">University</span>
+          <span className="ml-2 text-primary-first">الجامعة االملتحق بها</span>
           <select
             id="university"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
+            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-1 placeholder:text-sm placeholder:text-Grey-third`}
             {...register("university")}
           >
-            <option value="Suez canal university">Suez Canal University</option>
+            <option value="Suez canal university">جامعة قناة السويس</option>
           </select>
         </label>
         <label htmlFor="college" className="relative w-full">
-          <span className="ml-2 text-primary-first">College</span>
+          <span className="ml-2 text-primary-first">الكلية الملتحق بها</span>
           <select
             id="collage"
             {...register("college", {
               required: "required",
             })}
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
+            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-1 placeholder:text-sm placeholder:text-Grey-third`}
           >
             <option value="computer and information">
-              Computers and Informatics
+              كلية الحاسبات والمعلومات
             </option>
           </select>
         </label>
         <label htmlFor="level" className="relative w-full">
-          <span className="ml-2 text-primary-first">Level</span>
+          <span className="ml-2 text-primary-first">المرحلة الجامعية</span>
           <select
             defaultValue="1"
             id="level"
@@ -67,14 +70,14 @@ const UniversityInformation = () => {
             })}
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
           >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
+            <option value="1">الفرقة الأولى</option>
+            <option value="2">الفرقة الثانية</option>
+            <option value="3">الفرقة الثالثة</option>
+            <option value="4">الفرقة الرابعة</option>
           </select>
         </label>
         <label htmlFor="department" className="relative w-full">
-          <span className="ml-2 text-primary-first">Department</span>
+          <span className="ml-2 text-primary-first">القسم</span>
           <select
             id="department"
             {...register("department", {})}
@@ -89,7 +92,7 @@ const UniversityInformation = () => {
           </select>
         </label>
         <label htmlFor="universityEmail" className="relative w-full">
-          <span className="ml-2 text-primary-first">University Email</span>
+          <span className="ml-2 text-primary-first">البريد الجامعي</span>
           <input
             autoComplete="false"
             id="universityEmail"
@@ -97,11 +100,8 @@ const UniversityInformation = () => {
             {...register("universityEmail", {
               required: "required",
             })}
-            placeholder={
-              errors.universityEmail
-                ? "eg: ugs.1234@ci.suez.edu.eg"
-                : "University Email"
-            }
+            dir="ltr"
+            placeholder="eg: ugs.1234@ci.suez.edu.eg"
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third ${errors.universityEmail ? "border-red-500" : ""} `}
           />
         </label>
