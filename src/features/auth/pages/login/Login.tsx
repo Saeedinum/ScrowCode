@@ -6,9 +6,8 @@ import { useLoginUserMutation } from "../../api/authAPI";
 
 import background from "/src/assets//auth//login.png";
 import logo from "/src/assets/global/logo.svg";
-import mainlogo from "/src/assets/global/MainLogo.svg";
-import googleIcon from "/src/assets/auth/google.svg";
-import { TLoginData } from "@/types/auth"
+import { TLoginData } from "@/types/auth";
+import Google from "../../google/Google";
 
 const schema = z.object({
   email: z
@@ -28,7 +27,7 @@ const Login = () => {
     register,
     handleSubmit,
     watch,
-    // formState: { isDirty, dirtyFields },
+    formState: { errors },
   } = useForm<TLoginData>({
     resolver: zodResolver(schema),
   });
@@ -39,15 +38,15 @@ const Login = () => {
   };
 
   return (
-    <main className="relative flex max-h-screen w-screen select-none justify-start">
-      <section className="relative flex h-screen w-1/2 items-center justify-center bg-Grey-fourth text-primary-first">
-        <img src={background} alt="" className="absolute h-full w-full" />
-        <img
+    <main className="relative flex max-h-screen w-screen select-none justify-start overflow-hidden">
+      <section className="relative hidden h-screen w-[40%] items-center justify-center overflow-hidden bg-Grey-fourth text-primary-first lg:flex">
+        <img src={background} alt="" />
+        {/* <img
           src={mainlogo}
           alt=""
           className="absolute left-9 top-3 select-none"
-        />
-        <div className="flex items-end gap-5 text-center text-4xl font-bold">
+        /> */}
+        {/* <div className="flex items-end gap-5 text-center text-4xl font-bold">
           <p className="flex flex-col">
             <span className="pl-16">Log in</span>
             <span> Get your team </span>
@@ -55,44 +54,44 @@ const Login = () => {
           <p className="max-w-fit animate-typing overflow-hidden border-r-4 border-r-black text-[40px] font-bold">
             Faster
           </p>
-        </div>
+        </div> */}
       </section>
-      <section className="flex w-1/2 flex-col items-center justify-start p-7 pt-4">
+      <section
+        dir="rtl"
+        className="flex flex-grow flex-col items-center justify-start p-5 pt-4 sm:p-7"
+      >
         <div className="flex w-full items-center justify-between">
-          <Link to={"/"}>
-            <img src={logo} alt="logo" />
-          </Link>
-          <p className="font-bold text-[#6679BE]">
-            Don't Have An Account ?{" "}
+          <p className="flex flex-col items-center font-bold text-[#6679BE] sm:flex-row">
+            ليس لديك حساب ؟
             <Link
               to={"/signup"}
               className="pl-1 text-primary-first underline decoration-2 underline-offset-4"
             >
-              sign up
+              انشاء حساب
             </Link>
           </p>
+          <Link to={"/"}>
+            <img src={logo} alt="logo" />
+          </Link>
         </div>
-        <div className="flex w-full flex-col items-center px-16 pt-5 font-bold">
-          <h1 className="text-[32px] text-primary-first">Welcome Back</h1>
+        <div className="flex w-full flex-col items-center p-10 pt-5 font-bold sm:px-16">
+          <h1 className="text-[32px] text-primary-first">تسجيل الدخول</h1>
           <p className="text-[14px] text-[#6679BE]">
-            log in to Be Attached with your team
-            <hr className="m-2 h-[2px] w-[calc(100%-2rem)] bg-[#6679BE]" />
+            سجل دخولك الان لتكون تيمك علي سكرو
           </p>
-          <div className="mt-8 flex w-full cursor-pointer items-center justify-center gap-[10px] rounded-[8px] border-[1px] border-solid border-primary-first px-[83px] py-[7px] text-primary-first duration-300 hover:bg-primary-first hover:text-primary-fourth">
-            <img src={googleIcon} alt="" />
-            <p>Log in with Google</p>
-          </div>
-          <p className="mt-2 text-[13px] text-Grey-third">
-            Or use your Email to Log in
+          <hr className="m-2 h-[2px] w-[15rem] bg-[#6679BE]" />
+          <Google type={"login"} />
+          <p className="text-[13px] text-Grey-third sm:mt-2">
+            أو سجل الدخول عن طريق بريدك الالكتروني
           </p>
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="flex w-full flex-col gap-5"
+            className="flex w-full max-w-[500px] flex-col gap-5"
           >
-            <label htmlFor="email" className="relative">
-              <span className="ml-1 text-primary-first">Email</span>
+            <label htmlFor="email" className="relative max-w-[500px]">
+              <span className="ml-1 text-primary-first">البريد الالكتروني</span>
               <svg
-                className={`absolute left-3 top-[42px] ${watch().email ? "hidden" : ""} transition-all`}
+                className={`absolute right-3 top-[42px] ${watch().email ? "hidden" : ""} transition-all`}
                 width="16"
                 height="16"
                 viewBox="0 0 16 16"
@@ -100,8 +99,8 @@ const Login = () => {
                 xmlns="http://www.w3.org/2000/svg"
               >
                 <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
+                  fillRule="evenodd"
+                  clipRule="evenodd"
                   d="M14.95 3.684L8.637 8.912C8.45761 9.06063 8.23196 9.14196 7.999 9.14196C7.76604 9.14196 7.54039 9.06063 7.361 8.912L1.051 3.684C1.01714 3.78591 0.999922 3.89261 1 4V12C1 12.2652 1.10536 12.5196 1.29289 12.7071C1.48043 12.8946 1.73478 13 2 13H14C14.2652 13 14.5196 12.8946 14.7071 12.7071C14.8946 12.5196 15 12.2652 15 12V4C15.0004 3.89267 14.9835 3.78597 14.95 3.684ZM2 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V12C16 12.5304 15.7893 13.0391 15.4142 13.4142C15.0391 13.7893 14.5304 14 14 14H2C1.46957 14 0.960859 13.7893 0.585786 13.4142C0.210714 13.0391 0 12.5304 0 12V4C0 3.46957 0.210714 2.96086 0.585786 2.58579C0.960859 2.21071 1.46957 2 2 2ZM1.79 3L7.366 7.603C7.54459 7.7505 7.76884 7.83144 8.00046 7.83199C8.23209 7.83254 8.45672 7.75266 8.636 7.606L14.268 3H1.79Z"
                   fill="#95A3D5"
                 />
@@ -113,14 +112,14 @@ const Login = () => {
                 {...register("email", {
                   required: "required",
                 })}
-                placeholder="Email"
-                className="h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third"
+                placeholder="بريدك الالكتروني هنا"
+                className={`h-[52px] w-full max-w-[500px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-6 placeholder:text-sm placeholder:text-Grey-third ${errors.email ? "border-red-500" : ""}`}
               />
             </label>
-            <label htmlFor="password" className="relative">
-              <span className="ml-1 text-primary-first">Password</span>
+            <label htmlFor="password" className="relative max-w-[500px]">
+              <span className="ml-1 text-primary-first"> كلمة المرور</span>
               <svg
-                className={`absolute left-3 top-[42px] ${watch().password ? "hidden" : ""} transition-all`}
+                className={`absolute right-3 top-[42px] ${watch().password ? "hidden" : ""} transition-all`}
                 width="16"
                 height="16"
                 viewBox="0 0 16 16"
@@ -140,12 +139,15 @@ const Login = () => {
                 {...register("password", {
                   required: "required",
                 })}
-                placeholder="password"
-                className="h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third"
+                placeholder="كلمة المرور هنا"
+                className={`h-[52px] w-full max-w-[500px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-6 placeholder:text-sm placeholder:text-Grey-third ${errors.password ? "border-red-500" : ""}`}
               />
             </label>
 
             <div className="flex items-center justify-between text-[#6694FF]">
+              <Link to={"/forgetPassword"} className="text-sm hover:underline">
+                هل نسيت الرقم السري؟
+              </Link>
               <label
                 htmlFor="remember"
                 className="flex cursor-pointer items-center"
@@ -156,26 +158,23 @@ const Login = () => {
                   id="remember"
                   className="peer relative h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-gray-300 transition duration-200 checked:border-primary-first checked:bg-primary-first focus:outline-none"
                 />
-                <span className="ml-2 text-sm peer-checked:text-primary-first">
-                  Remember me
+                <span className="mr-2 text-sm peer-checked:text-primary-first">
+                  تذكرني
                 </span>
               </label>
-              <Link to={"/forgetPassword"} className="text-sm hover:underline">
-                Forget Password?
-              </Link>
             </div>
             <button
               type="submit"
               className="h-[39px] rounded-[8px] bg-primary-first py-[7px] text-primary-fourth hover:bg-gradient-to-r hover:from-[#001354] hover:to-[#002ABA]"
             >
-              Log in
+              تسجيل الدخول
             </button>
           </form>
         </div>
         <div className="mt-10 flex gap-2 text-center font-bold text-primary-first">
-          <p className="">created by scrow team</p>
+          <p className="">تم الانشاء عن طريق تيم سكرو</p>
           <Link to={"/contact"} className="text-Grey-first underline">
-            contact us
+            تواصل معنا
           </Link>
         </div>
       </section>
