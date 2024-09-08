@@ -1,13 +1,19 @@
 export type TCreateTeamData = {
-  projectName: string;
+  projectArabicName: string;
+  projectEnglishName: string;
   projectCategorie: string;
   projectDescription: string;
-  teamMembers: string[];
+  teamMembers: {
+    arabicName: string;
+    username: string;
+  }[];
   requirement: {
     trackID: string;
     number: number;
     tech: string;
   }[];
+  supervisor: string;
+  assistantSupervisor: string;
 };
 
 export type Tpartner = {
@@ -31,7 +37,7 @@ export type Tteam = {
   status: "available" | "notAvailable" | "pending";
   description: string;
   members: {
-    max:  5|6|7|8;
+    max: 5 | 6 | 7 | 8;
     current: number;
   };
   tracks: {

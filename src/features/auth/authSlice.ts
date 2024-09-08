@@ -18,6 +18,7 @@ const initialState: AuthState = {
     token: localStorage.getItem("token") || null,
     id: null,
     fullName: null,
+    username: null,
   },
   reset: {
     email: null,

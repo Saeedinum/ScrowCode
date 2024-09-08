@@ -30,7 +30,7 @@ const Track = ({
 
   return (
     <div
-      className={`absolute -left-5 top-5 mt-1 flex items-center gap-2 rounded-lg p-2 ${styles}`}
+      className={`absolute  sm:-right-1 right-40 sm:top-6  flex items-center gap-2 rounded-lg p-2 ${styles}`}
     >
       <div className="flex items-center gap-1">
         <span className="h-[32px] w-[32px] rounded-[8px] bg-blue-100 px-[12px] py-[7px] text-center">

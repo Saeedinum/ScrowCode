@@ -8,6 +8,7 @@ export type User = {
   token: string | null;
   id: string | null;
   fullName: string | null;
+  username: string | null;
 };
 
 export type Reset = {

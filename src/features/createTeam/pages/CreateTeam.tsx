@@ -2,16 +2,19 @@ import { useForm, SubmitHandler, useFieldArray } from "react-hook-form";
 
 import { useCreateTeamMutation, useGetTracksQuery } from "../api/createTeamAPI";
 
+import { useRef } from "react";
+
 import { TCreateTeamData } from "@/types";
 import { useAppSelector } from "@/store/hooks";
-import { Link } from "react-router-dom";
 import { Ttracks } from "@/types/auth";
 
-import background from "/src/assets/create.png";
-import mainlogo from "/src/assets/global/MainLogo.svg";
+import background from "/src/assets/create/create.png";
+import Track from "../components/Track";
+
+import { zodResolver } from "@hookform/resolvers/zod"
+import { createTeamSchema } from "@/schema"
 
 import "../index.css";
-import Track from "../components/Track";
 
 const CreateTeam = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -24,14 +27,15 @@ const CreateTeam = () => {
     handleSubmit,
     control,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<TCreateTeamData>({
     shouldUnregister: true,
+    resolver: zodResolver(createTeamSchema)
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
-    //@ts-expect-error  can't see what's wrong here , while I'am using teamMembers TS ecpect requirement
     name: "teamMembers",
   });
   const onSubmit: SubmitHandler<TCreateTeamData> = (data) => {
@@ -48,26 +52,24 @@ const CreateTeam = () => {
     setValue(`requirement.${index}.tech`, teck);
   };
 
+  const teamMembers = watch("teamMembers");
+  const isLastMemberFilled = teamMembers?.length
+    ? teamMembers[teamMembers.length - 1]?.arabicName?.trim() &&
+      teamMembers[teamMembers.length - 1]?.username?.trim()
+    : true;
+
+  const addingButton = useRef<HTMLButtonElement>(null);
+
   return (
-    <main className="relative flex select-none justify-start">
-      <section className="relative flex items-center justify-center bg-Grey-fourth text-primary-first">
+    <main className="max-w-screen relative flex select-none justify-start overflow-hidden">
+      <section className="relative hidden max-h-[1400px] flex-col items-start justify-center bg-Grey-fourth text-primary-first lg:flex">
         <img src={background} alt="" className="" />
-        <img
-          src={mainlogo}
-          alt=""
-          className="absolute left-9 top-3 w-16 select-none"
-        />
-        <div className="absolute bottom-10 flex flex-col gap-1 text-center font-bold text-primary-first">
-          <p className="">created by scrow team</p>
-          <Link to={"/contact"} className="text-Grey-first underline">
-            contact us
-          </Link>
-        </div>
+        <img src={background} alt="" className="bg-Grey-fourth" />
       </section>
-      <section className="flex w-1/2 flex-grow flex-col items-center justify-start px-16 py-0 font-bold">
-        <h1 className="mt-5 text-[32px] text-primary-first">Create Team</h1>
+      <section className="flex w-1/2 flex-grow flex-col items-center justify-start px-5 py-0 font-bold">
+        <h1 className="mt-5 text-[32px] text-primary-first">إنشاء تيم</h1>
         <p className="flex flex-col items-center text-[14px] text-[#6679BE]">
-          Create your team and Complete it Now !
+          املأ البيانات التالية و انشئ تيمك الان
           <span className="m-2 h-[1px] w-[calc(100%+2rem)] bg-[#6679BE]"></span>
         </p>
         <form
@@ -75,28 +77,60 @@ const CreateTeam = () => {
           className="mt-10 flex w-full flex-col items-start"
         >
           <div className="w-full">
-            <h2 className="text-[20px] text-primary-first">
-              1.Set Your Project Details{" "}
+            <h2 dir="rtl" className="text-[20px] text-primary-first">
+              1. تعيين تفاصيل المشروع
             </h2>
-            <div className="mb-5 mt-5 flex items-center justify-between gap-5">
-              <label htmlFor="projectName" className="relative w-full">
-                <span className="ml-1 text-primary-first">Project name</span>
+            <div
+              dir="rtl"
+              className="mb-5 mt-5 flex flex-wrap items-center justify-start gap-4"
+            >
+              <label
+                dir="rtl"
+                htmlFor="projectArabicName"
+                className="relative w-[285px] text-sm md:w-[329px]"
+              >
+                <span className="mr-1 text-primary-first">
+                  اسم المشروع باللغه العربية
+                </span>
                 <input
                   autoComplete="false"
-                  id="projectName"
+                  id="projectArabicName"
                   type="text"
-                  {...register("projectName", {
+                  {...register("projectArabicName", {
                     required: "required",
+                    
                   })}
-                  placeholder="Project name"
-                  className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third ${errors.projectName ? "border-red-500" : ""} `}
+                  placeholder=" اسم المشروع باللغه العربية هنا"
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.projectArabicName ? "border-red-500" : ""} `}
                 />
               </label>
 
-              <label htmlFor="projectCategorie" className="relative w-full">
-                <span className="ml-1 text-primary-first">
-                  Project Categorie
+              <label
+                dir="rtl"
+                htmlFor="projectEnglishName"
+                className="relative w-[285px] text-sm md:w-[329px]"
+              >
+                <span className="mr-1 text-primary-first">
+                  اسم المشروع باللغه الانجليزية
                 </span>
+                <input
+                  autoComplete="false"
+                  id="projectEnglishName"
+                  type="text"
+                  {...register("projectEnglishName", {
+                    required: "required",
+                  })}
+                  placeholder="اسم المشروع باللغه الانجليزية"
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.projectEnglishName ? "border-red-500" : ""} `}
+                />
+              </label>
+
+              <label
+                dir="rtl"
+                htmlFor="projectCategorie"
+                className="relative w-[285px] text-sm md:w-[329px]"
+              >
+                <span className="ml-1 text-primary-first">تصنيف المشروع</span>
 
                 <select
                   autoComplete="false"
@@ -104,51 +138,38 @@ const CreateTeam = () => {
                   {...register("projectCategorie", {
                     required: "required",
                   })}
-                  className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.projectCategorie ? "border-red-500" : ""} `}
                 >
                   <option value="1">1</option>
                   <option value="2">2</option>
                 </select>
               </label>
             </div>
-            <label
-              htmlFor="projectDescription"
-              className="relative h-40 w-full"
-            >
-              <span className="ml-2 text-primary-first">
-                Project Description
-              </span>
-              <textarea
-                autoComplete="false"
-                id="projectDescription"
-                {...register("projectDescription", {
-                  required: "required",
-                })}
-                placeholder="Project Description"
-                className={`h-[163px] max-h-[180px] min-h-[100px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third ${errors.projectDescription ? "border-red-500" : ""} `}
-              ></textarea>
-            </label>
+            <div dir="rtl">
+              <label
+                htmlFor="projectDescription"
+                className="relative h-40 w-full"
+              >
+                <span className="mr-2 text-primary-first">وصف المشروع</span>
+                <textarea
+                  autoComplete="false"
+                  id="projectDescription"
+                  {...register("projectDescription", {
+                    required: "required",
+                  })}
+                  placeholder="اكتب وصف مشروعك هنا .... مثال: فكرة المشروع واهدافه والاسباب والمشاكل والحلول"
+                  className={`mt-2 h-[163px] max-h-[250px] min-h-[100px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third lg:max-h-[180px] ${errors.projectDescription ? "border-red-500" : ""} `}
+                ></textarea>
+              </label>
+            </div>
           </div>
-          <span className="my-5 h-[1px] w-[calc(100%+3rem)] place-self-center bg-[#BCBCBC]"></span>
-          <div className="w-full">
+          <span className="my-5 h-[1px] w-[calc(100%-5rem)] place-self-center bg-[#BCBCBC]"></span>
+          <div dir="rtl" className="w-full">
             <div>
-              <h2 className="flex items-center text-[20px] text-primary-first">
-                2. Select Team Requriments{" "}
-                <svg
-                  className="ml-7"
-                  width="15"
-                  height="15"
-                  viewBox="0 0 15 15"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8.20866 5.37533H6.79199V3.95866H8.20866M8.20866 11.042H6.79199V6.79199H8.20866M7.50033 0.416992C6.57013 0.416992 5.64904 0.600208 4.78965 0.956179C3.93026 1.31215 3.1494 1.8339 2.49165 2.49165C1.16327 3.82004 0.416992 5.62171 0.416992 7.50033C0.416992 9.37894 1.16327 11.1806 2.49165 12.509C3.1494 13.1667 3.93026 13.6885 4.78965 14.0445C5.64904 14.4004 6.57013 14.5837 7.50033 14.5837C9.37894 14.5837 11.1806 13.8374 12.509 12.509C13.8374 11.1806 14.5837 9.37894 14.5837 7.50033C14.5837 6.57013 14.4004 5.64904 14.0445 4.78965C13.6885 3.93026 13.1667 3.1494 12.509 2.49165C11.8512 1.8339 11.0704 1.31215 10.211 0.956179C9.35161 0.600208 8.43052 0.416992 7.50033 0.416992Z"
-                    fill="#5D6A93"
-                  />
-                </svg>
-                <span className="ml-1 text-[12px] text-[#5D6A93]">
-                  The maximum number of members is 8
+              <h2 className="flex items-end gap-2 text-[20px] text-primary-first">
+                2. تحديد متطلبات التيم
+                <span className="mr-1 text-[12px] font-[600] text-[#5D6A93]">
+                  قم بادخال ما تريد من التراكات بما سيخص مشروعك
                 </span>
               </h2>
 
@@ -169,7 +190,7 @@ const CreateTeam = () => {
                       htmlFor={track.slug}
                       className="relative flex cursor-pointer items-center text-primary-second"
                     >
-                      <span className="mr-2 flex h-4 w-4 items-center justify-center rounded border border-primary-first bg-white peer-checked:bg-primary-first">
+                      <span className="ml-3 flex h-4 w-4 items-center justify-center rounded border border-primary-first bg-white peer-checked:bg-primary-first">
                         <svg
                           width="17"
                           height="12"
@@ -196,54 +217,117 @@ const CreateTeam = () => {
               </div>
             </div>
           </div>
-          <span className="my-5 h-[1px] w-[calc(100%+3rem)] place-self-center bg-[#BCBCBC]"></span>
-          <div className="w-full">
-            <div className="flex w-full items-center justify-between">
-              <h2 className="text-[20px] text-primary-first">
-                3.Add Team Members
-              </h2>
-              <button
-                //@ts-expect-error  can't see what's wrong here , while I'am using teamMembers TS ecpect requirement
-                onClick={() => append("")}
-                type="button"
-                disabled={fields.length >= 7}
-                className="flex h-[45px] w-[93px] items-center justify-center gap-[6px] rounded-[20px] bg-primary-third p-[10px] text-primary-fourth"
+          <span className="my-5 h-[1px] w-[calc(100%-5rem)] place-self-center bg-[#BCBCBC]"></span>
+          <section
+            dir="rtl"
+            className="flex w-full flex-col items-start justify-start"
+          >
+            <h2 className="text-[20px] text-primary-first">
+              3.اضافة اعضاء التيم
+            </h2>
+            <div
+              dir="rtl"
+              className="mb-5 mt-5 flex flex-wrap items-center justify-start gap-4"
+            >
+              <label
+                dir="rtl"
+                className="relative w-[285px] text-sm font-[500] md:w-[329px]"
               >
-                <svg
-                  width="25"
-                  height="25"
-                  viewBox="0 0 25 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="12.5" cy="12.5" r="12.5" fill="#6694FF" />
-                  <path
-                    d="M19.7913 13.5413H13.5413V19.7913H11.458V13.5413H5.20801V11.458H11.458V5.20801H13.5413V11.458H19.7913V13.5413Z"
-                    fill="white"
-                  />
-                </svg>
-                Add
-              </button>
+                <span className="mr-1 text-primary-first">العضو الأول</span>
+                <input
+                  type="text"
+                  disabled
+                  value={user.fullName!}
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px]`}
+                />
+              </label>
+              <label
+                dir="rtl"
+                className="relative w-[285px] text-sm font-[500] md:w-[329px]"
+              >
+                <span className="mr-1 text-primary-first">
+                  اسم المستخدم علي سكرو
+                </span>
+                <input
+                  type="text"
+                  disabled
+                  value={user.username!}
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px]`}
+                />
+              </label>
+              <p className="flex w-fit flex-col items-start font-[600]">
+                <span className="text-primary-first"> لاحظ :</span>
+                <span className="text-[#5D6A93]">
+                  العضو الأول هو المسوؤل عن التيم
+                </span>
+                <span className="text-[#A0A1A3]">
+                  يمكنك تغيير المسوؤل لاحقا
+                </span>
+              </p>
             </div>
-            <div className="mb-5 mt-5 grid grid-cols-1 gap-5 sm:grid-cols-1 lg:grid-cols-2">
+            <div className="mb-5 mt-5 w-full">
               {fields.map((field, index) => (
-                <label
-                  key={field.id}
-                  htmlFor="teamMembers"
-                  className="relative"
+                <div
+                  key={field.username}
+                  className="relative m-2 flex flex-row flex-wrap gap-4 p-1"
                 >
-                  <span className="ml-1 text-primary-first">Team member 1</span>
-                  <input
-                    autoComplete="off"
-                    id="teamMembers"
-                    type="text"
-                    {...register(`teamMembers.${index}`)}
-                    placeholder="@Saeed"
-                    className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
-                  />
+                  <label
+                    htmlFor="teamMembers"
+                    className="relative w-[285px] text-sm font-[500] md:w-[329px]"
+                  >
+                    {index === fields.length - 1 && (
+                      <span className="mr-1 text-primary-first">
+                        {index == 0
+                          ? "العضو الثاني"
+                          : index == 1
+                            ? "العضو الثالث"
+                            : index == 2
+                              ? "العضو الرابع"
+                              : index == 3
+                                ? "العضو الخامس"
+                                : index == 4
+                                  ? "العضو السادس"
+                                  : index == 5
+                                    ? "العضو السابع"
+                                    : "العضو الثامن"}
+                      </span>
+                    )}
+                    <input
+                      id="teamMembers"
+                      type="text"
+                      {...register(`teamMembers.${index}.arabicName`, {
+                        required: true,
+                      })}
+                      disabled={fields.length > index + 1}
+                      placeholder="  يرجي ادخال الاسم رباعي "
+                      className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[18px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px]`}
+                    />
+                  </label>
+                  <label
+                    key={field.id}
+                    htmlFor="teamMembers"
+                    className="relative w-[285px] text-sm font-[500] md:w-[329px]"
+                  >
+                    {index === fields.length - 1 && (
+                      <span className="mr-1 text-primary-first">
+                        اسم المستخدم علي سكرو
+                      </span>
+                    )}
+                    <input
+                      dir="ltr"
+                      id="teamMembers"
+                      type="text"
+                      {...register(`teamMembers.${index}.username`, {
+                        required: true,
+                      })}
+                      disabled={fields.length > index + 1}
+                      placeholder="@example"
+                      className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 text-[18px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px]`}
+                    />
+                  </label>
                   <svg
                     onClick={() => remove(index)}
-                    className="absolute right-4 top-10 cursor-pointer"
+                    className="cursor-pointer self-center"
                     width="18"
                     height="18"
                     viewBox="0 0 18 18"
@@ -262,15 +346,102 @@ const CreateTeam = () => {
                       fill="white"
                     />
                   </svg>
-                </label>
+                </div>
               ))}
             </div>
-          </div>
+            <div className="flex items-center gap-4">
+              <button
+                ref={addingButton}
+                onClick={() =>
+                  append({
+                    arabicName: "",
+                    username: "",
+                  })
+                }
+                type="button"
+                disabled={fields.length >= 7 || !isLastMemberFilled}
+                className={`flex h-[50px] w-[132px] items-center justify-center gap-[6px] text-nowrap rounded-[10px] bg-primary-third p-[10px] text-primary-fourth disabled:bg-[#5D6A93]`}
+              >
+                <svg
+                  width="25"
+                  height="25"
+                  viewBox="0 0 25 25"
+                  fill="primary-third"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="12.5" cy="12.5" r="12.5" fill="white" />
+                  <path
+                    d="M19.7913 13.5413H13.5413V19.7913H11.458V13.5413H5.20801V11.458H11.458V5.20801H13.5413V11.458H19.7913V13.5413Z"
+                    fill="#6694FF"
+                  />
+                </svg>
+                اضافة عضو
+              </button>
+              <p className="flex w-fit flex-col items-start font-[600]">
+                <span className="text-primary-first"> لاحظ :</span>
+                <span className="text-[#5D6A93]">
+                  عدد الطلاب لا يزيد عن 8 ولا يقل عن 5
+                </span>
+                <span className="font-[700] text-[#5D6A93]">
+                  يمكنك اضافة اقل من ذلك في حالة ان التيم ليس مكتمل
+                </span>
+              </p>
+            </div>
+          </section>
+          <span className="my-5 h-[1px] w-[calc(100%-5rem)] place-self-center bg-[#BCBCBC]"></span>
+          <section
+            dir="rtl"
+            className="mb-5 mt-5 flex w-full flex-wrap gap-4 place-self-start"
+          >
+            <h2 className="text-[20px] text-primary-first">
+              4.اضافة المشرفين علي المشروع
+            </h2>
+            <div  className=" mr-2 mt-1 flex w-full flex-wrap gap-4 place-self-start">
+              <label
+                dir="rtl"
+                className="relative w-[285px] text-sm font-[500] md:w-[329px]"
+              >
+                <span className="mr-1 text-primary-first">
+                  اسم المشرف الرئيسي ( عضو هيئة التدريس )
+                </span>
+                <input
+                  type="text"
+                  {...register("supervisor", {
+                    required: true,
+                  })}
+                  placeholder="اسم المشرف الرئيسي هنا"
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.supervisor ? "border-red-500" : ""} `}
+                />
+                <span className="text-xs font-[500] text-[#5D6A93]">
+                  اختياري اذا لم تحدد المشرف الرئيسي
+                </span>
+              </label>
+              <label
+                dir="rtl"
+                className="relative w-[285px] text-sm font-[500] md:w-[329px]"
+              >
+                <span className="mr-1 text-primary-first">
+                  اسم المشرف المساعد ( معيد أو مدرس مساعد )
+                </span>
+                <input
+                  type="text"
+                  {...register("assistantSupervisor", {
+                    required: true,
+                  })}
+                  placeholder="اسم المشرف المساعد هنا"
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.assistantSupervisor ? "border-red-500" : ""} `}
+                />
+                <span className="text-xs font-[500] text-[#5D6A93]">
+                  اختياري اذا لم تحدد المشرف المساعد
+                </span>
+              </label>
+            </div>
+          </section>
           <button
             type="submit"
-            className="mt-10 flex h-[52px] items-center justify-center gap-2 place-self-center rounded-[8px] bg-[#002ABA] px-52 text-primary-fourth duration-500 hover:bg-primary-first"
+            className="my-10 h-[49px] w-[calc(70%)] place-self-center text-nowrap rounded-[8px] bg-[#002ABA] text-primary-fourth duration-500 hover:bg-primary-first"
           >
-            Create Team
+            انشاء التيم
           </button>
         </form>
       </section>

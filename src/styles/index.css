@@ -62,10 +62,10 @@
 @layer base {
   * {
     @apply border-border;
+    @apply font-cairo;
   }
   body {
     @apply bg-background text-foreground;
-    @apply font-sans;
   }
 }
 
