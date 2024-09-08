@@ -112,7 +112,7 @@ export default {
         "caret-blink": "caret-blink 1.25s ease-out infinite",
       },
       fontFamily: {
-        sans: ["Lexend", "sans-serif"],
+        cairo: ['Cairo', 'sans-serif'],
       },
     },
   },
