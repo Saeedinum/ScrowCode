@@ -1,0 +1,31 @@
+.dashed {
+  --b: 2px;
+  --s: 25px;
+  --c1: rgb(255, 255, 255);
+  --c2: #407bff;
+
+  position: relative;
+}
+.dashed::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: var(--b);
+  background: repeating-conic-gradient(var(--c1) 0 25%, var(--c2) 0 50%) 0 0 /
+    var(--s) var(--s) round;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.dot-before>p::before {
+  content: "";
+  display: inline-block;
+  width: 4px;
+  height: 4px;
+  background-color: #001354;
+  border-radius: 50%;
+  margin-left: 8px;
+  vertical-align: middle;
+}
