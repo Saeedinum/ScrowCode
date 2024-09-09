@@ -1,19 +1,19 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import editIcon from "@/assets/profile/edit.svg";
+import SendDialog from "../components/SendDialog";
+import FileUploadComponent from "../components/FileUploadComponent"
 
+import editIcon from "@/assets/profile/edit.svg";
 import menueIcon from "@/assets/profile/menu.svg";
 import fileIcon from "@/assets/profile/file.svg";
 import vectorIcon from "@/assets/profile/Vector.svg";
 import uploadIcon from "@/assets/profile/upload.svg";
-
 import avialableIocn from "@/assets/global/available.svg";
 import sendIcon from "@/assets/profile/send.svg";
 import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
 
 import "../index.css";
-import SendDialog from "../components/SendDialog";
 
 const Team = () => {
   const {
@@ -23,6 +23,7 @@ const Team = () => {
   } = useForm({});
 
   const onSubmit = () => {};
+
 
   return (
     <main dir="rtl" className="w-full px-20 pt-10">
@@ -204,28 +205,9 @@ const Team = () => {
                 <span>سيظهر الملف لاعضاء الفريق والمشرفين فقط</span>
               </p>
 
-              {/* <div className="dashed mt-7 flex h-[253px] w-[271px] flex-col items-center justify-center gap-2 rounded-[10px]">
-                <img src={uploadIcon} alt="" />
-                <p className="text-[20px] font-semibold text-primary-first">
-                  ارفع الملف هنا
-                </p>
-                <p className="text-xs font-semibold text-[#5D6A93]">
-                  أقصي حجم 20 ميحا
-                </p>
-              </div> */}
-
-              <label className="dashed mt-7 cursor-pointer flex h-[253px] w-[271px] flex-col items-center justify-center gap-2 rounded-[10px]" htmlFor="file">
-              <img src={uploadIcon} alt="" />
-                <p className="text-[20px] font-semibold text-primary-first">
-                  ارفع الملف هنا
-                </p>
-                <p className="text-xs font-semibold text-[#5D6A93]">
-                  أقصي حجم 20 ميحا
-                </p>
-                <input id="file" type="file" className="hidden" />
-              </label>
-
-
+              <FileUploadComponent />
+              
+              
             </div>
           </div>
         </section>
