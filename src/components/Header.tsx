@@ -1,24 +1,34 @@
-import { Link, NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { useAppSelector } from "@/store/hooks";
+
 import Logo from "/src/assets/global/logo.svg";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-const auth = false;
-
 const Header = () => {
+  const user = useAppSelector((state) => state.auth.user);
+
+  const location = useLocation();
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isTeamsDropdownOpen, setIsTeamsDropdownOpen] =
+    useState<boolean>(false);
+
+  const handleItemClick = () => {
+    setIsDropdownOpen(false);
+  };
+
   return (
-    <header className="top-0 z-50 flex items-center justify-between bg-white p-5 text-base font-bold text-primary-first shadow-black md:sticky md:drop-shadow-lg">
-      <div className="md:hidden">
-        <DropdownMenu>
+    <header className="top-0 z-50 flex items-center justify-between bg-white p-4 px-12 text-base font-bold text-primary-first shadow-black sm:sticky sm:drop-shadow-lg lg:pl-20">
+      <div dir="rtl" className="sm:hidden">
+        <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
           <DropdownMenuTrigger
             className="outline-none"
             aria-label="Menu"
-            aria-expanded="false"
+            aria-expanded={isDropdownOpen}
           >
             <svg
               width="24"
@@ -33,120 +43,146 @@ const Header = () => {
               <rect y="14" width="24" height="2" rx="1" fill="#001354" />
             </svg>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-full">
-            <DropdownMenuItem>
+
+          <DropdownMenuContent className="ml-2 text-center font-medium text-primary-first sm:hidden">
+            {location.pathname !== "/" && (
               <Link
-                to={"/"}
+                to="/"
                 className="block w-full py-2 hover:text-primary-third"
+                onClick={handleItemClick}
               >
-                Home
+                الرئيسية
               </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                to={"/about"}
-                className="block w-full py-2 hover:text-primary-third"
-              >
-                About
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link to={"/FindTeam"} className="block w-full py-2">
-                Join Team
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link to={"/createTeam"} className="block w-full py-2">
-                Create Team
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-              <Link
-                to={"/findPartner"}
-                className="block w-full py-2 hover:text-primary-third"
-              >
-                Find Partner
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
+            )}
+            <Link
+              to="/FindTeam"
+              className="block w-full py-2 hover:text-primary-third"
+              onClick={handleItemClick}
+            >
+              البحث عن تيم
+            </Link>
+            <Link
+              to="/createTeam"
+              className="block w-full py-2 hover:text-primary-third"
+              onClick={handleItemClick}
+            >
+              انشاء تيم
+            </Link>
+            <Link
+              to="/findPartner"
+              className="block py-2 hover:text-primary-third"
+              onClick={handleItemClick}
+            >
+              ابحث عن شريك
+            </Link>
             <div>
-              {auth ? (
-                <div>
-                  <Link to={"Notifications"} className="block w-full py-2">
+              {user?.token ? (
+                <>
+                  <Link
+                    to="/Notifications"
+                    className="block py-2 hover:text-primary-third"
+                    onClick={handleItemClick}
+                  >
                     Notifications
                   </Link>
-                  <Link to={"profile"} className="block w-full py-2">
+                  <Link
+                    to="/profile"
+                    className="block py-2 hover:text-primary-third"
+                    onClick={handleItemClick}
+                  >
                     Profile
                   </Link>
-                </div>
+                </>
               ) : (
                 <>
-                  <DropdownMenuItem>
-                    <Link to={"/login"} className="block w-full py-2">
-                      Log in
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link
-                      to={"/signup"}
-                      className="block w-full rounded-lg bg-primary-first px-[10px] py-2 text-center text-primary-fourth"
-                    >
-                      Sign Up
-                    </Link>
-                  </DropdownMenuItem>
+                  <Link
+                    to="/login"
+                    className="block py-2 hover:text-primary-third"
+                    onClick={handleItemClick}
+                  >
+                    تسجيل دخول
+                  </Link>
+                  <Link
+                    to="/signup"
+                    className="block py-2 hover:text-primary-third"
+                    onClick={handleItemClick}
+                  >
+                    انشاء حساب
+                  </Link>
                 </>
               )}
             </div>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <img src={Logo} alt="logo" className="w-20 md:w-24" />
-      <nav className="hidden items-center gap-5 font-bold text-primary-first md:flex">
-        <NavLink to={""} className="outline-none hover:text-primary-third">
-          Home
+      <Link to={"/"}>
+        <img src={Logo} alt="logo" className="w-20 md:w-24" />
+      </Link>
+      <nav className="hidden items-center gap-5 font-bold text-primary-first sm:flex">
+        <NavLink to={"/"} className="outline-none hover:text-primary-third">
+          الرئيسية
         </NavLink>
-        <NavLink to={"about"} className="hover:text-primary-third">
-          About
+        <NavLink to={"/about"} className="hover:text-primary-third">
+          عن سكرو
         </NavLink>
-        <DropdownMenu>
-          <DropdownMenuTrigger className="outline-none">
-            Teams
+        <DropdownMenu
+          open={isTeamsDropdownOpen}
+          onOpenChange={setIsTeamsDropdownOpen}
+        >
+          <DropdownMenuTrigger className="flex items-center gap-1 outline-none">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="currentColor"
+              className="size-4"
+            >
+              <path
+                fillRule="evenodd"
+                d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
+                clipRule="evenodd"
+              />
+            </svg>
+            التيمات
           </DropdownMenuTrigger>
-          <DropdownMenuContent>
-            <DropdownMenuItem>
-              <NavLink to={"FindTeam"}>Join Team</NavLink>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <NavLink to={"createTeam"}>Create Team</NavLink>
-            </DropdownMenuItem>
+          <DropdownMenuContent className="flex flex-col items-center gap-3 p-3 font-medium text-primary-first">
+            <Link
+              onClick={() => setIsTeamsDropdownOpen(false)}
+              to={"/FindTeam"}
+            >
+              البحث عن تيم
+            </Link>
+            <Link
+              onClick={() => setIsTeamsDropdownOpen(false)}
+              to={"/createTeam"}
+            >
+              انشاء تيم
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
-        <NavLink to={"findPartner"} className="hover:text-primary-third">
-          Find Partner
+        <NavLink to={"/findPartner"} className="hover:text-primary-third">
+          ابحث عن شريك
         </NavLink>
       </nav>
-      <div className="hidden items-center gap-5 md:flex">
-        {auth ? (
+      <div className="hidden items-center gap-5 sm:flex">
+        {user?.token ? (
           <div className="flex items-center gap-5">
-            <NavLink to={"Notifications"} className="hover:text-primary-third">
+            <NavLink to={"/notifications"} className="hover:text-primary-third">
               Notifications
             </NavLink>
-            <NavLink to={"profile"} className="hover:text-primary-third">
+            <NavLink to={"/profile"} className="hover:text-primary-third">
               Profile
             </NavLink>
           </div>
         ) : (
           <div className="flex items-center gap-5">
             <Link to={"/login"} className="hover:text-primary-third">
-              Log in
+              تسجيل دخول
             </Link>
             <Link
               to={"/signup"}
-              className="rounded-lg bg-primary-first px-[12px] py-1 text-primary-fourth cursor-pointer"
+              className="cursor-pointer rounded-lg bg-primary-first px-[12px] py-1 text-primary-fourth"
             >
-              Sign Up
+              انشاء حساب
             </Link>
           </div>
         )}

@@ -1,0 +1,37 @@
+.rectangle {
+  width: 28px;
+  height: 41px;
+  position: relative;
+  border: 3px solid #001354;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 42px;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  background-color: #001354;
+  border-radius: 50%;
+  position: absolute;
+  bottom: 0;
+  animation: moveUpDown 2s infinite ease;
+}
+
+@keyframes moveUpDown {
+  0% {
+    bottom: 5px;
+  }
+  50% {
+    bottom: 26px; /* Moves the dot up */
+  }
+  100% {
+    bottom: 5px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
