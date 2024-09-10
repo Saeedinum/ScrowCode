@@ -208,6 +208,28 @@ export const authAPI = createApi({
         },
       }),
     }),
+
+    checkUsername: builder.mutation({
+      query: ({ username }) => ({
+        url: "authen/username",
+        method: "POST",
+        body: {
+          Username: username,
+        },
+      }),
+      transformResponse: (response) => console.log(response),
+    }),
+
+    verifyEmail: builder.mutation({
+      query: (code) => ({
+        url: "authen/verifyEmail",
+        method: "POST",
+        body: {
+          code: code,
+        },
+      }),
+      transformResponse: (response) => console.log(response),
+    }),
   }),
 });
 

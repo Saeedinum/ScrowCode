@@ -1,7 +1,7 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 
 import { useVerifycodeMutation } from "../../../api/authAPI";
-import { useAppSelector } from "../../../../../store/hooks";
+import { useAppSelector } from "@/store/hooks";
 
 import emaillogo from "/src/assets/auth/email.png";
 import { useRef } from "react";
@@ -11,16 +11,10 @@ type Inputs = {
 };
 
 const OtpComponent = () => {
-  const [verifycode, { data, error, isLoading, isSuccess, isError }] =
-    useVerifycodeMutation();
+  const [verifycode] = useVerifycodeMutation();
   const email = useAppSelector((state) => state.auth.reset?.email);
 
-  const {
-    register,
-    handleSubmit,
-    setValue,
-    formState: { errors },
-  } = useForm<Inputs>();
+  const { register, handleSubmit, setValue } = useForm<Inputs>();
 
   const inputsRef = useRef<HTMLInputElement[]>([]);
 
@@ -71,6 +65,7 @@ const OtpComponent = () => {
             <input
               key={index}
               {...register(`otp.${index}`, { required: true })}
+              //@ts-expect-error no problem
               ref={(el) => (inputsRef.current[index] = el)}
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
