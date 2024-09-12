@@ -94,7 +94,7 @@ const Header = () => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="flex flex-col items-center gap-3 p-3 font-medium text-primary-first"></DropdownMenuContent>
                   </DropdownMenu>
-                  <ProfileDropDown user={user} />
+                  <ProfileDropDown username={user.username || ""} />
                 </>
               ) : (
                 <>
@@ -182,7 +182,7 @@ const Header = () => {
                 </DialogTitle>
               </DialogContent>
             </Dialog>
-            <ProfileDropDown user={user} />
+            <ProfileDropDown username={user.username || ""} />
           </div>
         ) : (
           <div className="flex items-center gap-5">
@@ -204,7 +204,7 @@ const Header = () => {
 
 export default Header;
 
-const ProfileDropDown = ({ user }) => {
+const ProfileDropDown = ({ username }: { username: string }) => {
   const dispatch = useAppDispatch();
 
   return (
@@ -216,7 +216,7 @@ const ProfileDropDown = ({ user }) => {
             alt=""
             className="bg-svg h-8 w-8 rounded-full"
           />
-          {user.username}
+          {username}
           <img src="/src/assets/profile/menu.svg" alt="" className="size-3" />
         </div>
       </DropdownMenuTrigger>

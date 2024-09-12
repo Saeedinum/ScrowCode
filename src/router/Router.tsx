@@ -19,9 +19,11 @@ import FindTeam from "../features/findTeam/pages/FindTeam";
 import FindPartner from "../features/findPartner/pages/FindPartner";
 import ForgetPassword from "../features/auth/pages/forget/ForgetPassword";
 import About from "@/pages/about/About";
+import useRetrieveUser from "@/hooks/useRetrieveUser"
 
 const Router = () => {
   const auth: User = useAppSelector((state) => state.auth.user);
+  useRetrieveUser();
 
   return (
     <RouterProvider
@@ -39,19 +41,37 @@ const Router = () => {
             { path: "about", element: <About /> },
             {
               path: "CreateTeam",
-              element: auth?.token != undefined ? <CreateTeam /> : <Navigate to='/login' />,
+              element:
+                auth?.token != undefined ? (
+                  <CreateTeam />
+                ) : (
+                  <Navigate to="/login" />
+                ),
             },
             {
               path: "FindTeam",
-              element: auth?.token != undefined ? <FindTeam /> : <Navigate to='/login' />,
+              element:
+                auth?.token != undefined ? (
+                  <FindTeam />
+                ) : (
+                  <Navigate to="/login" />
+                ),
             },
             {
               path: "FindPartner",
-              element: auth?.token != undefined ? <FindPartner /> : <Navigate to='/login' />,
+              element:
+                auth?.token != undefined ? (
+                  <FindPartner />
+                ) : (
+                  <Navigate to="/login" />
+                ),
             },
           ],
         },
-        { path: "/login", element: <Login /> },
+        {
+          path: "/login",
+          element: auth?.token == undefined ? <Login /> : <Navigate to="/" />,
+        },
         { path: "signup", element: <SignUp /> },
         { path: "forgetPassword", element: <ForgetPassword /> },
         { path: "*", element: <NotFound /> },

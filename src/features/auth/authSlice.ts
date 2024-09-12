@@ -1,3 +1,4 @@
+import initializeUser from "@/hooks/useInitializeUser";
 import { Reset, Signup, Ttracks, User } from "@/types/auth";
 import { Tprofile, Tuser } from "@/types/google";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
@@ -15,7 +16,7 @@ interface AuthState {
 
 const initialState: AuthState = {
   user: {
-    token: localStorage.getItem("token") || null,
+    token: null,
     id: null,
     fullName: null,
     username: null,
@@ -62,7 +63,12 @@ export const authslice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      action.payload && localStorage.setItem("token", action.payload.token!);
+      initializeUser(
+        action.payload.token!,
+        action.payload.fullName!,
+        action.payload.id!,
+        action.payload.username!,
+      );
     },
 
     loginWithGoogle: (
@@ -75,7 +81,7 @@ export const authslice = createSlice({
     },
 
     logout: () => {
-      localStorage.removeItem("token");
+      localStorage.clear();
       return initialState;
     },
 
