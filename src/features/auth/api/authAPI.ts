@@ -1,7 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getTracks, login, reset, loginWithGoogle } from "../authSlice";
 
-import { Ttracks } from "@/types/auth.ts";
 import {
   TpersonalInformation,
   TuniversityInformation,
@@ -16,28 +15,10 @@ export const authAPI = createApi({
     getTracks: builder.query({
       query: () => "track",
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
-        try {
-          const { data: tracks } = await queryFulfilled;
-          const tracksWithSkills: Ttracks[] = await Promise.all(
-            tracks.data.map(async (track: Ttracks) => {
-              const skillsResponse = await dispatch(
-                authAPI.endpoints.getSkills.initiate({ trackId: track._id }),
-              );
-              return {
-                ...track,
-                skills: skillsResponse.data.data,
-              };
-            }),
-          );
-          dispatch(getTracks(tracksWithSkills));
-        } catch (error) {
-          console.error("Failed to fetch skills for tracks:", error);
-        }
+        const { data: tracks } = await queryFulfilled;
+        dispatch(getTracks(tracks.data));
+        console.log(tracks.data);
       },
-    }),
-
-    getSkills: builder.query({
-      query: ({ trackId }) => `track/${trackId}/skills`,
     }),
 
     googleSignup: builder.query({
@@ -66,10 +47,10 @@ export const authAPI = createApi({
 
     signupUser: builder.mutation({
       query: (userData: TpersonalInformation) => ({
-        url: "authen/signupUser",
+        url: "authen/signup",
         method: "POST",
         body: {
-          fullName: userData.fullName,
+          fullName: userData.arabicName,
           Email: userData.email,
           password: userData.password,
           passwordConfirm: userData.confirmPassword,
@@ -78,17 +59,10 @@ export const authAPI = createApi({
         },
       }),
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        console.log(arg);
         try {
           const { data } = await queryFulfilled;
-          dispatch(
-            login({
-              token: data.token,
-              id: data.data._id,
-              fullName: data.data.fullName,
-              username: data.data.usename,
-            }),
-          );
+          console.log(data);
+          dispatch(login(data.token));
         } catch (error) {
           console.error("Request failed:", error);
         }
@@ -147,14 +121,7 @@ export const authAPI = createApi({
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
-          dispatch(
-            login({
-              token: data.token,
-              id: data.data._id,
-              fullName: data.data.fullName,
-              username: data.data.usename,
-            }),
-          );
+          dispatch(login(data.token));
           console.log("Request completed:", data);
         } catch (error) {
           console.error("Request failed:", error);
@@ -209,15 +176,15 @@ export const authAPI = createApi({
       }),
     }),
 
-    checkUsername: builder.mutation({
-      query: ({ username }) => ({
+    checkUsername: builder.mutation<string, { username: string }>({
+      query: ({ username }: { username: string }) => ({
         url: "authen/username",
         method: "POST",
         body: {
           Username: username,
         },
       }),
-      transformResponse: (response) => console.log(response),
+      transformResponse: (response: { status: string }) => response.status,
     }),
 
     verifyEmail: builder.mutation({
@@ -243,4 +210,6 @@ export const {
   useResetpasswordMutation,
   useVerifycodeMutation,
   useGoogleSignupQuery,
+  useCheckUsernameMutation,
+  useVerifyEmailMutation,
 } = authAPI;

@@ -6,17 +6,86 @@ import { TpersonalInformation } from "@/types";
 import { useAppDispatch } from "@/store/hooks";
 import { signup } from "@/features/auth/authSlice";
 import Google from "@/features/auth/google/Google";
+import { useCheckUsernameMutation } from "@/features/auth/api/authAPI";
+import { useEffect, useState } from "react";
 
 const PersonalInformation = () => {
   const dispatch = useAppDispatch();
+
+  const [checkUsername, { data, isLoading, isError }] =
+    useCheckUsernameMutation();
+
+  const [usernameStatus, setUsernameStatus] = useState<JSX.Element>(<></>);
+
+  useEffect(() => {
+    if (data === "creative") {
+      setUsernameStatus(
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="green-500"
+          className="absolute right-5 top-[40px] size-6 fill-green-600 font-bold"
+        >
+          <path
+            fillRule="evenodd"
+            d="M19.916 4.626a.75.75 0 0 1 .208 1.04l-9 13.5a.75.75 0 0 1-1.154.114l-6-6a.75.75 0 0 1 1.06-1.06l5.353 5.353 8.493-12.74a.75.75 0 0 1 1.04-.207Z"
+            clipRule="evenodd"
+          />
+        </svg>,
+      );
+    } else if (isError) {
+      setError("username", {
+        type: "custom",
+        message: "username not available",
+      });
+      setUsernameStatus(
+        <>
+          <p className="absolute right-12 top-[40px] font-medium text-red-600">
+            username not available
+          </p>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            className="absolute right-5 top-[40px] size-6 fill-red-600 font-bold"
+          >
+            <path
+              fillRule="evenodd"
+              d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </>,
+      );
+    }
+  }, [data, isError]);
+
+  const handleUsernmae = async (value: string) => {
+    const isValid = await trigger("username");
+    if (!isValid) {
+      setUsernameStatus(<></>);
+      return;
+    }
+    await checkUsername({ username: value });
+  };
 
   const {
     register,
     handleSubmit,
     watch,
+    trigger,
+    setError,
     formState: { errors },
   } = useForm<TpersonalInformation>({
     resolver: zodResolver(personalInformationSchema),
+    defaultValues: {
+      arabicName: "",
+      username: "",
+      phone: "",
+      email: "",
+      password: "qwe123Q!",
+      confirmPassword: "qwe123Q!",
+    },
   });
 
   const onSubmit = async (data: TpersonalInformation) => {
@@ -37,7 +106,7 @@ const PersonalInformation = () => {
   return (
     <section
       dir="rtl"
-      className="flex w-[calc(100%-5rem)]  flex-grow flex-col items-center px-20"
+      className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center px-20"
     >
       <Google type="sign" />
       <form
@@ -78,6 +147,13 @@ const PersonalInformation = () => {
               strokeLinejoin="round"
             />
           </svg>
+          {isLoading && (
+            <p
+              className="text-surface absolute right-5 top-[44px] inline-block h-4 w-4 animate-spin rounded-full border-2 border-solid border-primary-first border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+              role="status"
+            ></p>
+          )}
+          {!isLoading && usernameStatus}
           <input
             dir="ltr"
             autoComplete="false"
@@ -85,9 +161,10 @@ const PersonalInformation = () => {
             type="text"
             {...register("username", {
               required: "required",
+              onBlur: (event) => handleUsernmae(event.target.value),
             })}
             placeholder="username"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-7 placeholder:text-sm placeholder:text-Grey-third ${errors.username ? "border-red-500" : ""} `}
+            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-7 placeholder:text-sm placeholder:text-Grey-third ${errors.username || isError ? "border-red-500" : ""} `}
           />
         </label>
 
@@ -209,8 +286,9 @@ const PersonalInformation = () => {
         </label>
 
         <button
+          disabled={isError}
           type="submit"
-          className="my-4 flex h-[48px] w-full max-w-[480px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
+          className="my-4 flex h-[48px] w-full max-w-[480px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first disabled:bg-Grey-first"
         >
           <svg
             width="16"
@@ -228,7 +306,6 @@ const PersonalInformation = () => {
           الخطوة التالية
         </button>
       </form>
-
     </section>
   );
 };
