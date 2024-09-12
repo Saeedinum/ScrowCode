@@ -14,7 +14,16 @@ export const createTeamAPI = createApi({
       query: ({ data, token }) => ({
         url: "team",
         method: "POST",
-        body: data,
+        body: {
+          projectNameArabic: data.projectArabicName,
+          projectNameEnglish: data.projectEnglishName,
+          projectCategory: data.category,
+          projectDescription: data.projectDescription,
+          userName: data.teamMembers,
+          requirement: data.requirement,
+          doctorName: data.supervisor,
+          doctorviceName: data.assistantSupervisor,
+        },
         headers: {
           Authorization: token,
         },
@@ -22,7 +31,9 @@ export const createTeamAPI = createApi({
     }),
     getTracks: builder.query<Ttracks[], void>({
       query: () => "track",
-      transformResponse: (response: { data: Ttracks[] }) => response.data,
+      transformResponse: (response: { data: Ttracks[] }) => {
+        return response.data;
+      },
     }),
   }),
 });

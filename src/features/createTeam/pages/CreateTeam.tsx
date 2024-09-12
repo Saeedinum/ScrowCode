@@ -11,8 +11,8 @@ import { Ttracks } from "@/types/auth";
 import background from "/src/assets/create/create.png";
 import Track from "../components/Track";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { createTeamSchema } from "@/schema"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { createTeamSchema } from "@/schema";
 
 import "../index.css";
 
@@ -28,28 +28,25 @@ const CreateTeam = () => {
     control,
     setValue,
     watch,
+    getValues,
     formState: { errors },
   } = useForm<TCreateTeamData>({
     shouldUnregister: true,
-    resolver: zodResolver(createTeamSchema)
+    resolver: zodResolver(createTeamSchema),
   });
 
   const { fields, append, remove } = useFieldArray({
     control,
     name: "teamMembers",
   });
-  const onSubmit: SubmitHandler<TCreateTeamData> = (data) => {
-    console.log(data);
-    if (user?.token) createTeam({ data, token: user?.token });
-  };
 
   const handleTrackNeeds = (
     index: number,
     value: number,
-    teck: string,
+    // teck: string,
   ): void => {
     setValue(`requirement.${index}.number`, value);
-    setValue(`requirement.${index}.tech`, teck);
+    // setValue(`requirement.${index}.tech`, teck);
   };
 
   const teamMembers = watch("teamMembers");
@@ -115,7 +112,6 @@ const CreateTeam = () => {
                   type="text"
                   {...register("projectArabicName", {
                     required: "required",
-                    
                   })}
                   placeholder=" اسم المشروع باللغه العربية هنا"
                   className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.projectArabicName ? "border-red-500" : ""} `}
@@ -152,12 +148,12 @@ const CreateTeam = () => {
                 <select
                   autoComplete="false"
                   id="projectCategorie"
-                  {...register("projectCategorie", {
+                  {...register("category", {
                     required: "required",
                   })}
-                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.projectCategorie ? "border-red-500" : ""} `}
+                  className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.category ? "border-red-500" : ""} `}
                 >
-                  <option value="1">1</option>
+                  <option value="medical">medical</option>
                   <option value="2">2</option>
                 </select>
               </label>
@@ -413,7 +409,7 @@ const CreateTeam = () => {
             <h2 className="text-[20px] text-primary-first">
               4.اضافة المشرفين علي المشروع
             </h2>
-            <div  className=" mr-2 mt-1 flex w-full flex-wrap gap-4 place-self-start">
+            <div className="mr-2 mt-1 flex w-full flex-wrap gap-4 place-self-start">
               <label
                 dir="rtl"
                 className="relative w-[285px] text-sm font-[500] md:w-[329px]"

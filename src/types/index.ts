@@ -1,7 +1,7 @@
 export type TCreateTeamData = {
   projectArabicName: string;
   projectEnglishName: string;
-  projectCategorie: string;
+  category: string;
   projectDescription: string;
   teamMembers: {
     arabicName: string;
@@ -10,7 +10,6 @@ export type TCreateTeamData = {
   requirement: {
     trackID: string;
     number: number;
-    tech: string;
   }[];
   supervisor: string;
   assistantSupervisor: string;

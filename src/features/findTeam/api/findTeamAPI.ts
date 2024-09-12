@@ -78,7 +78,7 @@ export const findTeamAPI = createApi({
     joinTeam: builder.mutation({
       query: ({ teamID, token }) => ({
         url: `/student/joinTeam/${teamID}`,
-        method: "GET",
+        method: "POST",
         headers: {
           authorization: token,
         },

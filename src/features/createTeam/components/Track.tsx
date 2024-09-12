@@ -7,10 +7,9 @@ const Track = ({
 }: {
   styles: string;
   index: number;
-  handleNeeds: (index: number, value: number, teck: string) => void;
+  handleNeeds: (index: number, value: number) => void;
 }) => {
   const [count, setCount] = useState<number>(1);
-  const [selectedOption, setSelectedOption] = useState<string>("react");
 
   const handleIncrement = () => {
     setCount((prevCount) => prevCount + 1);
@@ -20,17 +19,13 @@ const Track = ({
     setCount((prevCount) => (prevCount > 1 ? prevCount - 1 : 1));
   };
 
-  const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    setSelectedOption(event.target.value);
-  };
-
   useEffect(() => {
-    handleNeeds(index, count, selectedOption);
-  }, [count, selectedOption, handleNeeds, index]);
+    handleNeeds(index, count);
+  }, [count, handleNeeds, index]);
 
   return (
     <div
-      className={`absolute  sm:-right-1 right-40 sm:top-6  flex items-center gap-2 rounded-lg p-2 ${styles}`}
+      className={`absolute right-44 flex items-center gap-2 rounded-lg p-2 sm:right-10 sm:top-6 ${styles}`}
     >
       <div className="flex items-center gap-1">
         <span className="h-[32px] w-[32px] rounded-[8px] bg-blue-100 px-[12px] py-[7px] text-center">
@@ -54,15 +49,6 @@ const Track = ({
           </button>
         </div>
       </div>
-      <select
-        value={selectedOption}
-        onChange={handleSelectChange}
-        className="rounded-lg border border-blue-400 p-1"
-      >
-        <option value="react">React</option>
-        <option value="vue">Vue</option>
-        <option value="angular">Angular</option>
-      </select>
     </div>
   );
 };
