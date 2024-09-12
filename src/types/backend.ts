@@ -3,7 +3,9 @@ export type BACKEND_T_teams = {
   doctorName: string;
   doctorviceName: string;
   member: {
-    mtTrack: string[];
+    myTrack: {
+      name: string;
+    }[];
     user: {
       fullName: string;
     };
@@ -13,6 +15,6 @@ export type BACKEND_T_teams = {
   projectDescription: string;
   projectNameArabic: string;
   projectNameEnglish: string;
-  requirement: string[];
+  requirement: { name: string }[];
   _id: string;
 };

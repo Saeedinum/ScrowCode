@@ -15,11 +15,20 @@ import {
   DialogFooter,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { useAppSelector } from "@/store/hooks";
+import { useEffect, useState } from "react";
 
 const FindTeam = () => {
-  const { data } = useFetchTeamsQuery({ token: "" });
+  const { token } = useAppSelector((state) => state.auth.user);
+  const { data, isLoading } = useFetchTeamsQuery({ token: token });
+  console.log(data);
+  const [teams, setTeams] = useState<Tteam[]>([]);
 
-  const teams: Tteam[] = [];
+  useEffect(() => {
+    if (!isLoading && data) {
+      setTeams(data);
+    }
+  }, [isLoading, data]);
 
   return (
     <main className="flex flex-col items-center">
@@ -29,8 +38,7 @@ const FindTeam = () => {
       <p className="text-[15px] font-[500] text-Grey-first">
         ابحث عن الفريق المناسب لك بما يناسب افكارك ومستواك
       </p>
-
-      {/* <div className="relative mt-2 flex w-full items-center justify-center">
+      <div className="relative mt-2 flex w-full items-center justify-center">
         <div className="flex h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">
           <input
             dir="rtl"
@@ -41,7 +49,6 @@ const FindTeam = () => {
           <span className="text-2xl text-[#001354]">|</span>
           <img src={searchIcon} alt="search bar" className="w-[18px]" />
         </div>
-
         <div className="absolute right-20 flex gap-[25px]">
           <div className="flex h-[31px] w-[88px] items-center justify-evenly rounded-[8px] border-[1px] border-solid border-primary-first">
             <img src={sortIcon} alt="filter" className="w-[18px]" />
@@ -55,8 +62,7 @@ const FindTeam = () => {
             <img src={menueIcon} alt="" className="w-2" />
           </div>
         </div>
-      </div> */}
-
+      </div>
       <section className="mt-28 w-full px-4 sm:px-6 md:px-8 lg:px-14">
         <div className="flex grid-cols-1 flex-col items-start gap-8 gap-y-20 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
           {teams.map((team: Tteam) => (
@@ -124,7 +130,7 @@ const FindTeam = () => {
               <span className="my-1 h-[1px] w-[calc(100%+3rem)] bg-Grey-second"></span>
 
               <div className="w-full">
-                {team.tracks.map((track) => (
+                {team?.tracks?.map((track) => (
                   <div
                     key={track.id}
                     className="flex items-center gap-1 text-sm font-[500]"
@@ -140,7 +146,7 @@ const FindTeam = () => {
                       {track.name}
                     </p>
                     <div className="flex items-center">
-                      {track.members.map((member) => (
+                      {track?.members?.map((member) => (
                         <img
                           key={member.id}
                           src={member.imageURL}
@@ -148,8 +154,11 @@ const FindTeam = () => {
                           className="h-[23px] w-[25px] rounded-full"
                         />
                       ))}
-                      {track.members.map((member) => (
-                        <p className="overflow-hidden text-nowrap text-[12px] font-[400] text-[#A0A1A3]">
+                      {track?.members?.map((member) => (
+                        <p
+                          key={member.id}
+                          className="overflow-hidden text-nowrap text-[12px] font-[400] text-[#A0A1A3]"
+                        >
                           {member.name},
                         </p>
                       ))}
@@ -160,10 +169,8 @@ const FindTeam = () => {
 
               <div className="mb-6 mt-auto flex gap-5">
                 <Dialog>
-                  <DialogTrigger>
-                    <button className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first outline-none">
-                      تفاصيل
-                    </button>
+                  <DialogTrigger className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first outline-none">
+                    تفاصيل
                   </DialogTrigger>
                   <DialogContent
                     dir="rtl"
@@ -287,11 +294,9 @@ const FindTeam = () => {
                                 clipRule="evenodd"
                               />
                             </svg>
-                            <span className="font-medium">
-                             --
-                            </span>
+                            <span className="font-medium">--</span>
                             <span className="text-xs font-normal text-[#95A3D5]">
-                             --
+                              --
                             </span>
                           </div>
                         </div>

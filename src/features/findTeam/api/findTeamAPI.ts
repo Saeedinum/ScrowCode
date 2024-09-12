@@ -1,3 +1,6 @@
+import { Tteam } from "@/types"
+import { BACKEND_T_teams } from "@/types/backend";
+import { getTracksFromMembers } from "@/utils/teamStructure";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 export const findTeamAPI = createApi({
@@ -10,13 +13,37 @@ export const findTeamAPI = createApi({
         url: "team",
         method: "GET",
         headers: {
-          authorization:
-            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NmRjYTc4ZmMyMTJkOWIyMDljMzEzOGQiLCJpYXQiOjE3MjU3Nzg2MDEsImV4cCI6MTczMzU1NDYwMX0.99mZMplqF5PRPTQWKxZKyHVJ-ncvByS81sKn_diWz6w",
+          authorization: token,
         },
       }),
-      transformResponse: (response, meta, arg) => {
-        const teams = response.data;
-        console.log(teams);
+      transformResponse: (response: {
+        CompletedOrNo: BACKEND_T_teams[];
+        pendingSentMe: BACKEND_T_teams[];
+        pendingIsent: BACKEND_T_teams[];
+      }) => {
+        const teams = response.CompletedOrNo.map((item) => {
+          const team = {
+            id: item._id,
+            name: {
+              english: item.projectNameEnglish,
+              arabic: item.projectNameArabic,
+            },
+            status: item.completed ? "notAvailable" : "available" ,
+            description: item.projectDescription,
+            members: {
+              max: 8,
+              current: item.numOfMember,
+            },
+
+            tracks: getTracksFromMembers(item.member, item.requirement),
+
+            supervisor: item.doctorName,
+            assistantSupervisor: item.doctorviceName,
+          };
+
+          return team as Tteam ;
+        });
+        return teams;
       },
     }),
   }),
