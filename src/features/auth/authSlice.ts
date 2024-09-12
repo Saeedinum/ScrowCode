@@ -62,8 +62,7 @@ export const authslice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload;
-      action.payload.token &&
-        localStorage.setItem("token", action.payload.token);
+      action.payload && localStorage.setItem("token", action.payload.token!);
     },
 
     loginWithGoogle: (
@@ -88,7 +87,6 @@ export const authslice = createSlice({
     },
 
     signup: (state, action: PayloadAction<Partial<Signup>>) => {
-      console.log("first");
       state.signup = {
         ...state.signup,
         PersonalInformation: action.payload.PersonalInformation

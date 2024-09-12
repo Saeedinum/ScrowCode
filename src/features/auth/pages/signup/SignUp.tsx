@@ -81,14 +81,7 @@ const SignUp = () => {
           </div>
         </div>
         </div>
-        {/* <div dir="rtl" className="absolute bottom-0 flex flex-row gap-2 text-center font-bold text-primary-first">
-          <p className="">تم الانشاء عن طريق تيم سكرو</p>
-          <Link to={"/contact"} className="text-Grey-first underline">
-            تواصل معنا
-          </Link>
-        </div> */}
       </section>
-
       <section className="flex flex-grow flex-col items-center justify-start font-bold">
         <div className="flex w-full items-center justify-between px-16 pr-10 pt-5">
           <Link to={"/"}>
@@ -124,7 +117,6 @@ const SignUp = () => {
           <span className="m-2 h-[1px] w-[calc(100%+2rem)] bg-[#6679BE]"></span>
         </p>
         {section}
-
       </section>
     </main>
   );

@@ -17,7 +17,6 @@ export const authAPI = createApi({
       async onQueryStarted(_, { dispatch, queryFulfilled }) {
         const { data: tracks } = await queryFulfilled;
         dispatch(getTracks(tracks.data));
-        console.log(tracks.data);
       },
     }),
 
@@ -69,34 +68,25 @@ export const authAPI = createApi({
       },
     }),
 
-    signupStudent: builder.mutation({
+    verifyEmailStudent: builder.mutation({
       query: ({
         token,
+        code,
         data,
       }: {
         token: string;
-        data: TuniversityInformation;
+        code: string;
+        data: TuniversityInformation & TtrackInformation;
       }) => ({
-        url: "authen/signupStudent",
+        url: "authen/verifyEmailStudent",
         method: "POST",
         body: {
+          code: code,
           university: data.university,
           college: data.college,
           universityemail: data.universityEmail,
           department: data.department,
           level: data.level,
-        },
-        headers: {
-          Authorization: token,
-        },
-      }),
-    }),
-
-    collectData: builder.mutation({
-      query: ({ token, data }: { token: string; data: TtrackInformation }) => ({
-        url: "authen/collectData",
-        method: "POST",
-        body: {
           trackId: [data.track],
           skillId: data.skills,
           linkedin: data.linkedin,
@@ -120,9 +110,15 @@ export const authAPI = createApi({
       }),
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
-          const { data } = await queryFulfilled;
-          dispatch(login(data.token));
-          console.log("Request completed:", data);
+          const { data : {data : {user : {Username , fullName} , _id} , token } } = await queryFulfilled;
+          dispatch(
+            login({
+              token: token,
+              username: Username,
+              fullName: fullName,
+              id: _id,
+            }),
+          );
         } catch (error) {
           console.error("Request failed:", error);
         }
@@ -186,24 +182,12 @@ export const authAPI = createApi({
       }),
       transformResponse: (response: { status: string }) => response.status,
     }),
-
-    verifyEmail: builder.mutation({
-      query: (code) => ({
-        url: "authen/verifyEmail",
-        method: "POST",
-        body: {
-          code: code,
-        },
-      }),
-      transformResponse: (response) => console.log(response),
-    }),
   }),
 });
 
 export const {
   useSignupUserMutation,
-  useSignupStudentMutation,
-  useCollectDataMutation,
+  useVerifyEmailStudentMutation,
   useGetTracksQuery,
   useLoginUserMutation,
   useForgetpassMutation,
@@ -211,5 +195,4 @@ export const {
   useVerifycodeMutation,
   useGoogleSignupQuery,
   useCheckUsernameMutation,
-  useVerifyEmailMutation,
 } = authAPI;

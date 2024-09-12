@@ -24,12 +24,12 @@ export type Signup = {
 };
 
 export type skill = {
-  createdAt: string;
+  // createdAt: string;
   name: string;
-  slug: string;
-  track: string;
-  updatedAt: string;
-  _id: string;
+  // slug: string;
+  // track: string;
+  // updatedAt: string;
+  // _id: string;
 };
 
 export type Ttracks = {

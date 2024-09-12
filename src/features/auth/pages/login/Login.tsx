@@ -21,7 +21,7 @@ const schema = z.object({
 
 const Login = () => {
   const navigate = useNavigate();
-  const [loginUser] = useLoginUserMutation();
+  const [loginUser, { isLoading }] = useLoginUserMutation();
 
   const {
     register,
@@ -33,28 +33,14 @@ const Login = () => {
   });
 
   const onSubmit = async (data: TLoginData) => {
-    await loginUser(data).unwrap();
-    navigate("/");
+      await loginUser(data);
+      navigate("/");
   };
 
   return (
     <main className="relative flex max-h-screen w-screen select-none justify-start overflow-hidden">
       <section className="relative hidden h-screen w-[40%] items-center justify-center overflow-hidden bg-Grey-fourth text-primary-first lg:flex">
         <img src={background} alt="" />
-        {/* <img
-          src={mainlogo}
-          alt=""
-          className="absolute left-9 top-3 select-none"
-        /> */}
-        {/* <div className="flex items-end gap-5 text-center text-4xl font-bold">
-          <p className="flex flex-col">
-            <span className="pl-16">Log in</span>
-            <span> Get your team </span>
-          </p>
-          <p className="max-w-fit animate-typing overflow-hidden border-r-4 border-r-black text-[40px] font-bold">
-            Faster
-          </p>
-        </div> */}
       </section>
       <section
         dir="rtl"
@@ -106,6 +92,7 @@ const Login = () => {
                 />
               </svg>
               <input
+                dir="ltr"
                 autoComplete="false"
                 id="email"
                 type="text"
@@ -133,6 +120,7 @@ const Login = () => {
               </svg>
 
               <input
+                dir="ltr"
                 autoComplete="false"
                 type="password"
                 id="password"
@@ -165,9 +153,16 @@ const Login = () => {
             </div>
             <button
               type="submit"
-              className="h-[39px] rounded-[8px] bg-primary-first py-[7px] text-primary-fourth hover:bg-gradient-to-r hover:from-[#001354] hover:to-[#002ABA]"
+              className="relative h-[39px] rounded-[8px] bg-primary-first py-[7px] text-primary-fourth hover:bg-gradient-to-r hover:from-[#001354] hover:to-[#002ABA]"
             >
-              تسجيل الدخول
+              {isLoading ? (
+                <p
+                  className="text-surface absolute left-[48%] top-[9px] inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary-third border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+                  role="status"
+                ></p>
+              ) : (
+                " تسجيل الدخول"
+              )}
             </button>
           </form>
         </div>

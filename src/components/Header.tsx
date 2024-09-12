@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
-import { useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
 import Logo from "/src/assets/global/logo.svg";
 import {
@@ -9,10 +9,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+
+import notificationsIcon from "@/assets/global/notifications.svg";
+import { logout } from "@/features/auth/authSlice";
+
 const Header = () => {
   const user = useAppSelector((state) => state.auth.user);
-
   const location = useLocation();
+
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isTeamsDropdownOpen, setIsTeamsDropdownOpen] =
     useState<boolean>(false);
@@ -22,7 +32,7 @@ const Header = () => {
   };
 
   return (
-    <header className="top-0 z-50 flex items-center justify-between bg-white p-4 px-12 text-base font-bold text-primary-first shadow-black sm:sticky sm:drop-shadow-lg lg:pl-20">
+    <header className="relative top-0 z-50 flex items-center justify-between bg-white p-4 px-12 text-base font-bold text-primary-first shadow-black sm:sticky sm:drop-shadow-lg lg:pl-20">
       <div dir="rtl" className="sm:hidden">
         <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
           <DropdownMenuTrigger
@@ -78,20 +88,13 @@ const Header = () => {
             <div>
               {user?.token ? (
                 <>
-                  <Link
-                    to="/Notifications"
-                    className="block py-2 hover:text-primary-third"
-                    onClick={handleItemClick}
-                  >
-                    Notifications
-                  </Link>
-                  <Link
-                    to="/profile"
-                    className="block py-2 hover:text-primary-third"
-                    onClick={handleItemClick}
-                  >
-                    Profile
-                  </Link>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger className="flex items-center gap-1 outline-none">
+                      <img src={notificationsIcon} alt="" />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent className="flex flex-col items-center gap-3 p-3 font-medium text-primary-first"></DropdownMenuContent>
+                  </DropdownMenu>
+                  <ProfileDropDown user={user} />
                 </>
               ) : (
                 <>
@@ -166,12 +169,20 @@ const Header = () => {
       <div className="hidden items-center gap-5 sm:flex">
         {user?.token ? (
           <div className="flex items-center gap-5">
-            <NavLink to={"/notifications"} className="hover:text-primary-third">
-              Notifications
-            </NavLink>
-            <NavLink to={"/profile"} className="hover:text-primary-third">
-              Profile
-            </NavLink>
+            <Dialog>
+              <DialogTrigger>
+                <img src={notificationsIcon} alt="" />
+              </DialogTrigger>
+              <DialogContent
+                className="absolute left-[calc(100%-22rem)] top-[100px]"
+                dir="rtl"
+              >
+                <DialogTitle className="flex text-end text-[20px] text-primary-first">
+                  الاشعارات
+                </DialogTitle>
+              </DialogContent>
+            </Dialog>
+            <ProfileDropDown user={user} />
           </div>
         ) : (
           <div className="flex items-center gap-5">
@@ -192,3 +203,39 @@ const Header = () => {
 };
 
 export default Header;
+
+const ProfileDropDown = ({ user }) => {
+  const dispatch = useAppDispatch();
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger className="outline-none">
+        <div className="flex items-center gap-1">
+          <img
+            src="src/assets/profile/Vector.svg"
+            alt=""
+            className="bg-svg h-8 w-8 rounded-full"
+          />
+          {user.username}
+          <img src="/src/assets/profile/menu.svg" alt="" className="size-3" />
+        </div>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="flex w-[153px] flex-col items-end gap-3 p-5 text-xs font-semibold text-primary-first">
+        <Link className="hover:text-primary-third" to={"/profile"}>
+          عرض الملف الشخصي
+        </Link>
+        <Link className="hover:text-primary-third" to={"/myTeam"}>
+          التيم الخاص بي
+        </Link>
+        <button
+          onClick={() => {
+            dispatch(logout());
+          }}
+          className="hover:text-red-500"
+        >
+          تسجيل خروج
+        </button>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  );
+};

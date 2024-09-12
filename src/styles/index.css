@@ -85,3 +85,10 @@
 ::-webkit-scrollbar-thumb:hover {
   background: black;
 }
+
+
+.bg-svg {
+  background-image: url('/src/assets/profile/Vector.svg');
+  background-size: cover;
+  background-position: center;
+}
