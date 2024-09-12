@@ -27,9 +27,7 @@ const ContinueSigningIn = () => {
       dispatch(
         signup({
           PersonalInformation: {
-            fullName: google.profile.name,
-            firstname: google.profile.given_name,
-            lastname: google.profile.family_name,
+            arabicName: google.profile.name,
             username: data.username,
             phone: data.phone,
             email: google.profile.email,

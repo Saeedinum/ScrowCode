@@ -6,7 +6,10 @@ import { TpersonalInformation } from "@/types";
 import { useAppDispatch } from "@/store/hooks";
 import { signup } from "@/features/auth/authSlice";
 import Google from "@/features/auth/google/Google";
-import { useCheckUsernameMutation } from "@/features/auth/api/authAPI";
+import {
+  useCheckUsernameMutation,
+  useSignupUserMutation,
+} from "@/features/auth/api/authAPI";
 import { useEffect, useState } from "react";
 
 const PersonalInformation = () => {
@@ -14,6 +17,7 @@ const PersonalInformation = () => {
 
   const [checkUsername, { data, isLoading, isError }] =
     useCheckUsernameMutation();
+  const [signupUser, { isError: signupError }] = useSignupUserMutation();
 
   const [usernameStatus, setUsernameStatus] = useState<JSX.Element>(<></>);
 
@@ -79,28 +83,23 @@ const PersonalInformation = () => {
   } = useForm<TpersonalInformation>({
     resolver: zodResolver(personalInformationSchema),
     defaultValues: {
-      arabicName: "",
-      username: "",
-      phone: "",
-      email: "",
       password: "qwe123Q!",
       confirmPassword: "qwe123Q!",
     },
   });
 
   const onSubmit = async (data: TpersonalInformation) => {
-    dispatch(
-      signup({
-        PersonalInformation: {
-          arabicName: data.arabicName,
-          username: data.username,
-          phone: data.phone,
-          email: data.email,
-          password: data.password,
-          confirmPassword: data.confirmPassword,
-        },
-      }),
-    );
+    await signupUser({
+      ...data,
+    });
+    if (!signupError)
+      dispatch(
+        signup({
+          PersonalInformation: {
+            ...data,
+          },
+        }),
+      );
   };
 
   return (
@@ -305,6 +304,9 @@ const PersonalInformation = () => {
           </svg>
           الخطوة التالية
         </button>
+        <p className="text-center text-red-500">
+          {signupError && "an error happend"}
+        </p>
       </form>
     </section>
   );

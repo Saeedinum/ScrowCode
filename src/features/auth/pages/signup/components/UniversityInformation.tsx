@@ -25,8 +25,6 @@ const UniversityInformation = () => {
     );
   };
 
-  console.log(errors);
-
   return (
     <section
       dir="rtl"
@@ -83,12 +81,13 @@ const UniversityInformation = () => {
             {...register("department", {})}
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
           >
-            <option value="general">General</option>
-            <option value="bio">BioInformatics</option>
-            <option value="soft">Software</option>
+            <option value="Bio">BioInformatics</option>
+            <option value="Software">Software</option>
             <option value="CS">Computer Science </option>
-            <option value="is">Information Systems</option>
-            <option value="ai">Artificial Inteligence</option>
+            <option value="IS">Information Systems</option>
+            <option value="AI">Artificial Inteligence</option>
+            <option value="cybersecurity">Cyper Security</option>
+            <option value="IT">IT</option>
           </select>
         </label>
         <label htmlFor="universityEmail" className="relative w-full">
@@ -106,13 +105,6 @@ const UniversityInformation = () => {
           />
         </label>
         <div className="mt-10 flex w-full gap-20">
-          <button
-            type="submit"
-            className="flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
-          >
-            Prev Step
-          </button>
-
           <button
             type="submit"
             className="flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"

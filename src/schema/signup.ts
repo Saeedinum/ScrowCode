@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 const name = /^[\u0600-\u06FF\s]+$/;
-const username = /^[a-zA-Z0-9_-]{3,16}$/;
+const username = /^(?!\d+$)[a-zA-Z0-9_-]{3,16}$/;
 const email = /^[a-zA-Z0-9._%+-]+@(?:gmail\.com)$/i;
 const password =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;

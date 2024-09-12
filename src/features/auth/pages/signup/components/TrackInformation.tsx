@@ -7,22 +7,17 @@ import { TtrackInformation } from "@/types";
 import "../index.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signup } from "@/features/auth/authSlice";
-import {
-  useSignupUserMutation,
-  useSignupStudentMutation,
-  useCollectDataMutation,
-} from "@/features/auth/api/authAPI";
+
+import VerifyEmail from "./VerifyEmail"
+import { useState } from "react"
 
 const TrackInformation = () => {
   const dispatch = useAppDispatch();
+
   const tracks = useAppSelector((state) => state.auth.tracks);
-  const signupData = useAppSelector((state) => state.auth.signup);
-  const [signupUser, { data: signupUserData, error: error1 }] =
-    useSignupUserMutation();
-  const [signupStudent, { data: signupStudentData, error: error2 }] =
-    useSignupStudentMutation();
-  const [collectData, { data: collectDataData, error: error3 }] =
-    useCollectDataMutation();
+
+  
+  const [verify , setVerify] =useState<boolean>(false)
 
   const {
     register,
@@ -39,29 +34,19 @@ const TrackInformation = () => {
         TrackInformation: data,
       }),
     );
-    await signupUser(signupData.PersonalInformation);
-    console.log(signupUserData, error1);
-    await signupStudent({
-      token: localStorage.getItem("token")!,
-      data: signupData.UniversityInformation,
-    });
-    console.log(signupStudentData, error2);
-    await collectData({
-      token: localStorage.getItem("token")!,
-      data: signupData.TrackInformation,
-    });
-    console.log(collectDataData, error3);
+    setVerify(true)
   };
 
   return (
     <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center">
+      <VerifyEmail open={ verify} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-5 px-10"
       >
         <div className="w-full">
-          <label htmlFor="track" className="mb-2 block font-bold">
-            Select Your Track
+          <label dir="rtl" htmlFor="track" className="mb-2 block font-bold">
+            اختر التراك الخاص بك
           </label>
           <div className="grid grid-cols-3 gap-2">
             {tracks.map((track) => (
@@ -87,30 +72,30 @@ const TrackInformation = () => {
             ))}
           </div>
         </div>
-        <div className="p-4">
+        <div dir="rtl" className="flex w-full flex-col items-start p-4">
           <label htmlFor="track" className="mb-2 block font-bold">
-            Skills
+            المهارت
           </label>
           <div className="flex flex-wrap gap-2">
             {tracks
               .find((track) => track._id == watch().track)
-              ?.skills.map((skill) => (
+              ?.skills.map((skill, index) => (
                 <div
-                  key={skill._id}
-                  className={`relative flex h-[51px] w-fit items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm lowercase text-gray-600 ${watch().skills?.some((e) => e === skill._id) ? "border-[#407BFF] bg-blue-100 text-blue-600" : ""}`}
+                  key={index}
+                  className={`relative flex h-[51px] w-fit items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm lowercase text-gray-600 ${watch().skills?.some((e) => e === skill.name) ? "border-[#407BFF] bg-blue-100 text-blue-600" : ""}`}
                 >
                   <input
                     {...register("skills")}
                     type="checkbox"
-                    id={skill.slug}
-                    value={skill._id}
+                    id={skill.name}
+                    value={skill.name}
                     className="hidden"
                   />
                   <label
-                    htmlFor={skill.slug}
+                    htmlFor={skill.name}
                     className="relative flex flex-1 cursor-pointer items-center pl-1"
                   >
-                    <span className="radio-custom"></span>
+                    {/* <span className="radio-custom"></span> */}
                     {skill.name}
                   </label>
                 </div>
@@ -118,7 +103,7 @@ const TrackInformation = () => {
           </div>
         </div>
         <label htmlFor="linkedin" className="relative w-full">
-          <span className="ml-2 text-primary-first">Linked in link</span>
+          <span className="ml-2 text-primary-first">LinkedIn </span>
           <svg
             className={`absolute left-3 top-[37px] ${watch().linkedin ? "hidden" : ""} transition-all`}
             width="24"
@@ -149,7 +134,7 @@ const TrackInformation = () => {
           />
         </label>
         <label htmlFor="github" className="relative w-full">
-          <span className="ml-2 text-primary-first">Github link</span>
+          <span className="ml-2 text-primary-first">Github</span>
 
           <svg
             className={`absolute left-3 top-[37px] ${watch().github ? "hidden" : ""} transition-all`}
@@ -179,7 +164,7 @@ const TrackInformation = () => {
         </label>
         <label htmlFor="behance" className="relative w-full">
           <span className="ml-2 text-primary-first">
-            Behance link{" "}
+            Behance{" "}
             <span className="text-sm text-[#A0A1A3]">( Ui/Ux avability )</span>
           </span>
 
@@ -219,6 +204,7 @@ const TrackInformation = () => {
         >
           Sign Up
         </button>
+
         <p className="text-sm text-[#A0A1A3]">
           من خلال التسجيل، فإنك توافق على
           <span className="text-primary-second">

@@ -6,24 +6,43 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { useVerifyEmailMutation } from "@/features/auth/api/authAPI"
 
 import { useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useVerifyEmailStudentMutation } from "@/features/auth/api/authAPI";
+import { useAppSelector } from "@/store/hooks";
+import { useNavigate } from "react-router-dom";
 
 type Inputs = {
   otp: string[];
 };
 
-const VerifyEmail = () => {
-  const [verifyEmail] = useVerifyEmailMutation();
+const VerifyEmail = ({ open }: { open: boolean }) => {
+  const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm<Inputs>();
 
   const inputsRef = useRef<HTMLInputElement[]>([]);
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
+  const signupData = useAppSelector((state) => state.auth.signup);
+
+  const [verifyEmailStudent, { data: verifyEmailStudenttData, error: error2 }] =
+    useVerifyEmailStudentMutation();
+
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const otpCode = data.otp.join("");
-    verifyEmail(otpCode)
+    await verifyEmailStudent({
+      code: otpCode,
+      token: localStorage.getItem("token")!,
+      data: {
+        ...signupData.UniversityInformation,
+        ...signupData.TrackInformation,
+        department: "CS",
+      },
+    });
+    console.log(verifyEmailStudenttData, error2);
+    if (verifyEmailStudenttData?.data.status == "success") {
+      navigate("/");
+    }
   };
 
   const handleChange = (
@@ -52,7 +71,7 @@ const VerifyEmail = () => {
   };
 
   return (
-    <AlertDialog open={false}>
+    <AlertDialog open={open}>
       <AlertDialogTrigger></AlertDialogTrigger>
       <AlertDialogContent className="" dir="rtl">
         <AlertDialogHeader>
@@ -62,13 +81,16 @@ const VerifyEmail = () => {
               email@gmail.com
             </p>
           </AlertDialogTitle>
-          <section dir="ltr" className="flex select-none flex-col items-center font-bold">
+          <section
+            dir="ltr"
+            className="flex select-none flex-col items-center font-bold"
+          >
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex w-full flex-col items-center justify-between gap-5"
             >
               <div className="flex gap-2">
-                {[...Array(5)].map((_, index) => (
+                {[...Array(6)].map((_, index) => (
                   <input
                     key={index}
                     {...register(`otp.${index}`, { required: true })}
