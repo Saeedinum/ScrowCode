@@ -12,7 +12,15 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 
-const DetailsDialog = ({ team }: { team: Tteam }) => {
+const DetailsDialog = ({
+  team,
+  token,
+  handlejoin,
+}: {
+  team: Tteam;
+  token: string;
+  handlejoin: ({ teamID, token }: { teamID: string; token: string }) => void;
+}) => {
   return (
     <Dialog>
       <DialogTrigger className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first outline-none">
@@ -139,6 +147,12 @@ const DetailsDialog = ({ team }: { team: Tteam }) => {
             <button
               type="submit"
               disabled={team.status === "notAvailable"}
+              onClick={() => {
+                handlejoin({
+                  token: token,
+                  teamID: team.id,
+                });
+              }}
               className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second disabled:bg-[#5D6A93]"
             >
               طلب انضمام

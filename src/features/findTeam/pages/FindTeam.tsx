@@ -8,17 +8,19 @@ import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
 
 import { Tteam } from "@/types";
-import { useFetchTeamsQuery } from "../api/findTeamAPI";
+import { useFetchTeamsQuery, useJoinTeamMutation } from "../api/findTeamAPI";
 
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
-import DetailsDialog from "../components/DetailsDialog"
+import DetailsDialog from "../components/DetailsDialog";
 
 const FindTeam = () => {
-  const { token } = useAppSelector((state) => state.auth.user);
-  const { data, isLoading } = useFetchTeamsQuery({ token: token });
-  console.log(data);
   const [teams, setTeams] = useState<Tteam[]>([]);
+
+  const { token } = useAppSelector((state) => state.auth.user);
+
+  const { data, isLoading } = useFetchTeamsQuery({ token: token });
+  const [joinTeam] = useJoinTeamMutation();
 
   useEffect(() => {
     if (!isLoading && data) {
@@ -164,9 +166,12 @@ const FindTeam = () => {
               </div>
 
               <div className="mb-6 mt-auto flex gap-5">
+                <DetailsDialog
+                  team={team}
+                  token={token as string}
+                  handlejoin={joinTeam}
+                />
 
-                <DetailsDialog team={team} />
-                
                 {team.status === "pending" ? (
                   <button className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first">
                     الغاء الطلب
@@ -174,6 +179,12 @@ const FindTeam = () => {
                 ) : (
                   <button
                     disabled={team.status === "notAvailable"}
+                    onClick={() => {
+                      joinTeam({
+                        token: token,
+                        teamID: team.id,
+                      });
+                    }}
                     className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second disabled:bg-[#5D6A93]"
                   >
                     طلب انضمام
@@ -189,4 +200,3 @@ const FindTeam = () => {
 };
 
 export default FindTeam;
-
