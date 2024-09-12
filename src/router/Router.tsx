@@ -19,7 +19,9 @@ import FindTeam from "../features/findTeam/pages/FindTeam";
 import FindPartner from "../features/findPartner/pages/FindPartner";
 import ForgetPassword from "../features/auth/pages/forget/ForgetPassword";
 import About from "@/pages/about/About";
-import useRetrieveUser from "@/hooks/useRetrieveUser"
+import useRetrieveUser from "@/hooks/useRetrieveUser";
+import Team from "@/features/profile/pages/Team";
+import Profile from "@/features/profile/pages/Profile";
 
 const Router = () => {
   const auth: User = useAppSelector((state) => state.auth.user);
@@ -62,6 +64,20 @@ const Router = () => {
               element:
                 auth?.token != undefined ? (
                   <FindPartner />
+                ) : (
+                  <Navigate to="/login" />
+                ),
+            },
+            {
+              path: "myTeam",
+              element:
+                auth?.token != undefined ? <Team /> : <Navigate to="/login" />,
+            },
+            {
+              path: "myprofile",
+              element:
+                auth?.token != undefined ? (
+                  <Profile />
                 ) : (
                   <Navigate to="/login" />
                 ),

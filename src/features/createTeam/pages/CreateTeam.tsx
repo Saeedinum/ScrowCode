@@ -40,13 +40,8 @@ const CreateTeam = () => {
     name: "teamMembers",
   });
 
-  const handleTrackNeeds = (
-    index: number,
-    value: number,
-    // teck: string,
-  ): void => {
+  const handleTrackNeeds = (index: number, value: number): void => {
     setValue(`requirement.${index}.number`, value);
-    // setValue(`requirement.${index}.tech`, teck);
   };
 
   const teamMembers = watch("teamMembers");
@@ -61,9 +56,10 @@ const CreateTeam = () => {
       .requirement.filter((e) => e.trackID)
       .map((e) => [...Array(e.number).fill(e.trackID)])
       .flat()
-      .map((e) => tracks?.find((i) => i._id === e)?.name);
+      .map((e) => tracks?.find((i) => i._id === e)?.slug);
     data = {
       ...data,
+      category: getValues("category"),
       //@ts-expect-error ok dfgfg
       teamMembers: data.teamMembers.map((e) => e.username),
       //@ts-expect-error ok dfgfg
@@ -71,8 +67,6 @@ const CreateTeam = () => {
     };
     if (user?.token) createTeam({ data, token: user?.token });
   };
-
-  console.log(errors);
 
   return (
     <main className="max-w-screen relative flex select-none justify-start overflow-hidden">
