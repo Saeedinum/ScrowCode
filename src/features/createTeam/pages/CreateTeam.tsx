@@ -59,6 +59,23 @@ const CreateTeam = () => {
     : true;
 
   const addingButton = useRef<HTMLButtonElement>(null);
+  const onSubmit: SubmitHandler<TCreateTeamData> = (data) => {
+    const requirements = getValues()
+      .requirement.filter((e) => e.trackID)
+      .map((e) => [...Array(e.number).fill(e.trackID)])
+      .flat()
+      .map((e) => tracks?.find((i) => i._id === e)?.name);
+    data = {
+      ...data,
+      //@ts-expect-error ok dfgfg
+      teamMembers: data.teamMembers.map((e) => e.username),
+      //@ts-expect-error ok dfgfg
+      requirement: requirements,
+    };
+    if (user?.token) createTeam({ data, token: user?.token });
+  };
+
+  console.log(errors);
 
   return (
     <main className="max-w-screen relative flex select-none justify-start overflow-hidden">
