@@ -34,6 +34,7 @@ export type Tteam = {
     english: string;
     arabic: string;
   };
+  category: string;
   status: "available" | "notAvailable" | "pending";
   description: string;
   members: {

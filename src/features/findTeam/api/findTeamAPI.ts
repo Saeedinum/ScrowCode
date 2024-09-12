@@ -1,4 +1,4 @@
-import { Tteam } from "@/types"
+import { Tteam } from "@/types";
 import { BACKEND_T_teams } from "@/types/backend";
 import { getTracksFromMembers } from "@/utils/teamStructure";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -21,28 +21,56 @@ export const findTeamAPI = createApi({
         pendingSentMe: BACKEND_T_teams[];
         pendingIsent: BACKEND_T_teams[];
       }) => {
-        const teams = response.CompletedOrNo.map((item) => {
-          const team = {
-            id: item._id,
-            name: {
-              english: item.projectNameEnglish,
-              arabic: item.projectNameArabic,
+        const teams = [
+          ...response.CompletedOrNo.map((item) => {
+            const team = {
+              id: item._id,
+              name: {
+                english: item.projectNameEnglish,
+                arabic: item.projectNameArabic,
+              },
+              category: item.projectCategory,
+              status: item.completed ? "notAvailable" : "available",
+              description: item.projectDescription,
+              members: {
+                max: 8,
+                current: item.numOfMember,
+              },
+
+              tracks: getTracksFromMembers(item.member, item.requirement),
+
+              supervisor: item.doctorName,
+              assistantSupervisor: item.doctorviceName,
+            };
+
+            return team as Tteam;
+          }),
+          ...[...response.pendingIsent, ...response.pendingSentMe].map(
+            (item) => {
+              const team = {
+                id: item._id,
+                name: {
+                  english: item.projectNameEnglish,
+                  arabic: item.projectNameArabic,
+                },
+                category: item.projectCategory,
+                status: "pending",
+                description: item.projectDescription,
+                members: {
+                  max: 8,
+                  current: item.numOfMember,
+                },
+
+                tracks: getTracksFromMembers(item.member, item.requirement),
+
+                supervisor: item.doctorName,
+                assistantSupervisor: item.doctorviceName,
+              };
+
+              return team as Tteam;
             },
-            status: item.completed ? "notAvailable" : "available" ,
-            description: item.projectDescription,
-            members: {
-              max: 8,
-              current: item.numOfMember,
-            },
-
-            tracks: getTracksFromMembers(item.member, item.requirement),
-
-            supervisor: item.doctorName,
-            assistantSupervisor: item.doctorviceName,
-          };
-
-          return team as Tteam ;
-        });
+          ),
+        ];
         return teams;
       },
     }),
