@@ -10,10 +10,24 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-const SendDialog = ({ children }: { children: React.ReactNode }) => {
+import { useSendToDoctorMutation } from "../api/profileAPI";
+
+const SendDialog = ({
+  children,
+  token,
+  id,
+}: {
+  children: React.ReactNode;
+  token: string;
+  id: string;
+}) => {
+  const [sendToDoctor] = useSendToDoctorMutation();
+
   return (
     <AlertDialog>
-      <AlertDialogTrigger>{children}</AlertDialogTrigger>
+      <AlertDialogTrigger className="flex h-[37px] w-[116px] items-center justify-center gap-2 rounded-[8px] border-[1px] border-solid border-primary-first text-[15px]">
+        {children}
+      </AlertDialogTrigger>
       <AlertDialogContent className="" dir="rtl">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex flex-col items-center justify-center text-2xl font-bold text-primary-first">
@@ -41,7 +55,15 @@ const SendDialog = ({ children }: { children: React.ReactNode }) => {
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="my-5 flex gap-4 pl-6">
-          <AlertDialogAction className="mr-auto h-[37px] w-[188px] rounded-[10px] border-[1px] border-solid bg-primary-first font-bold text-white">
+          <AlertDialogAction
+            onClick={() => {
+              sendToDoctor({
+                token: token,
+                id: id,
+              });
+            }}
+            className="mr-auto h-[37px] w-[188px] rounded-[10px] border-[1px] border-solid bg-primary-first font-bold text-white"
+          >
             تأكيد
           </AlertDialogAction>
           <AlertDialogCancel className="h-[37px] w-[188px] rounded-[10px] border-[1px] border-solid border-primary-first text-primary-first">

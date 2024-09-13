@@ -54,6 +54,38 @@ export type Tteam = {
   assistantSupervisor: string;
 };
 
+export const emptyTeam: Tteam & { admin: false } = {
+  id: "",
+  name: {
+    english: "",
+    arabic: "",
+  },
+  category: "",
+  status: "available",
+  description: "",
+  members: {
+    max: 8,
+    current: 0,
+  },
+  tracks: [
+    {
+      id: "",
+      name: "",
+      maxmembers: 8,
+      members: [
+        {
+          id: "",
+          name: "",
+          imageURL: "",
+        },
+      ],
+    },
+  ],
+  supervisor: "",
+  assistantSupervisor: "",
+  admin: false,
+};
+
 export type TpersonalInformation = {
   arabicName: string;
   username: string;
