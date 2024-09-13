@@ -5,6 +5,7 @@ import { findTeamAPI } from "../features/findTeam/api/findTeamAPI";
 import { teamsSlice } from "@/features/findTeam/findTeamSlice";
 import { partnersSlice } from "@/features/findPartner/partnersSlice";
 import { profileAPI } from "@/features/profile/api/profileAPI";
+import { ordersAPI } from "@/features/orders/api/ordersAPI";
 
 export const store = configureStore({
   reducer: {
@@ -14,12 +15,14 @@ export const store = configureStore({
     [authAPI.reducerPath]: authAPI.reducer,
     [findTeamAPI.reducerPath]: findTeamAPI.reducer,
     [profileAPI.reducerPath]: profileAPI.reducer,
+    [ordersAPI.reducerPath]: ordersAPI.reducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
       authAPI.middleware,
       findTeamAPI.middleware,
       profileAPI.middleware,
+      ordersAPI.middleware,
     ),
 });
 

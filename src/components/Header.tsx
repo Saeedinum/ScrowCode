@@ -9,15 +9,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-
 import notificationsIcon from "@/assets/global/notifications.svg";
 import { logout } from "@/features/auth/authSlice";
+import Notifications from "@/features/orders/components/Notifications"
 
 const Header = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -169,19 +163,7 @@ const Header = () => {
       <div className="hidden items-center gap-5 sm:flex">
         {user?.token ? (
           <div className="flex items-center gap-5">
-            <Dialog>
-              <DialogTrigger>
-                <img src={notificationsIcon} alt="" />
-              </DialogTrigger>
-              <DialogContent
-                className="absolute left-[calc(100%-22rem)] top-[100px]"
-                dir="rtl"
-              >
-                <DialogTitle className="flex text-end text-[20px] text-primary-first">
-                  الاشعارات
-                </DialogTitle>
-              </DialogContent>
-            </Dialog>
+            <Notifications />
             <ProfileDropDown username={user.username || ""} />
           </div>
         ) : (
