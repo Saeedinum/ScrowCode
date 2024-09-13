@@ -55,14 +55,12 @@ const CreateTeam = () => {
     const requirements = getValues()
       .requirement.filter((e) => e.trackID)
       .map((e) => [...Array(e.number).fill(e.trackID)])
-      .flat()
-      .map((e) => tracks?.find((i) => i._id === e)?.slug);
+      .flat();
     data = {
       ...data,
       category: getValues("category"),
-      //@ts-expect-error ok dfgfg
+      // @ts-expect-error ok to use
       teamMembers: data.teamMembers.map((e) => e.username),
-      //@ts-expect-error ok dfgfg
       requirement: requirements,
     };
     if (user?.token) createTeam({ data, token: user?.token });
