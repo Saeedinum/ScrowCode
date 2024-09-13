@@ -221,7 +221,7 @@ const ProfileDropDown = ({ username }: { username: string }) => {
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex w-[153px] flex-col items-end gap-3 p-5 text-xs font-semibold text-primary-first">
-        <Link className="hover:text-primary-third" to={"/profile"}>
+        <Link className="hover:text-primary-third" to={"/myProfile"}>
           عرض الملف الشخصي
         </Link>
         <Link className="hover:text-primary-third" to={"/myTeam"}>
