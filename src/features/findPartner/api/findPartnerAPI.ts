@@ -60,7 +60,18 @@ export const findPartnerAPI = createApi({
         return partners;
       },
     }),
+
+    sendOrderToStudent: builder.mutation({
+      query: ({ token, studentId }) => ({
+        url: `student/sendorder/${studentId}`,
+        method: "POST",
+        headers: {
+          authorization: token,
+        },
+      }),
+    }),
   }),
 });
 
-export const { useGetStudentsQuery } = findPartnerAPI;
+export const { useGetStudentsQuery, useSendOrderToStudentMutation } =
+  findPartnerAPI;

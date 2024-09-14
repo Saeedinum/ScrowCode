@@ -9,14 +9,20 @@ import contactIocn from "@/assets/global/contact.svg";
 
 import { Tpartner } from "@/types";
 
-import { useGetStudentsQuery } from "../api/findPartnerAPI";
+import {
+  useGetStudentsQuery,
+  useSendOrderToStudentMutation,
+} from "../api/findPartnerAPI";
+
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 const FindPartner = () => {
   const token = useAppSelector((state) => state.auth.user.token);
 
   const { data, isLoading } = useGetStudentsQuery({ token });
+  const [sendOrderToStudent] = useSendOrderToStudentMutation();
 
   const [partners, setPartners] = useState<Tpartner[]>([]);
 
@@ -64,10 +70,22 @@ const FindPartner = () => {
           {partners.map((partner: Tpartner) => (
             <div
               key={partner.id}
-              className="relative flex max-w-[300px] flex-col items-center rounded-[10px] border-[1px] border-[#FFA800] px-12 pt-[71px]"
+              className={`relative flex max-w-[300px] flex-col items-center rounded-[10px] border-[1px] px-12 pt-[71px] ${
+                partner.status === "notAvailable"
+                  ? "border-red-500"
+                  : partner.status === "pending"
+                    ? "border-yellow-500"
+                    : "border-green-700"
+              } `}
             >
               <img
-                className="absolute -top-[50px] h-[125px] w-[121px] content-center rounded-[15px] border-[2px] border-solid border-[#FFA800] bg-white object-cover text-center font-bold text-primary-first"
+                className={`absolute -top-[50px] h-[125px] w-[121px] content-center rounded-[15px] border-[2px] border-solid bg-white object-cover text-center font-bold text-primary-first ${
+                  partner.status === "notAvailable"
+                    ? "border-red-500"
+                    : partner.status === "pending"
+                      ? "border-yellow-500"
+                      : "border-green-700"
+                } `}
                 src={partner.imageURL}
                 alt={partner.name}
               />
@@ -122,12 +140,30 @@ const FindPartner = () => {
               </div>
 
               <div className="mb-6 mt-3 flex flex-col gap-5">
-                <button className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second">
-                  طلب انضمام
-                </button>
-                <button className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first">
+                {partner.status === "pending" ? (
+                  <button className="flex h-[28px] w-[123px] cursor-pointer items-center justify-center rounded-[8px] border-yellow-500 bg-white px-[28px] py-2 text-sm font-[700] text-yellow-500">
+                    قيد الانتظار
+                  </button>
+                ) : (
+                  <button
+                    disabled={partner.status === "notAvailable"}
+                    onClick={() =>
+                      sendOrderToStudent({
+                        studentId: partner.id,
+                        token,
+                      })
+                    }
+                    className="flex h-[28px] w-[123px] cursor-pointer items-center justify-center rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second disabled:cursor-default disabled:bg-Grey-first"
+                  >
+                    طلب انضمام
+                  </button>
+                )}
+                <Link
+                  to={`/profile/${partner.id}`}
+                  className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first"
+                >
                   تفاصيل
-                </button>
+                </Link>
               </div>
             </div>
           ))}
