@@ -4,63 +4,111 @@ import SendDialog from "../components/SendDialog";
 import FileUploadComponent from "../components/FileUploadComponent";
 
 import editIcon from "@/assets/profile/edit.svg";
-import menueIcon from "@/assets/profile/menu.svg";
 import fileIcon from "@/assets/profile/file.svg";
 import vectorIcon from "@/assets/profile/Vector.svg";
-import uploadIcon from "@/assets/profile/upload.svg";
 import avialableIocn from "@/assets/global/available.svg";
 import sendIcon from "@/assets/profile/send.svg";
 import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
 
-import {
-  useGetMyTeamQuery,
-  useChooseLeaderMutation,
-  useUpdateTeamMutation,
-} from "../api/profileAPI";
+import { useGetMyTeamQuery, useUpdateTeamMutation } from "../api/profileAPI";
 
 import { useAppSelector } from "@/store/hooks";
 import { useEffect, useState } from "react";
-import { emptyTeam, TCreateTeamData, Tteam } from "@/types";
+import { emptyTeam, TEditTeamData, Tteam } from "@/types";
+
+import { editTeamSchema } from "@/schema";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Ttracks } from "@/types/auth";
+
+import { useGetTracksQuery } from "@/features/createTeam/api/createTeamAPI";
+import Track from "@/features/createTeam/components/Track";
+import UserDropDown from "../components/UserDropDown";
 
 import "../index.css";
-import { createTeamSchema } from "@/schema";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { compareArrays } from "@/utils/compareArrays";
 
 const Team = () => {
   const user = useAppSelector((state) => state.auth.user);
 
-  const { data, error, isLoading } = useGetMyTeamQuery({ token: user.token });
+  const { data: tracks } = useGetTracksQuery();
+  const { data, isLoading } = useGetMyTeamQuery({
+    token: user.token!,
+    tracks: tracks!,
+  });
+  const [updateTeam] = useUpdateTeamMutation();
 
   const [editMode, setEditMode] = useState<boolean>(false);
   const [team, setTeam] = useState<Tteam & { admin: boolean }>(emptyTeam);
+
   useEffect(() => {
     if (!isLoading && data) {
       setTeam(data);
+      setValue("projectArabicName", data.name.arabic);
+      setValue("projectEnglishName", data.name.english);
+      setValue("projectDescription", data.description);
+      setValue("category", data.category);
+      setValue("supervisor", data.supervisor);
+      setValue("assistantSupervisor", data.assistantSupervisor);
+      setValue(
+        "teamMembers",
+        data.tracks.map((t) => t.members.map((m) => m.id)).flat(),
+      );
     }
   }, [isLoading, data]);
 
   const {
     register,
     handleSubmit,
-    control,
     setValue,
-    watch,
     getValues,
     formState: { errors },
-  } = useForm<TCreateTeamData>({
+  } = useForm<TEditTeamData>({
     shouldUnregister: true,
-    resolver: zodResolver(createTeamSchema),
+    resolver: zodResolver(editTeamSchema),
   });
 
-  console.log(team);
+  const handleDeleteUser = (id: string) => {
+    if (getValues("deletedMembers"))
+      setValue("deletedMembers", [...getValues("deletedMembers"), id]);
+    else setValue("deletedMembers", [id]);
+    setValue(
+      "teamMembers",
+      getValues("teamMembers").filter((e) => e !== id),
+    );
+  };
+  const handleTrackNeeds = (index: number, value: number): void => {
+    setValue(`requirement.${index}.number`, value);
+  };
 
-  const onSubmit: SubmitHandler<TCreateTeamData> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<TEditTeamData> = (data) => {
+    const requirements = getValues()
+      .requirement.filter((e) => e.trackID)
+      .map((e) => [...Array(e.number).fill(e.trackID)])
+      .flat();
+    const { addedElements, removedElements } = compareArrays(
+      team.tracks.map((t) => t.members.map((m) => m.id)).flat(),
+      requirements,
+    );
+    data = {
+      ...data,
+      category: getValues("category"),
+      teamMembers: getValues("teamMembers"),
+      deletedMembers: getValues("deletedMembers"),
+      requirement: requirements,
+      requirementAdded: addedElements,
+      requirementDelete: removedElements,
+    };
+    updateTeam({ id: team.id, data, token: user.token! });
+    setEditMode(false);
   };
 
   return (
-    <main dir="rtl" className="w-full px-20 pt-10">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      dir="rtl"
+      className="w-full px-20 pt-10"
+    >
       <section className="flex flex-col items-start">
         <h1 className="text-[29px] font-bold text-primary-first">
           التيم الخاص بي
@@ -98,7 +146,8 @@ const Team = () => {
           <div className="flex gap-5 font-[600] text-primary-first">
             {editMode ? (
               <button
-                onClick={() => setEditMode(false)}
+                type="submit"
+                // onClick={() => setEditMode(false)}
                 className="flex h-[37px] w-[101px] items-center justify-center gap-2 rounded-[8px] border-[1px] border-solid bg-primary-first text-[15px] text-white"
               >
                 حفظ
@@ -108,6 +157,7 @@ const Team = () => {
                 {team.admin && (
                   <>
                     <button
+                      type="button"
                       onClick={() => setEditMode(true)}
                       className="flex h-[37px] w-[101px] items-center justify-center gap-2 rounded-[8px] border-[1px] border-solid border-primary-first text-[15px]"
                     >
@@ -128,10 +178,7 @@ const Team = () => {
         <span className="h-[1px] w-[calc(10rem)] bg-Grey-first"></span>
       </section>
 
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full flex-col items-start"
-      >
+      <section className="flex w-full flex-col items-start">
         <section>
           <h2 className="text-[20px] font-bold text-[#6694FF]">عن التيم</h2>
           <div className="flex flex-wrap gap-5">
@@ -144,11 +191,12 @@ const Team = () => {
                 اسم المشروع باللغه العربية
               </span>
               <input
+                {...register("projectArabicName", {
+                  required: "required",
+                })}
                 disabled={!editMode && team.admin}
-                autoComplete="false"
                 id="projectArabicName"
                 type="text"
-                value={team.name.arabic}
                 placeholder=" اسم المشروع باللغه العربية هنا"
                 className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px] ${errors.projectArabicName ? "border-red-500" : ""} `}
               />
@@ -165,12 +213,14 @@ const Team = () => {
                 اسم المشروع باللغه الانجليزية
               </span>
               <input
+                {...register("projectEnglishName", {
+                  required: "required",
+                })}
                 disabled={!editMode && team.admin}
                 dir="ltr"
                 autoComplete="false"
                 id="projectEnglishName"
                 type="text"
-                value={team.name.english}
                 placeholder="اسم المشروع باللغه الانجليزية"
                 className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px] ${errors.projectEnglishName ? "border-red-500" : ""} `}
               />
@@ -187,12 +237,17 @@ const Team = () => {
               <span className="ml-1 text-primary-first">تصنيف المشروع</span>
 
               <select
+                {...register("category", {
+                  required: "required",
+                })}
                 disabled={!editMode && team.admin}
                 autoComplete="false"
                 id="projectCategorie"
-                className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px] ${errors.projectCategorie ? "border-red-500" : ""} `}
+                className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px] ${errors.category ? "border-red-500" : ""} `}
               >
-                <option value={team.category}>{team.category}</option>
+                <option selected value={team.category}>
+                  {team.category}
+                </option>
               </select>
             </label>
           </div>
@@ -204,43 +259,101 @@ const Team = () => {
               >
                 <span className="mr-2 text-primary-first">وصف المشروع</span>
                 <textarea
+                  {...register("projectDescription", {
+                    required: "required",
+                  })}
                   disabled={!editMode && team.admin}
                   autoComplete="false"
                   id="projectDescription"
-                  value={team.description}
                   placeholder="اكتب وصف مشروعك هنا .... مثال: فكرة المشروع واهدافه والاسباب والمشاكل والحلول"
                   className={`mt-2 max-h-[400px] min-h-[150px] w-[639px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] text-[#95A3D5] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third disabled:border-none lg:max-h-[180px] ${errors.projectDescription ? "border-red-500" : ""} `}
                 ></textarea>
               </label>
               <p className="my-5 h-[1px] w-[639px] bg-Grey-first"></p>
 
-              <div>
+              <div className=" ">
                 <h2 className="text-[20px] font-bold text-[#6694FF]">
                   متطلبات التيم
                 </h2>
-                <div className="grid grid-cols-2 gap-5">
-                  {team?.tracks?.map((track) => (
-                    <div
-                      key={track.id}
-                      className="flex items-center gap-4 "
-                    >
-                      <p className="h-[27px] w-[26px] rounded-[5px] bg-[#EEF3FF] text-center text-[20px] font-semibold text-[#5D6A93]">
-                        {track.members.length}
-                      </p>
-                      <p className="flex flex-col text-[20px] font-semibold text-primary-first">
-                        {track.name}
-                        <span className="text-sm font-semibold text-[#5D6A93]">
-                          {track.maxmembers - track.members.length === 0
-                            ? `متبقي ${track.maxmembers - track.members.length}`
-                            : `مكتمل`}
-                          مكتمل
-                        </span>
-                      </p>
-                    </div>
-                  ))}
-                </div>
-                <p className="my-5 h-[1px] w-[639px] bg-Grey-first"></p>
+
+                {editMode ? (
+                  <div className="my-6 grid grid-cols-1 gap-5 text-nowrap sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+                    {tracks?.map((track: Ttracks, index) => (
+                      <div
+                        key={track._id}
+                        className="relative my-5 flex items-center"
+                      >
+                        <input
+                          {...register(`requirement.${index}.trackID`)}
+                          type="checkbox"
+                          defaultChecked={team.tracks.some(
+                            (teamNeed) => teamNeed.id === track._id,
+                          )}
+                          id={track.slug}
+                          value={track._id}
+                          className="peer hidden"
+                        />
+                        <label
+                          htmlFor={track.slug}
+                          className="relative flex cursor-pointer items-center text-primary-second"
+                        >
+                          <span className="ml-3 flex h-4 w-4 items-center justify-center rounded border border-primary-first bg-white peer-checked:bg-primary-first">
+                            <svg
+                              width="17"
+                              height="12"
+                              viewBox="0 0 17 12"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15.7555 1.97467L6.25545 11.4747C6.17271 11.5577 6.07439 11.6236 5.96613 11.6685C5.85788 11.7135 5.74181 11.7366 5.62459 11.7366C5.50737 11.7366 5.39131 11.7135 5.28305 11.6685C5.17479 11.6236 5.07647 11.5577 4.99373 11.4747L0.837482 7.31842C0.754637 7.23557 0.68892 7.13722 0.644084 7.02898C0.599248 6.92074 0.576172 6.80472 0.576172 6.68756C0.576172 6.5704 0.599248 6.45438 0.644084 6.34614C0.68892 6.2379 0.754637 6.13955 0.837482 6.0567C0.920328 5.97386 1.01868 5.90814 1.12692 5.8633C1.23517 5.81847 1.35118 5.79539 1.46834 5.79539C1.5855 5.79539 1.70152 5.81847 1.80976 5.8633C1.918 5.90814 2.01636 5.97386 2.0992 6.0567L5.62533 9.58283L14.4952 0.714435C14.6625 0.547121 14.8895 0.453125 15.1261 0.453125C15.3627 0.453125 15.5896 0.547121 15.7569 0.714435C15.9243 0.88175 16.0182 1.10868 16.0182 1.3453C16.0182 1.58191 15.9243 1.80884 15.7569 1.97615L15.7555 1.97467Z"
+                                fill="white"
+                              />
+                            </svg>
+                          </span>
+                          {track.name}
+                        </label>
+
+                        <Track
+                          styles="hidden peer-checked:flex"
+                          index={index}
+                          min={
+                            team.tracks.find(
+                              (teamNeed) => teamNeed.id === track._id,
+                            )?.members.length as number
+                          }
+                          handleNeeds={handleTrackNeeds}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid h-full grid-cols-2 gap-5">
+                    {team?.tracks?.map((track) => (
+                      <div key={track.id} className="flex items-center gap-4">
+                        <p
+                          className={`h-[27px] w-[26px] rounded-[5px] bg-[#EEF3FF] text-center text-[20px] font-semibold text-[#5D6A93] ${
+                            track.maxmembers - track.members.length === 0
+                              ? ""
+                              : "border-2 border-red-500 pb-1"
+                          } `}
+                        >
+                          {track.maxmembers}
+                        </p>
+                        <p className="flex flex-col text-[20px] font-semibold text-primary-first">
+                          {track.name}
+                          <span className="text-sm font-semibold text-[#5D6A93]">
+                            {track.maxmembers - track.members.length === 0
+                              ? `مكتمل`
+                              : `متبقي ${track.maxmembers - track.members.length}`}
+                          </span>
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
+              <p className="my-5 h-[1px] w-[639px] bg-Grey-first"></p>
             </div>
             <span className="h-[calc(30rem)] w-[1px] bg-Grey-first"></span>
             <div className="mt-10">
@@ -276,11 +389,18 @@ const Team = () => {
               </span>
             )}
           </p>
-          <div className="grid grid-cols-2 gap-5">
+          <div className="grid grid-cols-2 gap-5 gap-x-[10rem]">
             {team.tracks.map((track) => (
               <div className="flex flex-col">
                 {track.members.map((member) => (
                   <div className="flex items-center gap-4">
+                    {editMode && (
+                      <UserDropDown
+                        handleDeleteUser={handleDeleteUser}
+                        token={user.token!}
+                        id={member.id}
+                      />
+                    )}
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       viewBox="0 0 24 24"
@@ -293,12 +413,14 @@ const Team = () => {
                         clipRule="evenodd"
                       />
                     </svg>
-                    <p className="flex flex-col text-sm font-semibold text-primary-first">
-                      {member.name}
-                    </p>
-                    <span className="text-sm font-semibold text-[#5D6A93]">
-                      {track.name}
-                    </span>
+                    <div className="flex flex-col items-center">
+                      <p className="flex flex-col font-semibold text-primary-first">
+                        {member.name}
+                      </p>
+                      <p className="text-sm font-semibold text-[#407BFF]">
+                        {track.name}
+                      </p>
+                    </div>
                   </div>
                 ))}
               </div>
@@ -346,7 +468,6 @@ const Team = () => {
               <input
                 disabled={!editMode && team.admin}
                 type="text"
-                value={team.supervisor}
                 placeholder="اسم المشرف الرئيسي هنا"
                 className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px]`}
               />
@@ -362,14 +483,13 @@ const Team = () => {
                 disabled={!editMode && team.admin}
                 type="text"
                 placeholder="اسم المشرف المساعد هنا"
-                value={team.assistantSupervisor}
                 className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px]`}
               />
             </label>
           </div>
         </section>
-      </form>
-    </main>
+      </section>
+    </form>
   );
 };
 

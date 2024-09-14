@@ -1,4 +1,5 @@
-import { Tteam } from "@/types";
+import { TEditTeamData, Tteam } from "@/types";
+import { Ttracks } from "@/types/auth";
 import { BACKEND_T_teams } from "@/types/backend";
 import { getTracksFromMembers } from "@/utils/teamStructure";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
@@ -9,19 +10,22 @@ export const profileAPI = createApi({
   tagTypes: ["profile"],
   endpoints: (builder) => ({
     getMyTeam: builder.query({
-      query: ({ token }) => ({
+      query: ({ token }: { token: string; tracks: Ttracks[] }) => ({
         url: "team/myteam",
         method: "GET",
         headers: {
           authorization: token,
         },
       }),
-      transformResponse: (response: {
-        data: BACKEND_T_teams;
-        message: string;
-      }) => {
+      transformResponse: (
+        response: {
+          data: BACKEND_T_teams;
+          message: string;
+        },
+        _,
+        { tracks },
+      ) => {
         const item = response.data;
-        console.log(response);
         const team = {
           id: item._id,
           name: {
@@ -35,7 +39,7 @@ export const profileAPI = createApi({
             max: 8,
             current: item.numOfMember,
           },
-          tracks: getTracksFromMembers(item.member, item.requirement),
+          tracks: getTracksFromMembers(item.member, item.requirement, tracks),
           supervisor: item.doctorName,
           assistantSupervisor: item.doctorviceName,
           admin: response.message === "the status of leader is true",
@@ -55,10 +59,28 @@ export const profileAPI = createApi({
     }),
 
     updateTeam: builder.mutation({
-      query: ({ token, id, data }) => ({
+      query: ({
+        token,
+        id,
+        data,
+      }: {
+        token: string;
+        id: string;
+        data: TEditTeamData;
+      }) => ({
         url: `team/${id}`,
         method: "PUT",
-        body: data,
+        body: {
+          projectNameArabic: data.projectArabicName,
+          projectNameEnglish: data.projectEnglishName,
+          projectDescription: data.projectDescription,
+          requirementAdded: data.requirementAdded,
+          requirementDelete: data.requirementDelete,
+          projectCategory: data.category,
+          doctorName: data.supervisor,
+          doctorviceName: data.assistantSupervisor,
+          memberDelete: data.deletedMembers,
+        },
         headers: {
           authorization: token,
         },

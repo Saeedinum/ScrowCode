@@ -15,6 +15,23 @@ export type TCreateTeamData = {
   assistantSupervisor: string;
 };
 
+export type TEditTeamData = {
+  projectArabicName: string;
+  projectEnglishName: string;
+  category: string;
+  projectDescription: string;
+  teamMembers: string[];
+  deletedMembers: string[];
+  requirement: {
+    trackID: string;
+    number: number;
+  }[];
+  supervisor: string;
+  assistantSupervisor: string;
+  requirementAdded: string[];
+  requirementDelete: string[];
+};
+
 export type Tpartner = {
   id: string;
   imageURL: string;

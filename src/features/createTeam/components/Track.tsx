@@ -4,12 +4,14 @@ const Track = ({
   styles,
   index,
   handleNeeds,
+  min = 1,
 }: {
   styles: string;
   index: number;
   handleNeeds: (index: number, value: number) => void;
+  min?: number;
 }) => {
-  const [count, setCount] = useState<number>(1);
+  const [count, setCount] = useState<number>(min);
 
   const handleIncrement = () => {
     setCount((prevCount) => prevCount + 1);
