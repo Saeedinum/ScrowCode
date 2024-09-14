@@ -32,6 +32,24 @@ export type TEditTeamData = {
   requirementDelete: string[];
 };
 
+export type TEditProfileData = {
+  arabicName: string;
+  username: string;
+
+  linkedin: string;
+  github: string;
+  behance: string;
+
+  university: string;
+  college: string;
+  level: number;
+  department: string;
+  universityEmail: string;
+
+  track: string;
+  skills: string[];
+};
+
 export type Tpartner = {
   id: string;
   imageURL: string;

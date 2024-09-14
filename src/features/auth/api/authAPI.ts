@@ -60,7 +60,6 @@ export const authAPI = createApi({
       async onQueryStarted(arg, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
-          console.log(data);
           dispatch(login(data.token));
         } catch (error) {
           console.error("Request failed:", error);

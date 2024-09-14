@@ -98,8 +98,8 @@ export const profileAPI = createApi({
     }),
 
     getMyProfile: builder.query({
-      query: ({ token }: { token: string }) => ({
-        url: "student/mybaseInfo",
+      query: ({ token, id }: { token: string; id?: string }) => ({
+        url: id ? `student/profile/${id}` : "student/mybaseInfo",
         method: "GET",
         headers: {
           authorization: token,

@@ -82,6 +82,10 @@ const Router = () => {
                   <Navigate to="/login" />
                 ),
             },
+            {
+              path: "profile/:id",
+              element: <Profile />,
+            },
           ],
         },
         {

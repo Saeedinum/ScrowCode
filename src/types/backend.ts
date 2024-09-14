@@ -28,7 +28,7 @@ export type BACKEND_T_profile = {
   leader: boolean;
   level: string;
   mySkills: string[];
-  myTracks: string[];
+  myTrack: string[];
   pending: string[];
   resultvote: number;
   team: string;
@@ -44,4 +44,9 @@ export type BACKEND_T_profile = {
     slug: string;
   };
   _id: string;
+  contact?: {
+    behance: string;
+    github: string;
+    linkedin: string;
+  };
 };
