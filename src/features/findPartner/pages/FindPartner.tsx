@@ -2,15 +2,29 @@ import filterIcon from "@/assets/search/filter.svg";
 import searchIcon from "@/assets/search/search.svg";
 import menueIcon from "@/assets/search/menue.svg";
 import sortIcon from "@/assets/search/sort.svg";
-
 import avialableIocn from "@/assets/global/available.svg";
 import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
 import contactIocn from "@/assets/global/contact.svg";
+
 import { Tpartner } from "@/types";
 
+import { useGetStudentsQuery } from "../api/findPartnerAPI";
+import { useAppSelector } from "@/store/hooks";
+import { useEffect, useState } from "react";
+
 const FindPartner = () => {
-  const partners: Tpartner[] = [];
+  const token = useAppSelector((state) => state.auth.user.token);
+
+  const { data, isLoading } = useGetStudentsQuery({ token });
+
+  const [partners, setPartners] = useState<Tpartner[]>([]);
+
+  useEffect(() => {
+    if (!isLoading && data) {
+      setPartners(data);
+    }
+  }, [isLoading, data]);
 
   return (
     <main className="flex flex-col items-center">

@@ -52,7 +52,7 @@ export type TEditProfileData = {
 
 export type Tpartner = {
   id: string;
-  imageURL: string;
+  imageURL?: string;
   name: string;
   track: string;
   status: "available" | "notAvailable" | "pending";

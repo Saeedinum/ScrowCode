@@ -50,3 +50,14 @@ export type BACKEND_T_profile = {
     linkedin: string;
   };
 };
+
+export type BACKEND_T_partners = {
+  Available: boolean;
+  mySkills: { name: string }[];
+  myTrack: { name: string }[];
+  user: {
+    fullName: string;
+    profileImg?: string;
+  };
+  _id: string;
+};
