@@ -1,6 +1,6 @@
 import { TEditTeamData, Tteam } from "@/types";
 import { Ttracks } from "@/types/auth";
-import { BACKEND_T_teams } from "@/types/backend";
+import { BACKEND_T_profile, BACKEND_T_teams } from "@/types/backend";
 import { getTracksFromMembers } from "@/utils/teamStructure";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
@@ -96,6 +96,29 @@ export const profileAPI = createApi({
         },
       }),
     }),
+
+    getMyProfile: builder.query({
+      query: ({ token }: { token: string }) => ({
+        url: "student/mybaseInfo",
+        method: "GET",
+        headers: {
+          authorization: token,
+        },
+      }),
+      transformResponse: (response: { data: BACKEND_T_profile }) =>
+        response.data,
+    }),
+
+    updateMyProfile: builder.mutation({
+      query: ({ token, data }) => ({
+        url: "student/update",
+        method: "PUT",
+        body: data,
+        headers: {
+          authorization: token,
+        },
+      }),
+    }),
   }),
 });
 
@@ -104,4 +127,6 @@ export const {
   useChooseLeaderMutation,
   useSendToDoctorMutation,
   useUpdateTeamMutation,
+  useGetMyProfileQuery,
+  useUpdateMyProfileMutation,
 } = profileAPI;

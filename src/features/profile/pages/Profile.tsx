@@ -1,13 +1,20 @@
 import { useState } from "react";
 
 import avialableIocn from "@/assets/global/available.svg";
-import sendIcon from "@/assets/profile/send.svg";
-import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
 import editIcon from "@/assets/profile/edit.svg";
 
+import {
+  useGetMyProfileQuery,
+  useUpdateMyProfileMutation,
+} from "../api/profileAPI.ts";
+import { useAppSelector } from "@/store/hooks.ts";
+
 const Profile = () => {
   const [section, setSection] = useState<1 | 2>(1);
+
+  const token = useAppSelector((state) => state.auth.user.token);
+  const { data, error, isLoading } = useGetMyProfileQuery({ token: token! });
 
   return (
     <main dir="rtl" className="flex w-full flex-col gap-3 px-20 pt-16">
@@ -19,45 +26,44 @@ const Profile = () => {
               alt=""
               className="h-[147px] w-[156px] rounded-[8px]"
             />
-            <p className="mt-1 flex gap-2">
-              <img src={notavialableIocn} alt="" />
-              <span className="font-medium text-red-600">لم تنضم الي تيم</span>
-            </p>
+            {data?.team ? (
+              <p className="mt-1 flex gap-2">
+                <img src={avialableIocn} alt="" />
+                <span className="font-medium text-green-600">
+                  {" "}
+                  منضم الي تيم
+                </span>
+              </p>
+            ) : (
+              <p className="mt-1 flex gap-2">
+                <img src={notavialableIocn} alt="" />
+                <span className="font-medium text-red-600">
+                  لم تنضم الي تيم
+                </span>
+              </p>
+            )}
           </div>
           <div>
             <h1 className="text-[20px] font-medium text-primary-first">
-              رضوي محمد علي خالد
+              {data?.user.fullName}
             </h1>
-            <p className="text-[15px] text-[#5D6A93]">@Radwaaali</p>
+            <p className="text-[15px] text-[#5D6A93]">{data?.user.Username}</p>
             <p className="mt-2 text-[20px] font-semibold text-[#6694FF]">
-              Frontend Developer
+              {data?.myTracks}
             </p>
             <p className="text-base font-semibold">المهارات</p>
             <div className="flex flex-wrap gap-3">
-              <div
-                className={`relative flex h-[40px] w-fit items-center text-nowrap rounded-[8px] border border-[#407BFF] bg-[#E1EBFF] p-[10px] text-sm lowercase text-[#407BFF]`}
-              >
-                <input type="checkbox" className="hidden" />
-                <label className="relative flex flex-1 cursor-pointer items-center pl-1">
-                  React
-                </label>
-              </div>
-              <div
-                className={`relative flex h-[40px] w-fit items-center text-nowrap rounded-[8px] border border-[#407BFF] bg-[#E1EBFF] p-[10px] text-sm lowercase text-[#407BFF]`}
-              >
-                <input type="checkbox" className="hidden" />
-                <label className="relative flex flex-1 cursor-pointer items-center pl-1">
-                  React
-                </label>
-              </div>
-              <div
-                className={`relative flex h-[40px] w-fit items-center text-nowrap rounded-[8px] border border-[#407BFF] bg-[#E1EBFF] p-[10px] text-sm lowercase text-[#407BFF]`}
-              >
-                <input type="checkbox" className="hidden" />
-                <label className="relative flex flex-1 cursor-pointer items-center pl-1">
-                  React
-                </label>
-              </div>
+              {data?.mySkills.map((skill) => (
+                <div
+                  key={skill}
+                  className={`relative flex h-[40px] w-fit items-center text-nowrap rounded-[8px] border border-[#407BFF] bg-[#E1EBFF] p-[10px] text-sm lowercase text-[#407BFF]`}
+                >
+                  <input type="checkbox" className="hidden" />
+                  <label className="relative flex flex-1 cursor-pointer items-center pl-1">
+                    {skill}
+                  </label>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -98,8 +104,7 @@ const Profile = () => {
             نبذة عن
           </p>
           <div className="mr-3 mt-3 w-[367px] rounded-[8px] border border-[#95A3D5] px-[14px] py-[9px] font-medium text-[#5D6A93]">
-            I’m Frontend developer , 2 years experience, 4 projects , 2 project
-            with JS
+            no data from backend
           </div>
           <p className="mt-6 font-semibold text-[#407BFF]">تواصل مع</p>
           <div className="mt-2 flex gap-5">
@@ -173,21 +178,21 @@ const Profile = () => {
           <div>
             <p className="flex flex-col gap-1">
               <span>الجامعة </span>
-              <span className="text-[#5D6A93]">جامعة قناة السويس</span>
+              <span className="text-[#5D6A93]">{data?.university}</span>
             </p>
             <p className="mt-8 flex flex-col gap-1">
               <span>الكلية</span>
-              <span className="text-[#5D6A93]">كلية حاسبات ومعلومات</span>
+              <span className="text-[#5D6A93]"> {data?.college}</span>
             </p>
           </div>
           <div>
             <p className="flex flex-col gap-1">
               <span>المرحلة</span>
-              <span className="text-[#5D6A93]">الرابعة</span>
+              <span className="text-[#5D6A93]">{data?.level}</span>
             </p>
             <p className="mt-8 flex flex-col gap-1">
               <span>القسم</span>
-              <span className="text-[#5D6A93]">علوم الحاسب</span>
+              <span className="text-[#5D6A93]"> {data?.department}</span>
             </p>
           </div>
         </section>
