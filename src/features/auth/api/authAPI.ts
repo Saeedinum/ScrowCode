@@ -57,7 +57,7 @@ export const authAPI = createApi({
           phone: userData.phone,
         },
       }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
+      async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
           const { data } = await queryFulfilled;
           dispatch(login(data.token));

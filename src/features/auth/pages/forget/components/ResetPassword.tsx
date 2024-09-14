@@ -11,14 +11,13 @@ type Inputs = {
 };
 
 const ResetPassword = () => {
-  const [resetpassword, { data, error, isLoading, isSuccess, isError }] =
+  const [resetpassword] =
     useResetpasswordMutation();
   const email = useAppSelector((state) => state.auth.reset?.email);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {

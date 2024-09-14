@@ -18,7 +18,6 @@ const Notifications = () => {
     token: token,
   });
   const [handleOrderOfTeam] = useHandleOrderOfTeamMutation();
-  console.log(data)
 
   return (
     <Dialog>

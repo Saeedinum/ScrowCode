@@ -257,42 +257,9 @@ const Home = () => {
               </button>
             </div>
           </section>
-          {/* 
-          <section className="relative mt-44 hidden w-full items-start justify-start gap-20 pl-32 lg:flex">
-            <img
-              src={grayshadow3}
-              alt=""
-              className="absolute -top-[570px] left-0 -z-10"
-            />
-
-            <div className="flex flex-col justify-start gap-10 rounded-[100px] bg-primary-second p-20 pr-24 text-primary-fourth">
-              <p className="mr-20 flex flex-col items-center text-3xl">
-                Get in Touch <span>with us</span>
-              </p>
-              <p className="mr-3 flex flex-col items-center text-2xl">
-                Mail us <span>Scrow_code@gmail.com</span>
-              </p>
-            </div>
-
-            <form className="flex flex-col items-center justify-center gap-10">
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="w-96 border-b-2 border-solid border-primary-first bg-transparent pb-3 font-bold outline-none placeholder:text-primary-first"
-              />
-              <input
-                type="text"
-                placeholder="Your Email"
-                className="w-96 border-b-2 border-solid border-primary-first bg-transparent pb-3 font-bold outline-none placeholder:text-primary-first"
-              />
-              <button className="mt-32 w-fit rounded-lg bg-primary-first px-14 py-3 font-bold text-primary-fourth">
-                Contact US
-              </button>
-            </form>
-          </section> */}
         </section>
       </main>
-       {/* <footer className=" mt-52 lg:mt-[25rem] xl:mt-28 flex flex-col items-center justify-center bg-primary-first p-20 pt-10 font-bold text-[#95A3D5] md:items-start">
+      <footer className=" mt-52 lg:mt-[25rem] xl:mt-28 flex flex-col items-center justify-center bg-primary-first p-20 pt-10 font-bold text-[#95A3D5] md:items-start">
         <div className="flex flex-col items-start justify-center gap-10 md:flex-row md:gap-20">
           <img src={whiteLogo} alt="" className="" />
           <div className="flex flex-col gap-1 lg:ml-28">
@@ -327,7 +294,7 @@ const Home = () => {
             <Link to={""}> Scrow_code@gmail.com</Link>
           </div>
         </div>
-      </footer>  */}
+      </footer> 
     </>
   );
 };

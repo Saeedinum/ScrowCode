@@ -1,15 +1,15 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Iteams {}
+// interface Iteams {}
 
-const initialState: Iteams = {};
+// const initialState: Iteams = {};
 
-export const teamsSlice = createSlice({
-  name: "teams",
-  initialState,
-  reducers: {},
-});
+// export const teamsSlice = createSlice({
+//   name: "teams",
+//   initialState,
+//   reducers: {},
+// });
 
-export const {} = teamsSlice.actions;
+// export const {} = teamsSlice.actions;
 
-export default teamsSlice.reducer;
+// export default teamsSlice.reducer;

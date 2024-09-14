@@ -3,7 +3,7 @@ import { Reset, Signup, Ttracks, User } from "@/types/auth";
 import { Tprofile, Tuser } from "@/types/google";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface AuthState {
+export type AuthState = {
   user: User;
   reset: Reset;
   signup: Signup;

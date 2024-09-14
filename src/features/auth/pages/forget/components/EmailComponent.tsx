@@ -10,13 +10,12 @@ type Inputs = {
 };
 
 const EmailComponent = () => {
-  const [forgetpass, { data, error, isLoading, isSuccess, isError }] =
+  const [forgetpass] =
     useForgetpassMutation();
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {

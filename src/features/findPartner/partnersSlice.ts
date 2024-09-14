@@ -1,14 +1,14 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 
-const initialState = {};
+// const initialState = {};
 
-export const partnersSlice = createSlice({
-  name: "partners",
-  initialState,
-  reducers: {},
-});
+// export const partnersSlice = createSlice({
+//   name: "partners",
+//   initialState,
+//   reducers: {},
+// });
 
-export const {} = partnersSlice.actions;
+// export const {} = partnersSlice.actions;
 
-export default partnersSlice.reducer;
+// export default partnersSlice.reducer;
