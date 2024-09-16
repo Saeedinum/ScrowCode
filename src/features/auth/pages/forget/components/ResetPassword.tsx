@@ -61,7 +61,7 @@ const ResetPassword = () => {
             id="password"
             {...register("password")}
             placeholder="new password"
-            className="h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-5 placeholder:text-sm placeholder:text-Grey-third"
+            className="inputfield px-[13px] py-[14px] outline-none placeholder:pl-5 placeholder:text-sm placeholder:text-Grey-third"
           />
         </label>
 
@@ -90,7 +90,7 @@ const ResetPassword = () => {
             id="confirmPassword"
             {...register("confirmPassword")}
             placeholder="new password"
-            className="h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-5 placeholder:text-sm placeholder:text-Grey-third"
+            className="inputfield px-[13px] py-[14px] outline-none placeholder:pl-5 placeholder:text-sm placeholder:text-Grey-third"
           />
         </label>
 

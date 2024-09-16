@@ -44,7 +44,7 @@ const EmailComponent = () => {
               required: "required",
             })}
             placeholder="enter your email address"
-            className="h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third"
+            className="inputfield px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third"
           />
         </label>
 

@@ -130,7 +130,7 @@ const TrackInformation = () => {
                 ? "eg: https://linkedin.com/in/example"
                 : "linked in link"
             }
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-8 placeholder:text-sm placeholder:text-Grey-third ${errors.linkedin ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-8  ${errors.linkedin ? "border-red-500" : ""} `}
           />
         </label>
         <label htmlFor="github" className="relative w-full">
@@ -159,7 +159,7 @@ const TrackInformation = () => {
             placeholder={
               errors.github ? "eg: https://github.com/example" : "github link"
             }
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-8 placeholder:text-sm placeholder:text-Grey-third ${errors.github ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px]  placeholder:pl-8  ${errors.github ? "border-red-500" : ""} `}
           />
         </label>
         <label htmlFor="behance" className="relative w-full">
@@ -194,7 +194,7 @@ const TrackInformation = () => {
                 ? "eg: https://behance.net/example"
                 : "behance link"
             }
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-8 placeholder:text-sm placeholder:text-Grey-third ${errors.behance ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px]  placeholder:pl-8 ${errors.behance ? "border-red-500" : ""} `}
           />
         </label>
 

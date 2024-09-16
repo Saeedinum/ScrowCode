@@ -9,6 +9,12 @@ import Google from "@/features/auth/google/Google";
 import { useSignupUserMutation } from "@/features/auth/api/authAPI";
 import useCheckUsername from "@/hooks/useCheckUsername";
 
+import emailIcon from "@/assets/auth/signup/email.svg";
+import passwordIcon from "@/assets/auth/signup/password.svg";
+import phoneIcon from "@/assets/auth/signup/phone.svg";
+import usernameIcon from "@/assets/auth/signup/username.svg";
+import arrowIcon from "@/assets/global/rightArrow.svg";
+
 const PersonalInformation = () => {
   const dispatch = useAppDispatch();
   const [signupUser, { isError: signupError }] = useSignupUserMutation();
@@ -68,7 +74,7 @@ const PersonalInformation = () => {
               required: "required",
             })}
             placeholder="الاسم الرباعي"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 outline-none placeholder:pr-2 placeholder:text-sm placeholder:text-Grey-third ${errors.arabicName ? "border-red-500" : ""} `}
+            className={`inputfield py-[14px] pl-2 pr-2 ${errors.arabicName ? "border-red-500" : ""} `}
           />
         </label>
 
@@ -76,23 +82,8 @@ const PersonalInformation = () => {
           <span className="ml-2 text-primary-first">اسم المستخدم</span>
           <svg
             className={`absolute left-3 top-[42px] ${watch().username ? "hidden" : ""} transition-all`}
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5 20V19C5 17.1435 5.7375 15.363 7.05025 14.0503C8.36301 12.7375 10.1435 12 12 12M12 12C13.8565 12 15.637 12.7375 16.9497 14.0503C18.2625 15.363 19 17.1435 19 19V20M12 12C13.0609 12 14.0783 11.5786 14.8284 10.8284C15.5786 10.0783 16 9.06087 16 8C16 6.93913 15.5786 5.92172 14.8284 5.17157C14.0783 4.42143 13.0609 4 12 4C10.9391 4 9.92172 4.42143 9.17157 5.17157C8.42143 5.92172 8 6.93913 8 8C8 9.06087 8.42143 10.0783 9.17157 10.8284C9.92172 11.5786 10.9391 12 12 12Z"
-              stroke="#95A3D5"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        
+          />
           {ui}
-
           <input
             dir="ltr"
             autoComplete="false"
@@ -102,14 +93,15 @@ const PersonalInformation = () => {
               required: "required",
             })}
             placeholder="username"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-7 placeholder:text-sm
-               placeholder:text-Grey-third ${(  ( errors.username && errors.username?.message !== "less" )|| status === "unValid") ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-7 ${(errors.username && errors.username?.message !== "less") || status === "unValid" ? "border-red-500" : ""} `}
           />
         </label>
 
         <label htmlFor="phone" className="relative w-full max-w-[515px]">
           <span className="ml-2 text-primary-first">رقم الهاتف</span>
-          <svg
+          <img
+            src={phoneIcon}
+            alt=""
             className={`absolute left-3 top-[42px] ${watch().phone ? "hidden" : ""} transition-all`}
             width="15"
             height="16"
@@ -117,8 +109,7 @@ const PersonalInformation = () => {
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
-            <path
-              d="M12.0189 10.0371L10.4314 9.85586C10.2447 9.83394 10.0555 9.8546 9.878 9.91631C9.70047 9.97801 9.53923 10.0791 9.4064 10.2121L8.2564 11.3621C6.48214 10.4597 5.04001 9.01762 4.13765 7.24336L5.2939 6.08711C5.56265 5.81836 5.6939 5.44336 5.65015 5.06211L5.4689 3.48711C5.43346 3.18222 5.28714 2.90101 5.0578 2.69701C4.82845 2.49302 4.53209 2.3805 4.22515 2.38086H3.1439C2.43765 2.38086 1.85015 2.96836 1.8939 3.67461C2.22515 9.01211 6.4939 13.2746 11.8251 13.6059C12.5314 13.6496 13.1189 13.0621 13.1189 12.3559V11.2746C13.1251 10.6434 12.6501 10.1121 12.0189 10.0371Z"
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-7 ${(errors.username && errors.username?.message !== "less") || status === "unValid" ? "border-red-500" : ""} `}
               fill="#95A3D5"
             />
           </svg>
@@ -131,7 +122,7 @@ const PersonalInformation = () => {
               required: "required",
             })}
             placeholder="eg: +201012345678"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.phone ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.phone ? "border-red-500" : ""} `}
           />
         </label>
 
@@ -158,7 +149,7 @@ const PersonalInformation = () => {
             id="email"
             type="text"
             {...register("email", {
-              required: "required",
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.email ? "border-red-500" : ""} `}
             })}
             placeholder={errors.email ? "eg: example@gmail.com" : "Email"}
             className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.email ? "border-red-500" : ""} `}
@@ -189,7 +180,7 @@ const PersonalInformation = () => {
               required: "required",
             })}
             placeholder="Password"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.password ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.password ? "border-red-500" : ""} `}
           />
         </label>
 
@@ -220,7 +211,7 @@ const PersonalInformation = () => {
               required: "required",
             })}
             placeholder="Confirm Password"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.confirmPassword ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.confirmPassword ? "border-red-500" : ""} `}
           />
         </label>
 
@@ -229,27 +220,14 @@ const PersonalInformation = () => {
           type="submit"
           className="my-4 flex h-[48px] w-full max-w-[480px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first disabled:bg-Grey-first"
         >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.833008 7.5H14.1663M14.1663 7.5L8.16634 1.5M14.1663 7.5L8.16634 13.5"
-              stroke="white"
-              strokeWidth="2"
-            />
-          </svg>
-          الخطوة التالية
-        </button>
-        <p className="text-center text-red-500">
-          {signupError && "an error happend"}
-        </p>
-      </form>
-    </section>
-  );
+          {isLoading ? (
+            <p
+              className="text-surface h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+              role="status"
+            ></p>
+          ) : (
+            <img src={arrowIcon} alt="" className="size-6" />
+          )}
 };
 
 export default PersonalInformation;

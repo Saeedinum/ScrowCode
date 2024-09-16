@@ -38,7 +38,7 @@ const UniversityInformation = () => {
           <span className="ml-2 text-primary-first">الجامعة االملتحق بها</span>
           <select
             id="university"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-1 placeholder:text-sm placeholder:text-Grey-third`}
+            className={`inputfield px-[13px] py-[14px] placeholder:pr-1`}
             {...register("university")}
           >
             <option value="Suez canal university">جامعة قناة السويس</option>
@@ -51,7 +51,7 @@ const UniversityInformation = () => {
             {...register("college", {
               required: "required",
             })}
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-1 placeholder:text-sm placeholder:text-Grey-third`}
+            className={`inputfield px-[13px] py-[14px] placeholder:pr-1`}
           >
             <option value="computer and information">
               كلية الحاسبات والمعلومات
@@ -66,7 +66,7 @@ const UniversityInformation = () => {
             {...register("level", {
               valueAsNumber: true,
             })}
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-1`}
           >
             <option value="1">الفرقة الأولى</option>
             <option value="2">الفرقة الثانية</option>
@@ -79,7 +79,7 @@ const UniversityInformation = () => {
           <select
             id="department"
             {...register("department", {})}
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third`}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-1`}
           >
             <option value="Bio">BioInformatics</option>
             <option value="Software">Software</option>
@@ -101,7 +101,7 @@ const UniversityInformation = () => {
             })}
             dir="ltr"
             placeholder="eg: ugs.1234@ci.suez.edu.eg"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third ${errors.universityEmail ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-1 ${errors.universityEmail ? "border-red-500" : ""} `}
           />
         </label>
         <div className="mt-10 flex w-full gap-20">
