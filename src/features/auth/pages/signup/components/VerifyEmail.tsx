@@ -4,7 +4,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import { useRef } from "react";
@@ -17,13 +16,21 @@ type Inputs = {
   otp: string[];
 };
 
-const VerifyEmail = ({ open }: { open: boolean }) => {
+const VerifyEmail = ({
+  open,
+  handleVerifyDialog,
+}: {
+  open: boolean;
+  handleVerifyDialog: (e: boolean) => void;
+}) => {
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm<Inputs>();
 
   const inputsRef = useRef<HTMLInputElement[]>([]);
 
   const signupData = useAppSelector((state) => state.auth.signup);
+  const token = useAppSelector((state) => state.auth.user.token);
+  console.log(token);
 
   const [verifyEmailStudent, { data: verifyEmailStudenttData, error: error2 }] =
     useVerifyEmailStudentMutation();
@@ -36,7 +43,6 @@ const VerifyEmail = ({ open }: { open: boolean }) => {
       data: {
         ...signupData.UniversityInformation,
         ...signupData.TrackInformation,
-        department: "CS",
       },
     });
     console.log(verifyEmailStudenttData, error2);
@@ -71,20 +77,37 @@ const VerifyEmail = ({ open }: { open: boolean }) => {
   };
 
   return (
-    <AlertDialog open={open}>
-      <AlertDialogTrigger></AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={handleVerifyDialog}>
       <AlertDialogContent className="" dir="rtl">
         <AlertDialogHeader>
           <AlertDialogTitle className="flex flex-col items-center justify-center text-2xl font-bold text-primary-first">
             سنرسل لك رمز التأكيد الخاص بك
             <p className="flex flex-col items-center justify-center gap-0 text-[15px] font-semibold text-[#5D6A93]">
-              email@gmail.com
+              {signupData.PersonalInformation.email || ""}
             </p>
           </AlertDialogTitle>
           <section
             dir="ltr"
             className="flex select-none flex-col items-center font-bold"
           >
+            <button
+              type="button"
+              onClick={() => handleVerifyDialog(false)}
+              className="absolute right-2 top-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#ff0000"
+                className="size-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex w-full flex-col items-center justify-between gap-5"

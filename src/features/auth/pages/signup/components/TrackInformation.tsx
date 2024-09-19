@@ -8,23 +8,31 @@ import "../index.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signup } from "@/features/auth/authSlice";
 
-import VerifyEmail from "./VerifyEmail"
-import { useState } from "react"
+import VerifyEmail from "./VerifyEmail";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const TrackInformation = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const tracks = useAppSelector((state) => state.auth.tracks);
 
-  
-  const [verify , setVerify] =useState<boolean>(false)
+  const [verify, setVerify] = useState<boolean>(false);
+  const handleVerifyDialog = (e: boolean) => {
+    setVerify(e);
+  };
 
   const {
     register,
     handleSubmit,
     watch,
+    getValues,
     formState: { errors },
   } = useForm<TtrackInformation>({
+    defaultValues: {
+      skills: [""],
+    },
     resolver: zodResolver(trackInformationSchema),
   });
 
@@ -34,12 +42,12 @@ const TrackInformation = () => {
         TrackInformation: data,
       }),
     );
-    setVerify(true)
+    handleVerifyDialog(true);
   };
 
   return (
     <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center">
-      <VerifyEmail open={ verify} />
+      <VerifyEmail open={verify} handleVerifyDialog={handleVerifyDialog} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-5 px-10"
@@ -79,10 +87,11 @@ const TrackInformation = () => {
           <div className="flex flex-wrap gap-2">
             {tracks
               .find((track) => track._id == watch().track)
-              ?.skills.map((skill, index) => (
+              ?.skills.map((skill) => (
                 <div
-                  key={index}
-                  className={`relative flex h-[51px] w-fit items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm lowercase text-gray-600 ${watch().skills?.some((e) => e === skill.name) ? "border-[#407BFF] bg-blue-100 text-blue-600" : ""}`}
+                  key={skill.name}
+                  //no id to use as key
+                  className={`relative flex h-[51px] w-fit items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm lowercase text-gray-600 ${getValues("skills")?.includes(skill.name) ? "border-[#407BFF] bg-blue-100 text-blue-600" : ""}`}
                 >
                   <input
                     {...register("skills")}
@@ -95,7 +104,6 @@ const TrackInformation = () => {
                     htmlFor={skill.name}
                     className="relative flex flex-1 cursor-pointer items-center pl-1"
                   >
-                    {/* <span className="radio-custom"></span> */}
                     {skill.name}
                   </label>
                 </div>
@@ -117,7 +125,6 @@ const TrackInformation = () => {
               fill="#95A3D5"
             />
           </svg>
-
           <input
             autoComplete="false"
             id="linkedin"
@@ -125,17 +132,17 @@ const TrackInformation = () => {
             {...register("linkedin", {
               required: "required",
             })}
-            placeholder={
-              errors.linkedin
-                ? "eg: https://linkedin.com/in/example"
-                : "linked in link"
-            }
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-8  ${errors.linkedin ? "border-red-500" : ""} `}
+            placeholder={"linked in link"}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-8 ${errors.linkedin ? "border-1 border-red-600" : ""} `}
           />
+          {errors.linkedin && (
+            <span className="text-sm text-red-900">
+              eg: https://linkedin.com/in/example
+            </span>
+          )}
         </label>
         <label htmlFor="github" className="relative w-full">
           <span className="ml-2 text-primary-first">Github</span>
-
           <svg
             className={`absolute left-3 top-[37px] ${watch().github ? "hidden" : ""} transition-all`}
             width="24"
@@ -156,18 +163,20 @@ const TrackInformation = () => {
             {...register("github", {
               required: "required",
             })}
-            placeholder={
-              errors.github ? "eg: https://github.com/example" : "github link"
-            }
-            className={`inputfield px-[13px] py-[14px]  placeholder:pl-8  ${errors.github ? "border-red-500" : ""} `}
+            placeholder={"github link"}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-8 ${errors.github ? "border-1 border-red-600" : ""} `}
           />
+          {errors.github && (
+            <span className="text-sm text-red-900">
+              eg: https://github.com/example
+            </span>
+          )}
         </label>
         <label htmlFor="behance" className="relative w-full">
           <span className="ml-2 text-primary-first">
-            Behance{" "}
+            Behance
             <span className="text-sm text-[#A0A1A3]">( Ui/Ux avability )</span>
           </span>
-
           <svg
             className={`absolute left-3 top-[37px] ${watch().behance ? "hidden" : ""} transition-all`}
             width="24"
@@ -189,22 +198,30 @@ const TrackInformation = () => {
             {...register("behance", {
               required: "required",
             })}
-            placeholder={
-              errors.behance
-                ? "eg: https://behance.net/example"
-                : "behance link"
-            }
-            className={`inputfield px-[13px] py-[14px]  placeholder:pl-8 ${errors.behance ? "border-red-500" : ""} `}
+            placeholder={"behance link"}
+            className={`inputfield px-[13px] py-[14px] placeholder:pl-8 ${errors.behance ? "border-red-600" : ""} `}
           />
+          {errors.behance && (
+            <span className="absolutebottom-0 max-w-fit text-sm text-red-900">
+              eg: https://behance.net/example
+            </span>
+          )}
         </label>
-
-        <button
-          type="submit"
-          className="mt-10 flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-[#002ABA] py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
-        >
-          Sign Up
-        </button>
-
+        <div className="mt-10 flex w-full flex-col gap-5">
+          <button
+            type="button"
+            onClick={() => navigate("/signup/university", { replace: true })}
+            className="flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth"
+          >
+            الخطوة السابقة
+          </button>
+          <button
+            type="submit"
+            className="flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-[#002ABA] py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
+          >
+            تسجيل الدخول
+          </button>
+        </div>
         <p className="text-sm text-[#A0A1A3]">
           من خلال التسجيل، فإنك توافق على
           <span className="text-primary-second">

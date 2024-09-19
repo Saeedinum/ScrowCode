@@ -5,9 +5,12 @@ import { universityInformationSchema } from "@/schema/signup";
 import { TuniversityInformation } from "@/types";
 import { signup } from "@/features/auth/authSlice";
 import { useAppDispatch } from "@/store/hooks";
+import { useNavigate } from "react-router-dom";
+import { useGetTracksQuery } from "@/features/auth/api/authAPI"
 
 const UniversityInformation = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const {
     register,
@@ -23,7 +26,14 @@ const UniversityInformation = () => {
         UniversityInformation: data,
       }),
     );
+    navigate("/signup/track", { replace: true });
   };
+  
+  useGetTracksQuery(undefined, {
+    refetchOnMountOrArgChange: false,
+    refetchOnReconnect: false,
+    refetchOnFocus: false,
+  });
 
   return (
     <section
@@ -109,7 +119,7 @@ const UniversityInformation = () => {
             type="submit"
             className="flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
           >
-            Next Step
+            الخطوة التالية
             <svg
               width="16"
               height="15"

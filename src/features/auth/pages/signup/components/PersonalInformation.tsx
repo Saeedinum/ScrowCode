@@ -2,7 +2,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { personalInformationSchema } from "@/schema/signup";
 import { TpersonalInformation } from "@/types";
-import { useSignupUserMutation } from "@/features/auth/api/authAPI";
+import {
+  useSignupUserMutation,
+} from "@/features/auth/api/authAPI";
 import Google from "@/features/auth/google/Google";
 import useCheckUsername from "@/hooks/useCheckUsername";
 
@@ -11,8 +13,10 @@ import passwordIcon from "@/assets/auth/signup/password.svg";
 import phoneIcon from "@/assets/auth/signup/phone.svg";
 import usernameIcon from "@/assets/auth/signup/username.svg";
 import arrowIcon from "@/assets/global/rightArrow.svg";
+import { useNavigate } from "react-router-dom";
 
 const PersonalInformation = () => {
+  const navigate = useNavigate();
   const [signupUser, { isLoading }] = useSignupUserMutation();
 
   const {
@@ -48,7 +52,17 @@ const PersonalInformation = () => {
             type: "server",
             message: "Email already exists",
           });
+        //@ts-expect-error error is defined
+        if (response.error.data.errors[0].path === "Username")
+          setError("username", {
+            type: "server",
+            //@ts-expect-error error is defined
+            message: response.error.data.errors[0].msg,
+          });
       }
+    } else {
+      navigate('/signup/university', { replace: true });
+      window.location.reload(); // react router update the url but does not reload the new UI !!
     }
   };
 
@@ -182,8 +196,9 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <p className="text-center text-red-500">
+        <p className="flex flex-wrap gap-4 text-center text-red-500">
           {errors.email?.type === "server" && errors.email.message}
+          {errors.username?.type === "server" && errors.username.message}
         </p>
         <button
           disabled={status === "unValid" || status === "loading"}

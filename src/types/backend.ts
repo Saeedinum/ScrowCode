@@ -61,3 +61,13 @@ export type BACKEND_T_partners = {
   };
   _id: string;
 };
+
+export type BACKEND_T_error = {
+  errors: {
+    type: string;
+    value: string;
+    msg: string;
+    path: string;
+    location: string;
+  }[];
+};
