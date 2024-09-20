@@ -3,6 +3,7 @@ import { TCreateTeamData } from "../../../types";
 import { Ttracks } from "@/types/auth";
 
 export const createTeamAPI = createApi({
+  reducerPath: "createTeamAPI",
   baseQuery: fetchBaseQuery({
     baseUrl: import.meta.env.VITE_API_BASE_URL,
   }),

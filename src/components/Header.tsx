@@ -11,7 +11,7 @@ import {
 
 import notificationsIcon from "@/assets/global/notifications.svg";
 import { logout } from "@/features/auth/authSlice";
-import Notifications from "@/features/orders/components/Notifications"
+import Notifications from "@/features/orders/components/Notifications";
 
 const Header = () => {
   const user = useAppSelector((state) => state.auth.user);
@@ -118,9 +118,6 @@ const Header = () => {
       <nav className="hidden items-center gap-5 font-bold text-primary-first sm:flex">
         <NavLink to={"/"} className="outline-none hover:text-primary-third">
           الرئيسية
-        </NavLink>
-        <NavLink to={"/about"} className="hover:text-primary-third">
-          عن سكرو
         </NavLink>
         <DropdownMenu
           open={isTeamsDropdownOpen}

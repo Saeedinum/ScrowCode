@@ -15,11 +15,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createTeamSchema } from "@/schema";
 
 import "../index.css";
+import { BACKEND_T_createTeamError } from "@/types/backend";
 
 const CreateTeam = () => {
   const user = useAppSelector((state) => state.auth.user);
 
-  const [createTeam] = useCreateTeamMutation();
+  const [createTeam, { isLoading }] = useCreateTeamMutation();
   const { data: tracks } = useGetTracksQuery();
 
   const {
@@ -29,6 +30,7 @@ const CreateTeam = () => {
     setValue,
     watch,
     getValues,
+    setError,
     formState: { errors },
   } = useForm<TCreateTeamData>({
     shouldUnregister: true,
@@ -46,12 +48,11 @@ const CreateTeam = () => {
 
   const teamMembers = watch("teamMembers");
   const isLastMemberFilled = teamMembers?.length
-    ? teamMembers[teamMembers.length - 1]?.arabicName?.trim() &&
-      teamMembers[teamMembers.length - 1]?.username?.trim()
+    ? teamMembers[teamMembers.length - 1]?.username?.trim()
     : true;
 
   const addingButton = useRef<HTMLButtonElement>(null);
-  const onSubmit: SubmitHandler<TCreateTeamData> = (data) => {
+  const onSubmit: SubmitHandler<TCreateTeamData> = async (data) => {
     const requirements = getValues()
       .requirement.filter((e) => e.trackID)
       .map((e) => [...Array(e.number).fill(e.trackID)])
@@ -63,9 +64,45 @@ const CreateTeam = () => {
       teamMembers: data.teamMembers.map((e) => e.username),
       requirement: requirements,
     };
-    if (user?.token) createTeam({ data, token: user?.token });
+    if (user?.token) {
+      const response = (await createTeam({
+        data,
+        token: user?.token,
+      })) as unknown as { error: BACKEND_T_createTeamError };
+      console.log(response);
+      if ("error" in response) {
+        response.error.data.errors.map((e) => {
+          if (e.path === "projectDescription")
+            setError("projectDescription", {
+              type: "server",
+              message: e.msg,
+            });
+          if (e.path === "projectNameArabic")
+            setError("projectArabicName", {
+              type: "server",
+              message: e.msg,
+            });
+          if (e.path === "projectNameEnglish")
+            setError("projectEnglishName", {
+              type: "server",
+              message: e.msg,
+            });
+          if (e.path === "userName") {
+            e.value.map((a) => {
+              const index = getValues("teamMembers").findIndex(
+                (e) => e.username === a,
+              );
+              setError(`teamMembers.${index}.username`, {
+                type: "server",
+                message: `${a} not available for team`,
+              });
+            });
+          }
+        });
+      }
+    }
   };
-
+  console.log(errors);
   return (
     <main className="max-w-screen relative flex select-none justify-start overflow-hidden">
       <section className="relative hidden max-h-[1400px] flex-col items-start justify-center bg-Grey-fourth text-primary-first lg:flex">
@@ -108,8 +145,12 @@ const CreateTeam = () => {
                   placeholder=" اسم المشروع باللغه العربية هنا"
                   className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.projectArabicName ? "border-red-500" : ""} `}
                 />
+                {errors.projectArabicName && (
+                  <span className="text-red-500">
+                    {errors.projectArabicName.message}{" "}
+                  </span>
+                )}
               </label>
-
               <label
                 dir="rtl"
                 htmlFor="projectEnglishName"
@@ -128,15 +169,18 @@ const CreateTeam = () => {
                   placeholder="اسم المشروع باللغه الانجليزية"
                   className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] md:w-[329px] ${errors.projectEnglishName ? "border-red-500" : ""} `}
                 />
+                {errors.projectEnglishName && (
+                  <span className="text-red-500">
+                    {errors.projectEnglishName.message}{" "}
+                  </span>
+                )}
               </label>
-
               <label
                 dir="rtl"
                 htmlFor="projectCategorie"
                 className="relative w-[285px] text-sm md:w-[329px]"
               >
                 <span className="ml-1 text-primary-first">تصنيف المشروع</span>
-
                 <select
                   autoComplete="false"
                   id="projectCategorie"
@@ -164,6 +208,11 @@ const CreateTeam = () => {
                   placeholder="اكتب وصف مشروعك هنا .... مثال: فكرة المشروع واهدافه والاسباب والمشاكل والحلول"
                   className={`mt-2 h-[163px] max-h-[250px] min-h-[100px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-Grey-third lg:max-h-[180px] ${errors.projectDescription ? "border-red-500" : ""} `}
                 ></textarea>
+                {errors.projectDescription && (
+                  <span className="text-red-500">
+                    {errors.projectDescription.message}
+                  </span>
+                )}
               </label>
             </div>
           </div>
@@ -276,6 +325,7 @@ const CreateTeam = () => {
                   className="relative m-2 flex flex-row flex-wrap gap-4 p-1"
                 >
                   <label
+                    key={field.id}
                     htmlFor="teamMembers"
                     className="relative w-[285px] text-sm font-[500] md:w-[329px]"
                   >
@@ -297,27 +347,6 @@ const CreateTeam = () => {
                       </span>
                     )}
                     <input
-                      id="teamMembers"
-                      type="text"
-                      {...register(`teamMembers.${index}.arabicName`, {
-                        required: true,
-                      })}
-                      disabled={fields.length > index + 1}
-                      placeholder="  يرجي ادخال الاسم رباعي "
-                      className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[18px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px]`}
-                    />
-                  </label>
-                  <label
-                    key={field.id}
-                    htmlFor="teamMembers"
-                    className="relative w-[285px] text-sm font-[500] md:w-[329px]"
-                  >
-                    {index === fields.length - 1 && (
-                      <span className="mr-1 text-primary-first">
-                        اسم المستخدم علي سكرو
-                      </span>
-                    )}
-                    <input
                       dir="ltr"
                       id="teamMembers"
                       type="text"
@@ -325,13 +354,18 @@ const CreateTeam = () => {
                         required: true,
                       })}
                       disabled={fields.length > index + 1}
-                      placeholder="@example"
-                      className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 text-[18px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px]`}
+                      placeholder="@ username"
+                      className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pl-2 text-[18px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-transparent md:w-[329px] ${errors.teamMembers?.[index]?.username && "border-red-500 disabled:border-red-500"} `}
                     />
+                    {errors.teamMembers?.[index]?.username && (
+                      <span className="text-red-500">
+                        {errors.teamMembers?.[index]?.username.message}
+                      </span>
+                    )}
                   </label>
                   <svg
                     onClick={() => remove(index)}
-                    className="cursor-pointer self-center"
+                    className="mt-6 cursor-pointer self-center"
                     width="18"
                     height="18"
                     viewBox="0 0 18 18"
@@ -443,9 +477,16 @@ const CreateTeam = () => {
           </section>
           <button
             type="submit"
-            className="my-10 h-[49px] w-[calc(70%)] place-self-center text-nowrap rounded-[8px] bg-[#002ABA] text-primary-fourth duration-500 hover:bg-primary-first"
+            className="relative my-10 h-[49px] w-[calc(70%)] place-self-center text-nowrap rounded-[8px] bg-[#002ABA] text-primary-fourth duration-500 hover:bg-primary-first"
           >
-            انشاء التيم
+            {isLoading ? (
+              <p
+                className="text-surface absolute left-[48%] top-[14px] inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-white border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+                role="status"
+              ></p>
+            ) : (
+              "  انشاء التيم"
+            )}
           </button>
         </form>
       </section>

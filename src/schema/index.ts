@@ -5,10 +5,10 @@ import { name, behanceRegex, githubRegex, linkedinRegex } from "./regex";
 export const createTeamSchema = z.object({
   projectArabicName: z.string().regex(name),
   projectEnglishName: z.string(),
-  projectDescription: z.string().regex(name),
+  // projectDescription: z.string().regex(name),
   teamMembers: z.array(
     z.object({
-      arabicName: z.string().regex(name),
+      // arabicName: z.string().regex(name),
       username: z.string(),
     }),
   ),

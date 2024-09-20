@@ -71,3 +71,23 @@ export type BACKEND_T_error = {
     location: string;
   }[];
 };
+
+export type BACKEND_T_createTeamError = {
+  status: number;
+  data: {
+    errors:
+      | {
+          msg: string;
+          path:
+            | "projectNameArabic"
+            | "projectNameEnglish"
+            | "projectDescription";
+          value: string;
+        }[]
+      | {
+          msg: string;
+          path: "userName";
+          value: string[];
+        }[];
+  };
+};

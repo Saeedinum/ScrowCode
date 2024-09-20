@@ -124,7 +124,7 @@ export const authAPI = createApi({
               login({
                 token: data.data.token,
                 username: data.data.data.user.Username,
-                fullName: data.data.data.user.FullName,
+                fullName: data.data.data.user.fullName,
                 id: data.data.data._id,
               }),
             );
