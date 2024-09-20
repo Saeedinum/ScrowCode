@@ -25,12 +25,8 @@ const VerifyEmail = ({
 }) => {
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm<Inputs>();
-
   const inputsRef = useRef<HTMLInputElement[]>([]);
-
   const signupData = useAppSelector((state) => state.auth.signup);
-  const token = useAppSelector((state) => state.auth.user.token);
-  console.log(token);
 
   const [verifyEmailStudent, { data: verifyEmailStudenttData, error: error2 }] =
     useVerifyEmailStudentMutation();
@@ -45,7 +41,7 @@ const VerifyEmail = ({
         ...signupData.TrackInformation,
       },
     });
-    console.log(verifyEmailStudenttData, error2);
+    console.log(error2);
     if (verifyEmailStudenttData?.data.status == "success") {
       navigate("/");
     }

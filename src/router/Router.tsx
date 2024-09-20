@@ -100,11 +100,19 @@ const Router = () => {
           path: "/signup",
           element: <SignUp />,
           children: [
-            { index: true, element: <PersonalInformation /> },
+            {
+              index: true,
+              element:
+                signup.PersonalInformation.email !== "" ? (
+                  <Navigate to={"/signup/university"} />
+                ) : (
+                  <PersonalInformation />
+                ),
+            },
             {
               path: "/signup/university",
               element:
-                signup?.PersonalInformation.arabicName === "" ? (
+                signup.PersonalInformation.email === "" ? (
                   <Navigate to={"/signup"} />
                 ) : (
                   <UniversityInformation />

@@ -2,9 +2,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { personalInformationSchema } from "@/schema/signup";
 import { TpersonalInformation } from "@/types";
-import {
-  useSignupUserMutation,
-} from "@/features/auth/api/authAPI";
+import { useSignupUserMutation } from "@/features/auth/api/authAPI";
 import Google from "@/features/auth/google/Google";
 import useCheckUsername from "@/hooks/useCheckUsername";
 
@@ -13,7 +11,7 @@ import passwordIcon from "@/assets/auth/signup/password.svg";
 import phoneIcon from "@/assets/auth/signup/phone.svg";
 import usernameIcon from "@/assets/auth/signup/username.svg";
 import arrowIcon from "@/assets/global/rightArrow.svg";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 const PersonalInformation = () => {
   const navigate = useNavigate();
@@ -61,8 +59,8 @@ const PersonalInformation = () => {
           });
       }
     } else {
-      navigate('/signup/university', { replace: true });
-      window.location.reload(); // react router update the url but does not reload the new UI !!
+      navigate("/signup/university", { replace: true });
+      return <Navigate to={"/signup/university"} />;
     }
   };
 

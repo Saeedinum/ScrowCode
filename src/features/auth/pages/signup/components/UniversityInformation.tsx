@@ -6,7 +6,7 @@ import { TuniversityInformation } from "@/types";
 import { signup } from "@/features/auth/authSlice";
 import { useAppDispatch } from "@/store/hooks";
 import { useNavigate } from "react-router-dom";
-import { useGetTracksQuery } from "@/features/auth/api/authAPI"
+import { useGetTracksQuery } from "@/features/auth/api/authAPI";
 
 const UniversityInformation = () => {
   const dispatch = useAppDispatch();
@@ -28,7 +28,7 @@ const UniversityInformation = () => {
     );
     navigate("/signup/track", { replace: true });
   };
-  
+
   useGetTracksQuery(undefined, {
     refetchOnMountOrArgChange: false,
     refetchOnReconnect: false,

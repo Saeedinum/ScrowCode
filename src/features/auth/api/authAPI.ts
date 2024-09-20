@@ -61,7 +61,7 @@ export const authAPI = createApi({
         try {
           const data = await queryFulfilled;
           if (data.data.status === "success") {
-            dispatch(login(data.data.token));
+            localStorage.setItem("token", data.data.token);
             dispatch(
               signup({
                 PersonalInformation: {

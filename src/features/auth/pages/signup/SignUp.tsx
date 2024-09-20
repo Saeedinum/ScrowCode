@@ -7,17 +7,17 @@ import { useEffect, useState } from "react";
 const SignUp = () => {
   const google = useAppSelector((state) => state.auth.google);
   const [backgroundStep, setBackgroundStep] = useState<number>();
-  const location = useLocation();
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    if (location.pathname === "/signup") {
+    if (pathname === "/signup") {
       setBackgroundStep(1);
-    } else if (location.pathname === "/signup/university") {
+    } else if (pathname === "/signup/university") {
       setBackgroundStep(2);
     } else {
       setBackgroundStep(3);
     }
-  }, [location]);
+  }, [pathname]);
 
   return (
     <main className="relative flex select-none justify-start">
