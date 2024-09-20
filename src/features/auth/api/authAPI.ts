@@ -118,25 +118,19 @@ export const authAPI = createApi({
       }),
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
-          const {
-            data: {
-              data: {
-                user: { Username, fullName },
-                _id,
-              },
-              token,
-            },
-          } = await queryFulfilled;
-          dispatch(
-            login({
-              token: token,
-              username: Username,
-              fullName: fullName,
-              id: _id,
-            }),
-          );
+          const data = await queryFulfilled;
+          if ("data" in data) {
+            dispatch(
+              login({
+                token: data.data.token,
+                username: data.data.data.user.Username,
+                fullName: data.data.data.user.FullName,
+                id: data.data.data._id,
+              }),
+            );
+          }
         } catch (error) {
-          console.error("Request failed:", error);
+          console.error("invalid email or password");
         }
       },
     }),
