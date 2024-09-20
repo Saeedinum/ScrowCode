@@ -1,8 +1,4 @@
-import filterIcon from "@/assets/search/filter.svg";
 import searchIcon from "@/assets/search/search.svg";
-import menueIcon from "@/assets/search/menue.svg";
-import sortIcon from "@/assets/search/sort.svg";
-
 import avialableIocn from "@/assets/global/available.svg";
 import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
@@ -15,12 +11,25 @@ import { useEffect, useState } from "react";
 import DetailsDialog from "../components/DetailsDialog";
 
 const FindTeam = () => {
-  const [teams, setTeams] = useState<Tteam[]>([]);
-
   const { token } = useAppSelector((state) => state.auth.user);
-
   const { data, isLoading } = useFetchTeamsQuery({ token: token });
   const [joinTeam] = useJoinTeamMutation();
+
+  const [teams, setTeams] = useState<Tteam[]>([]);
+
+  const handleSearch = (text: string) => {
+    if (text.length === 0) setTeams(data!);
+    else {
+      const filteredData = teams.filter((team) =>
+        team.name.english.includes(text),
+      );
+      if (filteredData.length > 0) {
+        setTeams(filteredData);
+      } else {
+        setTeams(data!);
+      }
+    }
+  };
 
   useEffect(() => {
     if (!isLoading && data) {
@@ -41,24 +50,12 @@ const FindTeam = () => {
           <input
             dir="rtl"
             type="text"
-            placeholder="بحث عن التيم"
+            onChange={(e) => handleSearch(e.target.value)}
+            placeholder="ابحث عن فريق بالسم الانجليزي"
             className="h-full flex-grow bg-transparent outline-none placeholder:absolute placeholder:right-1 placeholder:top-0 placeholder:text-sm placeholder:font-[400] placeholder:text-[#666666]"
           />
           <span className="text-2xl text-[#001354]">|</span>
           <img src={searchIcon} alt="search bar" className="w-[18px]" />
-        </div>
-        <div className="absolute right-20 flex gap-[25px]">
-          <div className="flex h-[31px] w-[88px] items-center justify-evenly rounded-[8px] border-[1px] border-solid border-primary-first">
-            <img src={sortIcon} alt="filter" className="w-[18px]" />
-            <span className="text-[13px] font-[700] text-[#001354]">ترتيب</span>
-            <img src={menueIcon} alt="" className="w-2" />
-          </div>
-
-          <div className="flex h-[31px] w-[88px] items-center justify-evenly rounded-[8px] border-[1px] border-solid border-primary-first">
-            <img src={filterIcon} alt="filter" className="w-[18px]" />
-            <span className="text-[13px] font-[700] text-[#001354]">فلترة</span>
-            <img src={menueIcon} alt="" className="w-2" />
-          </div>
         </div>
       </div>
       <section className="mt-28 w-full px-4 sm:px-6 md:px-8 lg:px-14">
