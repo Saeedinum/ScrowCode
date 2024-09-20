@@ -12,10 +12,15 @@ import phoneIcon from "@/assets/auth/signup/phone.svg";
 import usernameIcon from "@/assets/auth/signup/username.svg";
 import arrowIcon from "@/assets/global/rightArrow.svg";
 import { Navigate, useNavigate } from "react-router-dom";
+import useGoodBass from "@/hooks/useGoodBass";
+
+import "../index.css"
 
 const PersonalInformation = () => {
   const navigate = useNavigate();
   const [signupUser, { isLoading }] = useSignupUserMutation();
+
+  const { ProgressBar, checkPassword } = useGoodBass();
 
   const {
     register,
@@ -165,10 +170,14 @@ const PersonalInformation = () => {
             type="password"
             {...register("password", {
               required: "required",
+              onChange(event) {
+                checkPassword(event.target.value);
+              },
             })}
             placeholder="Password"
             className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.password ? "border-red-500" : ""} `}
           />
+          {ProgressBar}
         </label>
 
         <label
