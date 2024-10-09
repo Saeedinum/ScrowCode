@@ -17,7 +17,7 @@ export type AuthState = {
 const initialState: AuthState = {
   user: {
     token: null,
-    id: null,
+    email: null,
     fullName: null,
     username: null,
   },
@@ -66,7 +66,7 @@ export const authslice = createSlice({
       initializeUser(
         action.payload.token!,
         action.payload.fullName!,
-        action.payload.id!,
+        action.payload.email!,
         action.payload.username!,
       );
     },

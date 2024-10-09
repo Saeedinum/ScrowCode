@@ -125,7 +125,7 @@ export const authAPI = createApi({
                 token: data.data.token,
                 username: data.data.data.user.Username,
                 fullName: data.data.data.user.fullName,
-                id: data.data.data._id,
+                email: data.data.data.user.Email,
               }),
             );
           }
