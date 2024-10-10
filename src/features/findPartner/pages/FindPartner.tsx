@@ -6,6 +6,7 @@ import avialableIocn from "@/assets/global/available.svg";
 import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
 import contactIocn from "@/assets/global/contact.svg";
+import useIcon from "@/assets/header/user.svg";
 
 import { Tpartner } from "@/types";
 
@@ -83,29 +84,27 @@ const FindPartner = () => {
       <p className="text-[15px] font-[500] text-Grey-first">
         ابحث عن الشريك المناسب لك بما يناسب فريقك
       </p>
-      <div className="relative mt-2 flex w-full items-center justify-center">
-        <div className="flex h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">
-          <input
-            dir="rtl"
-            type="text"
-            placeholder="بحث عن شريك"
-            onChange={(e) => handleSearch(e.target.value)}
-            className="h-full flex-grow bg-transparent outline-none placeholder:absolute placeholder:right-1 placeholder:top-0 placeholder:text-sm placeholder:font-[400] placeholder:text-[#666666]"
-          />
-          <span className="text-2xl text-[#001354]">|</span>
-          <img src={searchIcon} alt="search bar" className="w-[18px]" />
-        </div>
+      <div className="mt-10 flex h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">
+        <input
+          dir="ltr"
+          type="text"
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="only English"
+          className="flex-grow bg-transparent text-center font-mono outline-none placeholder:font-[500] placeholder:text-[#666666]"
+        />
+        <span className="text-2xl text-[#001354]">|</span>
+        <img src={searchIcon} alt="search bar" className="w-[18px]" />
       </div>
 
       {isLoading ? (
         <FindPartnerSkeleton />
       ) : (
         <section className="mt-28 w-full px-4 sm:px-6 md:px-8 lg:px-14">
-          <div className="flex grid-cols-1 flex-col items-center gap-8 gap-y-20 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-24">
             {filtredPartners.map((partner: Tpartner) => (
               <div
                 key={partner.id}
-                className={`relative flex max-w-[300px] flex-col items-center rounded-[10px] border-[1px] px-12 pt-[71px] ${
+                className={`relative flex h-[460px] w-[350px] flex-col items-center justify-start rounded-[10px] border-[1px] px-12 pt-[71px] ${
                   partner.status === "notAvailable"
                     ? "border-red-500"
                     : partner.status === "pending"
@@ -121,7 +120,7 @@ const FindPartner = () => {
                         ? "border-yellow-500"
                         : "border-green-700"
                   } `}
-                  src={partner.imageURL}
+                  src={partner.imageURL || useIcon}
                   alt={partner.name}
                 />
                 <h2 className="mt-3 font-[500] text-primary-first" dir="rtl">
@@ -180,7 +179,7 @@ const FindPartner = () => {
                   </p>
                 </div>
 
-                <div className="mb-6 mt-3 flex flex-col gap-5">
+                <div className="mb-6 mt-auto flex flex-row gap-5 text-nowrap">
                   {partner.status === "pending" ? (
                     <button className="flex h-[28px] w-[123px] cursor-pointer items-center justify-center rounded-[8px] border-yellow-500 bg-white px-[28px] py-2 text-sm font-[700] text-yellow-500">
                       قيد الانتظار
