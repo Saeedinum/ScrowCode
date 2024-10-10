@@ -1,16 +1,18 @@
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 import { trackInformationSchema } from "@/schema/signup";
+
 import { TtrackInformation } from "@/types";
 
-import "../index.css";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { signup } from "@/features/auth/authSlice";
 
 import VerifyEmail from "./VerifyEmail";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import "../index.css";
 
 const TrackInformation = () => {
   const dispatch = useAppDispatch();
@@ -46,7 +48,7 @@ const TrackInformation = () => {
   };
 
   return (
-    <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center">
+    <section className="mb-10 flex flex-grow flex-col items-center lg:w-[calc(100%-5rem)]">
       <VerifyEmail open={verify} handleVerifyDialog={handleVerifyDialog} />
       <form
         onSubmit={handleSubmit(onSubmit)}
@@ -56,11 +58,11 @@ const TrackInformation = () => {
           <label dir="rtl" htmlFor="track" className="mb-2 block font-bold">
             اختر التراك الخاص بك
           </label>
-          <div className="grid grid-cols-3 gap-2">
+          <div className="flex flex-wrap gap-2">
             {tracks.map((track) => (
               <div
                 key={track._id}
-                className={`relative flex h-[51px] w-[185px] items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm text-gray-600 ${watch().track == track._id ? "border-[#407BFF] bg-blue-100 text-[#407BFF]" : ""}`}
+                className={`relative flex h-[51px] w-[165px] items-center text-nowrap rounded-lg border border-Grey-first p-[10px] text-sm text-gray-600 lg:w-[185px] ${watch().track == track._id ? "border-[#407BFF] bg-blue-100 text-[#407BFF]" : ""}`}
               >
                 <input
                   {...register("track")}
@@ -222,7 +224,7 @@ const TrackInformation = () => {
             تسجيل الدخول
           </button>
         </div>
-        <p className="text-sm text-[#A0A1A3]">
+        <p className="text-center text-sm text-[#A0A1A3]">
           من خلال التسجيل، فإنك توافق على
           <span className="text-primary-second">
             شروط الاستخدام وسياسة الخصوصية{" "}

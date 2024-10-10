@@ -75,7 +75,7 @@ const VerifyEmail = ({
     <AlertDialog open={open} onOpenChange={handleVerifyDialog}>
       <AlertDialogContent className="" dir="rtl">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex flex-col items-center justify-center text-2xl font-bold text-primary-first">
+          <AlertDialogTitle className="flex flex-col items-center justify-center text-xl font-bold text-primary-first lg:text-2xl">
             سنرسل لك رمز التأكيد الخاص بك
             <p className="flex flex-col items-center justify-center gap-0 text-[15px] font-semibold text-[#5D6A93]">
               {signupData.PersonalInformation.email || ""}
@@ -83,7 +83,7 @@ const VerifyEmail = ({
           </AlertDialogTitle>
           <section
             dir="ltr"
-            className="flex select-none flex-col items-center font-bold"
+            className="flex w-full select-none flex-col items-center font-bold"
           >
             <button
               type="button"
@@ -118,7 +118,7 @@ const VerifyEmail = ({
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     type="text"
                     maxLength={1}
-                    className="h-[69px] w-[68px] rounded-[8px] border-2 border-primary-second px-[20px] py-[4px] text-[40px] text-primary-second outline-none focus:border-primary-second"
+                    className="md:border-1 size-[40px] rounded-[5px] border border-primary-second px-[20px] py-[4px] text-[40px] text-primary-second outline-none focus:border-primary-second md:size-[50px] lg:size-[68px]"
                   />
                 ))}
               </div>
@@ -130,10 +130,10 @@ const VerifyEmail = ({
               </button>
             </form>
             <p className="mt-8 text-[14px] text-Grey-first">
-              لم يصل لك الكود ؟
               <button type="button" className="text-primary-second">
                 اضغط لاعادة الارسال
               </button>
+              لم يصل لك الكود ؟
             </p>
           </section>
         </AlertDialogHeader>

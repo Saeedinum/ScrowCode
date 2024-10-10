@@ -80,28 +80,26 @@ const FindTeam = () => {
       <p className="text-[15px] font-[500] text-Grey-first">
         ابحث عن الفريق المناسب لك بما يناسب افكارك ومستواك
       </p>
-      <div className="relative mt-2 flex w-full items-center justify-center">
-        <div className="flex h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">
-          <input
-            dir="rtl"
-            type="text"
-            onChange={(e) => handleSearch(e.target.value)}
-            placeholder="ابحث عن فريق بالسم الانجليزي"
-            className="h-full flex-grow bg-transparent outline-none placeholder:absolute placeholder:right-1 placeholder:top-0 placeholder:text-sm placeholder:font-[400] placeholder:text-[#666666]"
-          />
-          <span className="text-2xl text-[#001354]">|</span>
-          <img src={searchIcon} alt="search bar" className="w-[18px]" />
-        </div>
+      <div className="flex mt-10 h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">
+        <input
+          dir="ltr"
+          type="text"
+          onChange={(e) => handleSearch(e.target.value)}
+          placeholder="only English"
+          className="flex-grow bg-transparent text-center font-mono outline-none placeholder:font-[500] placeholder:text-[#666666]"
+        />
+        <span className="text-2xl text-[#001354]">|</span>
+        <img src={searchIcon} alt="search bar" className="w-[18px]" />
       </div>
       {isLoading ? (
         <FindTeamSkeleton />
       ) : (
-        <section className="mt-10 w-full px-4 sm:px-6 md:px-8 lg:px-14">
-          <div className="flex grid-cols-1 flex-col items-start gap-8 gap-y-20 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <section className="my-10 w-full px-4 sm:px-6 md:px-8 lg:px-14">
+          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-10">
             {filtredTeams.map((team: Tteam) => (
               <div
                 key={team.id}
-                className={`relative flex h-[457px] max-w-[380px] flex-col items-center overflow-hidden rounded-[10px] border-[1px] px-8 ${team.status === "available" ? "border-[#00D03A]" : team.status === "pending" ? "border-[#FFA800]" : "border-[#FF0000]"}`}
+                className={`relative flex h-[460px] w-[350px] flex-col items-center overflow-hidden rounded-[10px] border-[1px] px-8 ${team.status === "available" ? "border-[#00D03A]" : team.status === "pending" ? "border-[#FFA800]" : "border-[#FF0000]"}`}
               >
                 <h2
                   className="mt-3 text-nowrap text-center text-[20px] font-[500] text-primary-first"
@@ -206,7 +204,7 @@ const FindTeam = () => {
                     handlejoin={joinTeam}
                   />
                   {team.status === "pending" ? (
-                    <button className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first">
+                    <button className="flex h-[28px] w-[123px] items-center justify-center text-nowrap rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first">
                       الغاء الطلب
                     </button>
                   ) : (
@@ -215,7 +213,7 @@ const FindTeam = () => {
                       onClick={() => {
                         handleJoindTeam(token!, team.id);
                       }}
-                      className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second disabled:bg-[#5D6A93]"
+                      className="flex h-[28px] w-[123px] items-center justify-center text-nowrap rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second disabled:bg-[#5D6A93]"
                     >
                       طلب انضمام
                     </button>
