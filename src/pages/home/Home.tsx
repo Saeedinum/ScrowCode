@@ -1,28 +1,35 @@
-import backgroundleft from "/src/assets//home/background1.png";
-import backgroundright from "/src/assets//home/background2.png";
-import backgroundlines from "/src/assets//home/AbstractLine.png";
+import { useRef } from "react";
+import { Link } from "react-router-dom";
 
-import dots from "/src/assets//home/dots.png";
-import officeWorker from "/src/assets//home/officeWorker.png";
-import Vector from "/src/assets//home/Vector.png";
+import useSmoothScroll from "@/hooks/useSmoothScroll";
+
+import backgroundleft from "@/assets/home/background1.png";
+import backgroundright from "@/assets/home/background2.png";
+import backgroundlines from "@/assets/home/AbstractLine.png";
+import dots from "@/assets/home/dots.png";
+import officeWorker from "@/assets/home/officeWorker.png";
+import Vector from "@/assets/home/Vector.png";
 import downloadIcon from "@/assets/home/download.svg";
-import background3 from "/src/assets/home//background3.png";
-import grayshadow1 from "/src/assets/home/grayshadow1.png";
-import grayshadow2 from "/src/assets/home/grayshadow2.png";
-import teams from "/src/assets/home/teams.png";
-import create from "/src/assets/home/create.png";
-import partners from "/src/assets/home/partners.png";
-import mobile1 from "/src//assets//home//mobile1.png";
-import mobile2 from "/src//assets//home//mobile2.png";
-import star1 from "/src/assets/home//star1.svg";
-import star2 from "/src/assets/home//star2.svg";
+import background3 from "@/assets/home/background3.png";
+import grayshadow1 from "@/assets/home/grayshadow1.png";
+import grayshadow2 from "@/assets/home/grayshadow2.png";
+import teams from "@/assets/home/teams.png";
+import create from "@/assets/home/create.png";
+import partners from "@/assets/home/partners.png";
+import mobile1 from "@/assets/home/mobile1.png";
+import mobile2 from "@/assets/home/mobile2.png";
+import star1 from "@/assets/home/star1.svg";
+import star2 from "@/assets/home/star2.svg";
+import whiteLogo from "@/assets/home/whiteLogo.svg";
 
 import "./index.css";
 
-import whiteLogo from "/src/assets/home/whiteLogo.svg";
-import { Link } from "react-router-dom";
-
 const Home = () => {
+  const smoothScroll = useSmoothScroll(500);
+
+  const aboutSection = useRef<HTMLElement>(null);
+  const startSection = useRef<HTMLElement>(null);
+
   return (
     <>
       <main dir="rtl" className="flex max-w-full flex-col">
@@ -48,7 +55,10 @@ const Home = () => {
               <span> التيمات المناسبة لك ..</span>
             </h1>
             <div className="flex flex-col gap-5 text-sm sm:flex-row md:text-base">
-              <button className="flex h-[50px] w-[226px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth">
+              <button
+                onClick={() => smoothScroll(startSection)}
+                className="flex h-[50px] w-[226px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth"
+              >
                 أبدا الان
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -64,8 +74,8 @@ const Home = () => {
                 </svg>
               </button>
               <a
-                href="#we"
-                className="flex h-[50px] w-[226px] items-center justify-center rounded-[8px] border-2 border-solid border-primary-first bg-white text-[20px] font-semibold text-primary-first"
+                onClick={() => smoothScroll(aboutSection)}
+                className="flex h-[50px] w-[226px] cursor-pointer items-center justify-center rounded-[8px] border-2 border-solid border-primary-first bg-white text-[20px] font-semibold text-primary-first"
               >
                 اعرف عنا
               </a>
@@ -84,7 +94,7 @@ const Home = () => {
 
         <section
           dir="ltr"
-          id="we"
+          ref={aboutSection}
           className="relative flex flex-col items-center justify-between pb-10 sm:flex-row lg:justify-center lg:gap-28"
         >
           <img
@@ -117,7 +127,10 @@ const Home = () => {
           />
         </section>
         {/* ******************************************************************************************* */}
-        <section className="relative mt-20 flex flex-col items-center justify-center sm:gap-20">
+        <section
+          ref={startSection}
+          className="relative mt-20 flex flex-col items-center justify-center sm:gap-20"
+        >
           <img
             src={grayshadow1}
             alt=""
@@ -132,7 +145,6 @@ const Home = () => {
             <h2 className="bg-gradient-to-r from-[#001354] to-[#002ABA] bg-clip-text text-2xl font-bold text-transparent sm:text-3xl md:text-[40px] lg:gap-7">
               خدمات سكرو
             </h2>
-            <p className="text-base font-medium text-Grey-first">في سكرو كود</p>
           </div>
 
           <section
@@ -153,9 +165,12 @@ const Home = () => {
                 <span> من بين التيمات المتاحة</span>
                 <span> ابحث عن التيم المناسب لك ولقدراتك !</span>
               </p>
-              <button className="flex h-[52px] w-[281px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth">
+              <Link
+                to={"/FindTeam"}
+                className="flex h-[52px] w-[281px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth"
+              >
                 انضم الي تيم
-              </button>
+              </Link>
             </div>
           </section>
 
@@ -183,9 +198,12 @@ const Home = () => {
                 <span>البحث عن شخص مناسب لتكمل معه مشاريعك </span>
                 <span>أمر سلس في سكرو الان !</span>
               </p>
-              <button className="flex h-[52px] w-[281px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth">
+              <Link
+                to={"/FindPartner"}
+                className="flex h-[52px] w-[281px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth"
+              >
                 ابحث عن شريك
-              </button>
+              </Link>
             </div>
           </section>
 
@@ -208,17 +226,20 @@ const Home = () => {
                 <span> يمكنك انشاء تيم خاص بك </span>
                 <span>وتحديد جميع احتياجتك بسهولة !</span>
               </p>
-              <button className="flex h-[52px] w-[281px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth">
+              <Link
+                to={"/CreateTeam"}
+                className="flex h-[52px] w-[281px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth"
+              >
                 انشئ تيم
-              </button>
+              </Link>
             </div>
           </section>
 
           <section
             dir="ltr"
-            className="relative flex w-full mt-28  items-center flex-col md:flex-row md:justify-between lg:justify-center lg:gap-56 md:pr-10 md:items-center"
+            className="relative mt-28 flex w-full flex-col items-center md:flex-row md:items-center md:justify-between md:pr-10 lg:justify-center lg:gap-56"
           >
-            <div className="relative w-[30%] sm:w-[35%] md:w-[35%] lg:w-[20%]  flex items-end">
+            <div className="relative flex w-[30%] items-end sm:w-[35%] md:w-[35%] lg:w-[20%]">
               <img src={mobile1} alt="" className="w-full" />
               <img
                 src={mobile2}
@@ -240,7 +261,7 @@ const Home = () => {
                 <span>حمل تطبيقنا سكرو كود </span>
                 <span> لاستفادة من خدماتنا بهاتفك الان لسهولة التصفح</span>
               </p>
-              <button className="flex h-[52px] w-[300px]  lg:w-[448px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth">
+              <button className="flex h-[52px] w-[300px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth lg:w-[448px]">
                 تحميل الان
                 <svg
                   width="24"
@@ -259,33 +280,33 @@ const Home = () => {
           </section>
         </section>
       </main>
-      <footer className=" mt-52 lg:mt-[25rem] xl:mt-28 flex flex-col items-center justify-center bg-primary-first p-20 pt-10 font-bold text-[#95A3D5] md:items-start">
+      <footer className="mt-52 flex flex-col items-center justify-center bg-primary-first p-20 pt-10 font-bold text-[#95A3D5] md:items-start lg:mt-[25rem] xl:mt-28">
         <div className="flex flex-col items-start justify-center gap-10 md:flex-row md:gap-20">
           <img src={whiteLogo} alt="" className="" />
           <div className="flex flex-col gap-1 lg:ml-28">
             <p className="mb-4 text-primary-fourth"> Navigation</p>
-            <Link to={""} className="hover:text-primary-third">
+            <Link to={"/"} className="hover:text-primary-third">
               home
             </Link>
             <Link to={"/about"} className="hover:text-primary-third">
               About us
             </Link>
-            <Link to={""} className="hover:text-primary-third">
+            <Link to={"/FindTeam"} className="hover:text-primary-third">
               Teams
             </Link>
-            <Link to={""} className="hover:text-primary-third">
+            <Link to={"/FindPartner"} className="hover:text-primary-third">
               find partner
             </Link>
           </div>
           <div className="flex flex-col lg:ml-28">
             <p className="mb-4 text-primary-fourth"> LEGAL</p>
-            <Link to={""} className="hover:text-primary-third">
+            <Link to={"/"} className="hover:text-primary-third">
               General Info
             </Link>
-            <Link to={""} className="hover:text-primary-third">
+            <Link to={"/"} className="hover:text-primary-third">
               Privacy Policy
             </Link>
-            <Link to={""} className="hover:text-primary-third">
+            <Link to={"/"} className="hover:text-primary-third">
               Terms of Service
             </Link>
           </div>
@@ -294,7 +315,7 @@ const Home = () => {
             <Link to={""}> Scrow_code@gmail.com</Link>
           </div>
         </div>
-      </footer> 
+      </footer>
     </>
   );
 };
