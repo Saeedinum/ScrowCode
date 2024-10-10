@@ -69,7 +69,6 @@ const CreateTeam = () => {
         data,
         token: user?.token,
       })) as unknown as { error: BACKEND_T_createTeamError };
-      console.log(response);
       if ("error" in response) {
         response.error.data.errors.map((e) => {
           if (e.path === "projectDescription")
@@ -102,7 +101,6 @@ const CreateTeam = () => {
       }
     }
   };
-  console.log(errors);
   return (
     <main className="max-w-screen relative flex select-none justify-start overflow-hidden">
       <section className="relative hidden max-h-[1400px] flex-col items-start justify-center bg-Grey-fourth text-primary-first lg:flex">

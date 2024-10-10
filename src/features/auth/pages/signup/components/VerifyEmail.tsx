@@ -28,7 +28,7 @@ const VerifyEmail = ({
   const inputsRef = useRef<HTMLInputElement[]>([]);
   const signupData = useAppSelector((state) => state.auth.signup);
 
-  const [verifyEmailStudent, { data: verifyEmailStudenttData, error: error2 }] =
+  const [verifyEmailStudent, { data: verifyEmailStudenttData }] =
     useVerifyEmailStudentMutation();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -41,7 +41,6 @@ const VerifyEmail = ({
         ...signupData.TrackInformation,
       },
     });
-    console.log(error2);
     if (verifyEmailStudenttData?.data.status == "success") {
       navigate("/");
     }

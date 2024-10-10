@@ -17,10 +17,8 @@ export const teamsSlice = createSlice({
     },
 
     unJoindTeamLocally(state, action: PayloadAction<string>) {
-      console.log(state);
       const index = state.findIndex((e) => e.id === action.payload);
       state[index] = { ...state[index], status: "available" };
-      console.log(state);
     },
   },
 });

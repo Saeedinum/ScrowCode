@@ -38,13 +38,9 @@ const FileUploadComponent = () => {
 
   const handleFileUpload = async (file: FileWithPreview) => {
     if (!file) return;
-
     setUploading(true);
     const formData = new FormData();
     formData.append("file", file);
-
-    console.log(formData);
-
     setUploading(false);
   };
 
