@@ -38,7 +38,7 @@ const UniversityInformation = () => {
   return (
     <section
       dir="rtl"
-      className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center px-20"
+      className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center lg:px-20"
     >
       <form
         onSubmit={handleSubmit(onSubmit)}
