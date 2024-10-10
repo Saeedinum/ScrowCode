@@ -7,7 +7,7 @@ import { login } from "@/features/auth/authSlice";
 type User = {
   token: string;
   username: string;
-  id: string;
+  email: string;
   fullName: string;
 };
 
@@ -31,16 +31,16 @@ const useRetrieveUser = (): User | void => {
       }
       const token = decrypt(encryptedToken);
       const username = decrypt(encryptedUsername);
-      const id = decrypt(encryptedId);
+      const email = decrypt(encryptedId);
       const fullName = decrypt(encryptedFullName);
-      if (!token || !username || !id || !fullName) {
+      if (!token || !username || !email || !fullName) {
         throw new Error("Decryption failed or missing user data");
       }
       if (jwtDecode(token)) {
         dispatch(
           login({
             username: username,
-            id: id,
+            email: email,
             fullName: fullName,
             token: token,
           }),
@@ -48,7 +48,7 @@ const useRetrieveUser = (): User | void => {
         setUser({
           token: token,
           username: username,
-          id: id,
+          email: email,
           fullName: fullName,
         });
       }

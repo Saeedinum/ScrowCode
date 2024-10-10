@@ -26,6 +26,8 @@ import PersonalInformation from "@/features/auth/pages/signup/components/Persona
 import UniversityInformation from "@/features/auth/pages/signup/components/UniversityInformation";
 import TrackInformation from "@/features/auth/pages/signup/components/TrackInformation";
 
+import { Toaster } from "@/components/ui/toaster";
+
 const Router = () => {
   const auth: User = useAppSelector((state) => state.auth.user);
   const signup = useAppSelector((state) => state.auth.signup);
@@ -40,6 +42,7 @@ const Router = () => {
             <>
               <Header />
               <Outlet />
+              <Toaster />
             </>
           ),
           children: [

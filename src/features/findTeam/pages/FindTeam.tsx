@@ -1,42 +1,76 @@
+import { useEffect, useState } from "react";
+
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useFetchTeamsQuery, useJoinTeamMutation } from "../api/findTeamAPI";
+import {
+  joindTeamLocally,
+  unJoindTeamLocally,
+  getTeam,
+} from "../findTeamSlice";
+
+import { Tteam } from "@/types";
+
+import DetailsDialog from "../components/DetailsDialog";
+import FindTeamSkeleton from "../components/FindTeamSkeleton ";
+
 import searchIcon from "@/assets/search/search.svg";
 import avialableIocn from "@/assets/global/available.svg";
 import waitingIocn from "@/assets/global/waiting.svg";
 import notavialableIocn from "@/assets/global/notAvailable.svg";
 
-import { Tteam } from "@/types";
-import { useFetchTeamsQuery, useJoinTeamMutation } from "../api/findTeamAPI";
-
-import { useAppSelector } from "@/store/hooks";
-import { useEffect, useState } from "react";
-import DetailsDialog from "../components/DetailsDialog";
-import FindTeamSkeleton from "../components/FindTeamSkeleton ";
+import { useToast } from "@/hooks/use-toast";
 
 const FindTeam = () => {
+  const dispatch = useAppDispatch();
+
   const { token } = useAppSelector((state) => state.auth.user);
+  const teams = useAppSelector((state) => state.teams);
+
   const { data, isLoading } = useFetchTeamsQuery({ token: token });
   const [joinTeam] = useJoinTeamMutation();
 
-  const [teams, setTeams] = useState<Tteam[]>([]);
+  const [filtredTeams, setFiltredTeams] = useState<Tteam[]>([]);
+
+  const { toast } = useToast();
 
   const handleSearch = (text: string) => {
-    if (text.length === 0) setTeams(data!);
-    else {
-      const filteredData = teams.filter((team) =>
-        team.name.english.includes(text),
-      );
-      if (filteredData.length > 0) {
-        setTeams(filteredData);
-      } else {
-        setTeams(data!);
-      }
+    if (!text) {
+      setFiltredTeams(teams);
+      return;
+    }
+    const filteredData = teams.filter((team) =>
+      team.name.english.toLowerCase().includes(text.toLowerCase()),
+    );
+    setFiltredTeams(filteredData);
+  };
+
+  const handleJoindTeam = async (token: string, teamID: string) => {
+    try {
+      dispatch(joindTeamLocally(teamID));
+      await joinTeam({
+        token: token,
+        teamID: teamID,
+      }).unwrap();
+    } catch (error) {
+      console.error("Failed to join team:", error);
+      toast({
+        title: "Join team failed",
+        description: "Please try again later",
+        variant: "destructive",
+      });
+      dispatch(unJoindTeamLocally(teamID));
     }
   };
 
   useEffect(() => {
     if (!isLoading && data) {
-      setTeams(data);
+      dispatch(getTeam(data));
     }
-  }, [isLoading, data]);
+  }, [isLoading, data, dispatch]);
+
+  useEffect(() => {
+    setFiltredTeams(teams);
+  }, [teams]);
 
   return (
     <main className="flex flex-col items-center">
@@ -64,7 +98,7 @@ const FindTeam = () => {
       ) : (
         <section className="mt-10 w-full px-4 sm:px-6 md:px-8 lg:px-14">
           <div className="flex grid-cols-1 flex-col items-start gap-8 gap-y-20 sm:grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-            {teams.map((team: Tteam) => (
+            {filtredTeams.map((team: Tteam) => (
               <div
                 key={team.id}
                 className={`relative flex h-[457px] max-w-[380px] flex-col items-center overflow-hidden rounded-[10px] border-[1px] px-8 ${team.status === "available" ? "border-[#00D03A]" : team.status === "pending" ? "border-[#FFA800]" : "border-[#FF0000]"}`}
@@ -179,10 +213,7 @@ const FindTeam = () => {
                     <button
                       disabled={team.status === "notAvailable"}
                       onClick={() => {
-                        joinTeam({
-                          token: token,
-                          teamID: team.id,
-                        });
+                        handleJoindTeam(token!, team.id);
                       }}
                       className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second disabled:bg-[#5D6A93]"
                     >
