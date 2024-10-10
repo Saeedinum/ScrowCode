@@ -258,9 +258,7 @@ const Team = () => {
                   id="projectCategorie"
                   className={`mt-2 h-[52px] w-[285px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] py-[14px] pr-2 text-[20px] text-primary-first outline-none placeholder:pl-1 placeholder:text-sm placeholder:text-[#95A3D5] disabled:border-none md:w-[329px] ${errors.category ? "border-red-500" : ""} `}
                 >
-                  <option selected value={team.category}>
-                    {team.category}
-                  </option>
+                  <option value={team.category}>{team.category}</option>
                 </select>
               </label>
             </div>
