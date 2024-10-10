@@ -27,7 +27,6 @@ const Profile = () => {
   const { id } = useParams();
   const { pathname } = useLocation();
 
-  const [section, setSection] = useState<1 | 2>(1);
   const [editMode, setEditMode] = useState<boolean>(false);
 
   const { data, isLoading } = useGetMyProfileQuery({
@@ -68,7 +67,7 @@ const Profile = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         dir="rtl"
-        className="flex w-full flex-col gap-3 px-20 pt-16"
+        className="mt-7 flex w-full flex-col gap-3 px-2 lg:px-20"
       >
         <section className="flex w-full justify-between">
           <div className="flex gap-5">
@@ -76,19 +75,19 @@ const Profile = () => {
               <img
                 src="/src/assets/global/userProfileIcon.png"
                 alt=""
-                className="h-[147px] w-[156px] rounded-[8px]"
+                className="rounded-[8px] lg:h-[147px] lg:w-[156px]"
               />
               {data?.team ? (
-                <p className="mt-1 flex gap-2">
-                  <img src={avialableIocn} alt="" />
+                <p className="mt-1 flex gap-2 text-nowrap">
+                  <img src={avialableIocn} alt="" className="size-[20px]" />
                   <span className="font-medium text-green-600">
                     {" "}
                     منضم الي تيم
                   </span>
                 </p>
               ) : (
-                <p className="mt-1 flex gap-2">
-                  <img src={notavialableIocn} alt="" />
+                <p className="mt-1 flex gap-2 text-nowrap">
+                  <img src={notavialableIocn} alt="" className="size-[20px]" />
                   <span className="font-medium text-red-600">
                     لم تنضم الي تيم
                   </span>
@@ -102,22 +101,26 @@ const Profile = () => {
               <p className="text-[15px] text-[#5D6A93]">
                 {data?.user.Username}
               </p>
-              <p className="mt-2 text-[20px] font-semibold text-[#6694FF]">
-                {data?.myTrack[0]}
+              <p className="mt-2 font-semibold text-[#6694FF] lg:text-[20px]">
+                {/* {data?.myTrack[0]} */}
+                without a name
               </p>
-              <p className="text-base font-semibold">المهارات</p>
-              <div className="flex flex-wrap gap-3">
-                {data?.mySkills.map((skill) => (
-                  <div
-                    key={skill}
-                    className={`relative flex h-[40px] w-fit items-center text-nowrap rounded-[8px] border border-[#407BFF] bg-[#E1EBFF] p-[10px] text-sm lowercase text-[#407BFF]`}
-                  >
-                    <input type="checkbox" className="hidden" />
-                    <label className="relative flex flex-1 cursor-pointer items-center pl-1">
-                      {skill}
-                    </label>
-                  </div>
-                ))}
+              <div className="max-md:absolute">
+                <p className="text-base font-semibold">المهارات</p>
+                <div className="top-0 flex flex-wrap gap-3">
+                  {data?.mySkills.map((skill) => (
+                    <div
+                      key={skill}
+                      className={`relative flex h-[40px] w-fit items-center text-nowrap rounded-[8px] border border-[#407BFF] bg-[#E1EBFF] p-[10px] text-sm lowercase text-[#407BFF]`}
+                    >
+                      <input type="checkbox" className="hidden" />
+                      <label className="relative flex flex-1 cursor-pointer items-center pl-1">
+                        {/* {skill} */}
+                        without a name
+                      </label>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -126,7 +129,7 @@ const Profile = () => {
               {editMode ? (
                 <button
                   type="submit"
-                  className="flex h-[37px] w-[101px] items-center justify-center gap-2 rounded-[8px] border-[1px] border-solid bg-primary-first text-[15px] text-white"
+                  className="flex h-[37px] items-center justify-center gap-2 rounded-[8px] border-[1px] border-solid bg-primary-first px-3 text-[15px] text-white"
                 >
                   حفظ
                 </button>
@@ -134,7 +137,7 @@ const Profile = () => {
                 <button
                   type="button"
                   onClick={() => setEditMode(true)}
-                  className="flex h-[37px] w-[101px] items-center justify-center gap-2 rounded-[8px] border-[1px] border-solid border-primary-first text-[15px]"
+                  className="flex h-[37px] items-center justify-center rounded-[8px] border-[1px] border-solid border-primary-first px-3 text-[15px]"
                 >
                   <img src={editIcon} alt="edit" className="size-[19px]" />
                   تعديل
@@ -143,22 +146,9 @@ const Profile = () => {
             </>
           )}
         </section>
-        <div className="mr-2 flex gap-14 text-primary-first">
-          <button
-            onClick={() => setSection(1)}
-            className={`text-[20px] font-semibold decoration-primary-second decoration-2 underline-offset-[18px] duration-100 ${section === 1 && "text-[#407BFF] underline"} `}
-          >
-            البيانات الشخصية
-          </button>
-          <button
-            onClick={() => setSection(2)}
-            className={`text-[20px] font-semibold decoration-primary-second decoration-2 underline-offset-[18px] duration-100 ${section === 2 && "text-[#407BFF] underline"} `}
-          >
-            البيانات الجامعية
-          </button>
-        </div>
-        {section === 1 ? (
-          <section className="rounded-[10px] border border-Grey-first p-4">
+
+        <section className="flex flex-wrap justify-start gap-10">
+          <section className="p-4">
             <p className="flex items-center gap-1 font-semibold text-[#407BFF]">
               <svg
                 width="13"
@@ -175,7 +165,7 @@ const Profile = () => {
               نبذة عن
             </p>
             <div className="mr-3 mt-3 w-[367px] rounded-[8px] border border-[#95A3D5] px-[14px] py-[9px] font-medium text-[#5D6A93]">
-              no data from backend
+              empty
             </div>
             <p className="mt-6 font-semibold text-[#407BFF]">تواصل مع</p>
 
@@ -263,8 +253,8 @@ const Profile = () => {
               </div>
             </div>
           </section>
-        ) : (
-          <section className="flex flex-row gap-10 rounded-[10px] border border-Grey-first p-4 pb-16 text-primary-first">
+
+          <section className="flex flex-row gap-10 p-4 pb-16 text-primary-first">
             <div>
               <p className="flex flex-col gap-1">
                 <span>الجامعة </span>
@@ -286,7 +276,7 @@ const Profile = () => {
               </p>
             </div>
           </section>
-        )}
+        </section>
       </form>
     </>
   );

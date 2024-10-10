@@ -105,6 +105,33 @@ const Team = () => {
     }
   }, [isLoading, data, setValue]);
 
+
+  const [isDesktop, setIsDesktop] = useState(true);
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 1024) {
+        setIsDesktop(false);
+      } else {
+        setIsDesktop(true);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+
+  if (!isDesktop) {
+    return (
+      <div className="flex  items-center justify-center">
+        <p className="text-center mt-10 font-serif  text-red-500">
+        This feature is currently available for desktop only, as some functionalities are not supported on mobile devices.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <>
       {isLoading && <LoadingDialog />}
