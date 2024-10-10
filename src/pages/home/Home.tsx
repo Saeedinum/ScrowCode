@@ -149,7 +149,7 @@ const Home = () => {
 
           <section
             dir="ltr"
-            className="relative flex w-full flex-col md:flex-row md:items-center"
+            className="relative flex w-full flex-col md:flex-row md:items-center md:gap-14"
           >
             <img
               src={star1}
@@ -176,7 +176,7 @@ const Home = () => {
 
           <section
             dir="rtl"
-            className="relative flex w-full flex-col md:flex-row md:items-center"
+            className="relative mt-10 flex w-full flex-col md:flex-row md:items-center md:gap-14"
           >
             <img
               src={grayshadow1}
@@ -189,7 +189,7 @@ const Home = () => {
               <img
                 src={star2}
                 alt=""
-                className="absolute -top-20 right-0 z-30 w-28 sm:hidden"
+                className="absolute -top-20 right-0 -z-10 w-28 sm:hidden"
               />
               <h3 className="flex flex-col items-center text-center text-[24px] font-medium text-primary-first lg:text-[32px]">
                 ابحث عن <span>شريك الدراسة المناسب لك</span>
@@ -209,7 +209,7 @@ const Home = () => {
 
           <section
             dir="ltr"
-            className="relative flex w-full flex-col md:flex-row md:items-center"
+            className="relative mt-10 flex w-full flex-col md:flex-row md:items-center md:gap-14"
           >
             <img src={create} alt="" className="-z-10 md:w-[60%]" />
             <img src={background3} alt="" className="absolute right-0 -z-20" />
@@ -261,7 +261,7 @@ const Home = () => {
                 <span>حمل تطبيقنا سكرو كود </span>
                 <span> لاستفادة من خدماتنا بهاتفك الان لسهولة التصفح</span>
               </p>
-              <button className="flex h-[52px] w-[300px] items-center justify-center gap-5 rounded-[8px] bg-primary-first text-[20px] font-semibold text-primary-fourth lg:w-[448px]">
+              <button className="flex h-[52px] w-[300px] cursor-auto items-center justify-center gap-5 rounded-[8px] bg-gray-600 text-[20px] font-semibold text-primary-fourth lg:w-[448px]">
                 تحميل الان
                 <svg
                   width="24"
@@ -284,18 +284,18 @@ const Home = () => {
         <div className="flex flex-col items-start justify-center gap-10 md:flex-row md:gap-20">
           <img src={whiteLogo} alt="" className="" />
           <div className="flex flex-col gap-1 lg:ml-28">
-            <p className="mb-4 text-primary-fourth"> Navigation</p>
+            <p className="mb-4 text-primary-fourth"> الصفحات</p>
             <Link to={"/"} className="hover:text-primary-third">
-              home
+              الرئيسية
             </Link>
             <Link to={"/about"} className="hover:text-primary-third">
-              About us
+              عن سكرو
             </Link>
             <Link to={"/FindTeam"} className="hover:text-primary-third">
-              Teams
+              التيمات
             </Link>
             <Link to={"/FindPartner"} className="hover:text-primary-third">
-              find partner
+              ابحث عن شريك
             </Link>
           </div>
           <div className="flex flex-col lg:ml-28">
@@ -312,7 +312,10 @@ const Home = () => {
           </div>
           <div className="flex flex-col">
             <p className="mb-4 text-primary-fourth"> Talk To US</p>
-            <Link to={""}> Scrow_code@gmail.com</Link>
+            <Link to={"mailto:Scrow_code@gmail.com"}>
+              {" "}
+              Scrow_code@gmail.com
+            </Link>
           </div>
         </div>
       </footer>
