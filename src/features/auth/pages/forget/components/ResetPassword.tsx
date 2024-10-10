@@ -1,9 +1,6 @@
+import { useAppSelector } from "@/store/hooks";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-import { useResetpasswordMutation } from "../../../api/authAPI";
-import { useAppSelector } from "../../../../../store/hooks";
-
-import emaillogo from "/src/assets/auth/email.png";
+import { useResetpasswordMutation } from "@/features/auth/api/authAPI";
 
 type Inputs = {
   password: string;
@@ -11,14 +8,10 @@ type Inputs = {
 };
 
 const ResetPassword = () => {
-  const [resetpassword] =
-    useResetpasswordMutation();
+  const [resetpassword] = useResetpasswordMutation();
   const email = useAppSelector((state) => state.auth.reset?.email);
 
-  const {
-    register,
-    handleSubmit,
-  } = useForm<Inputs>();
+  const { register, handleSubmit } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = (data) => {
     resetpassword({
@@ -29,16 +22,14 @@ const ResetPassword = () => {
 
   return (
     <section className="flex flex-col items-center justify-between gap-1 font-bold">
-      <img src={emaillogo} alt="" className="mb-5" />
-      <h1 className="text-4xl text-primary-first">Create new Pasword</h1>
-      <p className="text-base text-Grey-first">
-        your new password must be unique from those previously used.
-      </p>
+      <h1 className="text-2xl text-primary-first md:text-3xl lg:text-4xl">
+        انشاء كلمة مرور جديدة
+      </h1>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="mt-5 flex w-full flex-col items-center justify-between gap-10 px-10"
       >
-        <label htmlFor="password" className="relative w-[calc(100%+8rem)]">
+        <label htmlFor="password" className="relative lg:w-[calc(100%+8rem)]">
           <span className="ml-1 text-primary-first"> New Password</span>
 
           <svg
@@ -67,7 +58,7 @@ const ResetPassword = () => {
 
         <label
           htmlFor="confirmPassword"
-          className="relative w-[calc(100%+8rem)]"
+          className="relative lg:w-[calc(100%+8rem)]"
         >
           <span className="ml-1 text-primary-first"> Confirm Password</span>
           <svg
