@@ -1,0 +1,164 @@
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import { continueWithGoogleSchema } from "@/schema/signup";
+import { TpersonalInformation } from "@/types";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { signup } from "@/features/auth/authSlice";
+
+const ContinueSigningIn = () => {
+  const dispatch = useAppDispatch();
+  const google = useAppSelector((state) => state.auth.google);
+
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm<TpersonalInformation>({
+    resolver: zodResolver(continueWithGoogleSchema),
+    defaultValues: {
+      email: google.profile ? (google.profile.email as string) : "",
+    },
+  });
+
+  const onSubmit = async (data: TpersonalInformation) => {
+    if (google.profile && google.user)
+      dispatch(
+        signup({
+          PersonalInformation: {
+            arabicName: google.profile.name,
+            username: data.username,
+            phone: data.phone,
+            email: google.profile.email,
+            password: "",
+            confirmPassword: "",
+          },
+        }),
+      );
+  };
+
+  return (
+    <section className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center px-20">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="flex w-full flex-col items-center gap-5"
+      >
+        <label htmlFor="username" className="relative w-full">
+          <span className="ml-2 text-primary-first">
+            username
+            <span className="font-bold text-red-600"> &#42;</span>
+          </span>
+          <svg
+            className={`absolute left-3 top-[42px] ${watch().username ? "hidden" : ""} transition-all`}
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5 20V19C5 17.1435 5.7375 15.363 7.05025 14.0503C8.36301 12.7375 10.1435 12 12 12M12 12C13.8565 12 15.637 12.7375 16.9497 14.0503C18.2625 15.363 19 17.1435 19 19V20M12 12C13.0609 12 14.0783 11.5786 14.8284 10.8284C15.5786 10.0783 16 9.06087 16 8C16 6.93913 15.5786 5.92172 14.8284 5.17157C14.0783 4.42143 13.0609 4 12 4C10.9391 4 9.92172 4.42143 9.17157 5.17157C8.42143 5.92172 8 6.93913 8 8C8 9.06087 8.42143 10.0783 9.17157 10.8284C9.92172 11.5786 10.9391 12 12 12Z"
+              stroke="#95A3D5"
+              strokeWidth="1.5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          </svg>
+          <input
+            autoComplete="false"
+            id="username"
+            type="text"
+            {...register("username", {
+              required: "required",
+            })}
+            placeholder="username"
+            className={`inputfield px-[13px] py-[14px] outline-none placeholder:pl-7 placeholder:text-sm placeholder:text-Grey-third ${errors.username ? "border-red-500" : ""} `}
+          />
+        </label>
+
+        <label htmlFor="phone" className="relative w-full">
+          <span className="ml-2 text-primary-first">
+            Phone number <span className="font-bold text-red-600"> &#42;</span>
+          </span>
+          <svg
+            className={`absolute left-3 top-[42px] ${watch().phone ? "hidden" : ""} transition-all`}
+            width="15"
+            height="16"
+            viewBox="0 0 15 16"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M12.0189 10.0371L10.4314 9.85586C10.2447 9.83394 10.0555 9.8546 9.878 9.91631C9.70047 9.97801 9.53923 10.0791 9.4064 10.2121L8.2564 11.3621C6.48214 10.4597 5.04001 9.01762 4.13765 7.24336L5.2939 6.08711C5.56265 5.81836 5.6939 5.44336 5.65015 5.06211L5.4689 3.48711C5.43346 3.18222 5.28714 2.90101 5.0578 2.69701C4.82845 2.49302 4.53209 2.3805 4.22515 2.38086H3.1439C2.43765 2.38086 1.85015 2.96836 1.8939 3.67461C2.22515 9.01211 6.4939 13.2746 11.8251 13.6059C12.5314 13.6496 13.1189 13.0621 13.1189 12.3559V11.2746C13.1251 10.6434 12.6501 10.1121 12.0189 10.0371Z"
+              fill="#95A3D5"
+            />
+          </svg>
+          <input
+            autoComplete="false"
+            id="phone"
+            type="text"
+            {...register("phone", {
+              required: "required",
+            })}
+            placeholder={errors.phone ? "eg: +201012345678" : " Phone number"}
+            className={`inputfield px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.phone ? "border-red-500" : ""} `}
+          />
+        </label>
+
+        <label htmlFor="email" className="relative w-full">
+          <span className="ml-2 text-primary-first">Email</span>
+          <svg
+            className={`absolute left-3 top-[42px] hidden transition-all`}
+            width="16"
+            height="16"
+            viewBox="0 0 16 16"
+            fill="Grey-third "
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M14.95 3.684L8.637 8.912C8.45761 9.06063 8.23196 9.14196 7.999 9.14196C7.76604 9.14196 7.54039 9.06063 7.361 8.912L1.051 3.684C1.01714 3.78591 0.999922 3.89261 1 4V12C1 12.2652 1.10536 12.5196 1.29289 12.7071C1.48043 12.8946 1.73478 13 2 13H14C14.2652 13 14.5196 12.8946 14.7071 12.7071C14.8946 12.5196 15 12.2652 15 12V4C15.0004 3.89267 14.9835 3.78597 14.95 3.684ZM2 2H14C14.5304 2 15.0391 2.21071 15.4142 2.58579C15.7893 2.96086 16 3.46957 16 4V12C16 12.5304 15.7893 13.0391 15.4142 13.4142C15.0391 13.7893 14.5304 14 14 14H2C1.46957 14 0.960859 13.7893 0.585786 13.4142C0.210714 13.0391 0 12.5304 0 12V4C0 3.46957 0.210714 2.96086 0.585786 2.58579C0.960859 2.21071 1.46957 2 2 2ZM1.79 3L7.366 7.603C7.54459 7.7505 7.76884 7.83144 8.00046 7.83199C8.23209 7.83254 8.45672 7.75266 8.636 7.606L14.268 3H1.79Z"
+              fill="#95A3D5"
+            />
+          </svg>
+          <input
+            autoComplete="false"
+            id="email"
+            type="text"
+            value={google.profile ? (google.profile.email as string) : ""}
+            {...register("email", {
+              required: "required",
+              disabled: true,
+            })}
+            placeholder={errors.email ? "eg: example@gmail.com" : "Email"}
+            className={`inputfield px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.email ? "border-red-500" : ""} `}
+          />
+        </label>
+
+        <button
+          type="submit"
+          className="mt-10 flex h-[39px] w-full items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first"
+        >
+          Next Step
+          <svg
+            width="16"
+            height="15"
+            viewBox="0 0 16 15"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M0.833008 7.5H14.1663M14.1663 7.5L8.16634 1.5M14.1663 7.5L8.16634 13.5"
+              stroke="white"
+              strokeWidth="2"
+            />
+          </svg>
+        </button>
+      </form>
+    </section>
+  );
+};
+
+export default ContinueSigningIn;
