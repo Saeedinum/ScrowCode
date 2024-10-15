@@ -23,7 +23,7 @@ const SignUp = () => {
     <main className="relative flex select-none justify-start">
       <section
         dir="rtl"
-        className="relative max-lg:hidden flex max-h-screen w-[calc(40%)] flex-col items-center justify-center bg-Grey-fourth text-primary-first"
+        className="relative flex max-h-screen w-[calc(40%)] flex-col items-center justify-center bg-Grey-fourth text-primary-first max-md:hidden"
       >
         <img src={background} alt="" className="" />
         <img src={background} alt="" className="bg-Grey-fourth" />
@@ -58,8 +58,7 @@ const SignUp = () => {
         </div>
       </section>
       <section className="flex flex-grow flex-col items-center justify-start font-bold">
-
-        <div className="flex w-full items-center justify-between px-8 lg:px-16 pr-10 pt-5">
+        <div className="flex w-full items-center justify-between px-8 pr-10 pt-5 lg:px-16">
           <Link to={"/"}>
             <img src={logo} alt="logo" />
           </Link>
@@ -75,13 +74,13 @@ const SignUp = () => {
             </div>
           ) : (
             <p className="flex flex-col items-center font-bold text-[#6679BE] sm:flex-row">
-              لديك حساب بالفعل؟
               <Link
                 to={"/login"}
-               className="pl-1 text-primary-first underline decoration-2 underline-offset-4"
+                className="pl-1 text-primary-first underline decoration-2 underline-offset-4"
               >
                 تسجيل الدخول
               </Link>
+              لديك حساب بالفعل؟
             </p>
           )}
         </div>

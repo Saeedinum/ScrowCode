@@ -14,7 +14,7 @@ import arrowIcon from "@/assets/global/rightArrow.svg";
 import { Navigate, useNavigate } from "react-router-dom";
 import useGoodBass from "@/hooks/useGoodBass";
 
-import "../index.css"
+import "../index.css";
 
 const PersonalInformation = () => {
   const navigate = useNavigate();
@@ -79,7 +79,7 @@ const PersonalInformation = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-5"
       >
-        <label htmlFor="arabicName" className="relative w-full max-w-[515px]">
+        <label htmlFor="arabicName" className="inputlabel">
           <span className="ml-1 text-primary-first">
             الاسم الرباعي باللغة العربية{" "}
           </span>
@@ -95,7 +95,7 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <label htmlFor="username" className="relative w-full max-w-[515px]">
+        <label htmlFor="username" className="inputlabel">
           <span className="ml-2 text-primary-first">اسم المستخدم</span>
           <img
             src={usernameIcon}
@@ -116,7 +116,7 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <label htmlFor="phone" className="relative w-full max-w-[515px]">
+        <label htmlFor="phone" className="inputlabel">
           <span className="ml-2 text-primary-first">رقم الهاتف</span>
           <img
             src={phoneIcon}
@@ -136,7 +136,7 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <label htmlFor="email" className="relative w-full max-w-[515px]">
+        <label htmlFor="email" className="inputlabel">
           <span className="ml-2 text-primary-first">البريد الالكتروني</span>
           <img
             src={emailIcon}
@@ -156,7 +156,7 @@ const PersonalInformation = () => {
           />
         </label>
 
-        <label htmlFor="password" className="relative w-full max-w-[515px]">
+        <label htmlFor="password" className="inputlabel">
           <span className="ml-2 text-primary-first">كلمة المرور</span>
           <img
             src={passwordIcon}
@@ -180,10 +180,7 @@ const PersonalInformation = () => {
           {ProgressBar}
         </label>
 
-        <label
-          htmlFor="confirmPassword"
-          className="relative w-full max-w-[515px]"
-        >
+        <label htmlFor="confirmPassword" className="inputlabel">
           <span className="ml-2 text-primary-first">تأكيد كلمة المرور</span>
           <img
             src={passwordIcon}
@@ -210,7 +207,7 @@ const PersonalInformation = () => {
         <button
           disabled={status === "unValid" || status === "loading"}
           type="submit"
-          className="flex h-[48px] w-full max-w-[480px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first disabled:bg-Grey-first"
+          className="inputlabel flex h-[48px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first disabled:bg-Grey-first"
         >
           {isLoading ? (
             <p

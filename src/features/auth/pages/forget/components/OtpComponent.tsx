@@ -1,17 +1,15 @@
+import { useRef } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-import { useVerifycodeMutation } from "../../../api/authAPI";
 import { useAppSelector } from "@/store/hooks";
-
-import emaillogo from "/src/assets/auth/email.png";
-import { useRef } from "react";
+import { useVerifycodeMutation } from "@/features/auth/api/authAPI";
 
 type Inputs = {
   otp: string[];
 };
 
 const OtpComponent = () => {
-  const [verifycode] = useVerifycodeMutation();
+  const [verifycode, { isError }] = useVerifycodeMutation();
   const email = useAppSelector((state) => state.auth.reset?.email);
 
   const { register, handleSubmit, setValue } = useForm<Inputs>();
@@ -49,11 +47,13 @@ const OtpComponent = () => {
   };
 
   return (
-    <section className="flex select-none flex-col items-center justify-between gap-1 font-bold">
-      <img src={emaillogo} alt="" className="mb-5" />
-      <h1 className="text-4xl text-primary-first">Check Your Email</h1>
-      <p className="text-center text-base text-Grey-first">
-        Enter the code that was sent to <br />
+    <section className="relative flex select-none flex-col items-center justify-between gap-1 font-bold">
+      <h1 className="text-2xl text-primary-first md:text-3xl lg:text-4xl">
+        تحقق من الايميل الخاص بك
+      </h1>
+      <p className="text-sm text-Grey-first md:text-base">
+        أدخل الرمز الذي تم إرساله إليه
+        <br />
         <span className="text-primary-second">{email}</span>
       </p>
       <form
@@ -71,7 +71,7 @@ const OtpComponent = () => {
               onKeyDown={(e) => handleKeyDown(e, index)}
               type="text"
               maxLength={1}
-              className="h-[69px] w-[68px] rounded-[8px] border-2 border-primary-second px-[20px] py-[4px] text-[40px] text-primary-second focus:border-primary-second"
+              className="md:border-1 size-[40px] rounded-[5px] border border-primary-second px-[10px] py-[2px] text-xl text-primary-second outline-none focus:border-primary-second md:size-[50px] md:text-3xl lg:size-[68px] lg:text-4xl"
             />
           ))}
         </div>
@@ -80,13 +80,16 @@ const OtpComponent = () => {
           type="submit"
           className="h-[39px] rounded-[8px] bg-[#002ABA] px-40 font-bold text-primary-fourth"
         >
-          Next
+          التالي
         </button>
       </form>
       <p className="mt-8 text-[14px] text-Grey-first">
-        Didn't get the code?{" "}
-        <button className="text-primary-second">Click to resend</button>
+        <button className="text-primary-second"> انقر لاعادة الارسال</button>
+        لم تحصل علي الرمز ؟
       </p>
+      {isError && (
+        <p className="absolute -bottom-6 text-red-600"> something wrong </p>
+      )}
     </section>
   );
 };
