@@ -12,8 +12,8 @@ const ForgetPassword = () => {
   const reset = useAppSelector((state) => state.auth.reset);
 
   return (
-    <main className="relative flex h-screen flex-col items-center justify-center">
-      <Link to={"/"} className="absolute left-2 top-4 lg:p-8 lg:pl-28">
+    <main className="relative flex h-screen  items-center justify-center">
+      <Link to={"/"} className="absolute left-4 top-4 lg:p-8 lg:pl-28">
         <img src={logo} alt="" />
       </Link>
 

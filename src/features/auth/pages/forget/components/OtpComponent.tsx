@@ -9,7 +9,7 @@ type Inputs = {
 };
 
 const OtpComponent = () => {
-  const [verifycode] = useVerifycodeMutation();
+  const [verifycode, { isError }] = useVerifycodeMutation();
   const email = useAppSelector((state) => state.auth.reset?.email);
 
   const { register, handleSubmit, setValue } = useForm<Inputs>();
@@ -47,7 +47,7 @@ const OtpComponent = () => {
   };
 
   return (
-    <section className="flex select-none flex-col items-center justify-between gap-1 font-bold">
+    <section className="relative flex select-none flex-col items-center justify-between gap-1 font-bold">
       <h1 className="text-2xl text-primary-first md:text-3xl lg:text-4xl">
         تحقق من الايميل الخاص بك
       </h1>
@@ -71,7 +71,7 @@ const OtpComponent = () => {
               onKeyDown={(e) => handleKeyDown(e, index)}
               type="text"
               maxLength={1}
-              className="md:border-1 size-[40px] rounded-[5px] border border-primary-second px-[20px] py-[4px] text-[40px] text-primary-second outline-none focus:border-primary-second md:size-[50px] lg:size-[68px]"
+              className="md:border-1 size-[40px] rounded-[5px] border border-primary-second px-[10px] py-[2px] text-xl text-primary-second outline-none focus:border-primary-second md:size-[50px] md:text-3xl lg:size-[68px] lg:text-4xl"
             />
           ))}
         </div>
@@ -87,6 +87,9 @@ const OtpComponent = () => {
         <button className="text-primary-second"> انقر لاعادة الارسال</button>
         لم تحصل علي الرمز ؟
       </p>
+      {isError && (
+        <p className="absolute -bottom-6 text-red-600"> something wrong </p>
+      )}
     </section>
   );
 };
