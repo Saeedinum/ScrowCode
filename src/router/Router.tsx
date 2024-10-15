@@ -22,9 +22,15 @@ import About from "@/pages/about/About";
 import useRetrieveUser from "@/hooks/useRetrieveUser";
 import Team from "@/features/profile/pages/Team";
 import Profile from "@/features/profile/pages/Profile";
+import PersonalInformation from "@/features/auth/pages/signup/components/PersonalInformation";
+import UniversityInformation from "@/features/auth/pages/signup/components/UniversityInformation";
+import TrackInformation from "@/features/auth/pages/signup/components/TrackInformation";
+
+import { Toaster } from "@/components/ui/toaster";
 
 const Router = () => {
   const auth: User = useAppSelector((state) => state.auth.user);
+  const signup = useAppSelector((state) => state.auth.signup);
   useRetrieveUser();
 
   return (
@@ -36,6 +42,7 @@ const Router = () => {
             <>
               <Header />
               <Outlet />
+              <Toaster />
             </>
           ),
           children: [
@@ -92,7 +99,39 @@ const Router = () => {
           path: "/login",
           element: auth?.token == undefined ? <Login /> : <Navigate to="/" />,
         },
-        { path: "signup", element: <SignUp /> },
+        {
+          path: "/signup",
+          element: <SignUp />,
+          children: [
+            {
+              index: true,
+              element:
+                signup.PersonalInformation.email !== "" ? (
+                  <Navigate to={"/signup/university"} />
+                ) : (
+                  <PersonalInformation />
+                ),
+            },
+            {
+              path: "/signup/university",
+              element:
+                signup.PersonalInformation.email === "" ? (
+                  <Navigate to={"/signup"} />
+                ) : (
+                  <UniversityInformation />
+                ),
+            },
+            {
+              path: "/signup/track",
+              element:
+                signup.UniversityInformation.universityEmail === "" ? (
+                  <Navigate to={"/signup"} />
+                ) : (
+                  <TrackInformation />
+                ),
+            },
+          ],
+        },
         { path: "forgetPassword", element: <ForgetPassword /> },
         { path: "*", element: <NotFound /> },
       ])}

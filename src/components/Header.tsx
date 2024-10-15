@@ -1,21 +1,35 @@
 import { useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
+
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
 
-import Logo from "/src/assets/global/logo.svg";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import ProfileDropDown from "./ProfileDropDown";
 
-import notificationsIcon from "@/assets/global/notifications.svg";
 import { logout } from "@/features/auth/authSlice";
-import Notifications from "@/features/orders/components/Notifications"
+import Notifications from "@/features/orders/components/Notifications";
+
+import Logo from "@/assets/global/logo.svg";
+import homeIcon from "@/assets/header/home.svg";
+import findIcon from "@/assets/header/find.svg";
+import loginIcon from "@/assets/header/login.svg";
+import logoutIcon from "@/assets/header/logout.svg";
+import scenariosIcon from "@/assets/header/scenarios.svg";
+import signupIcon from "@/assets/header/signup.svg";
+import userIcon from "@/assets/header/user.svg";
+import teamsIcon from "@/assets/header/teams.png";
+import partnerIcon from "@/assets/header/partner.png";
+
+import "./HeaderStyle.css";
 
 const Header = () => {
-  const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
   const location = useLocation();
+  const user = useAppSelector((state) => state.auth.user);
 
   const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
   const [isTeamsDropdownOpen, setIsTeamsDropdownOpen] =
@@ -30,85 +44,83 @@ const Header = () => {
       <div dir="rtl" className="sm:hidden">
         <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
           <DropdownMenuTrigger
-            className="outline-none"
+            className="flex flex-col gap-[1px] outline-none"
             aria-label="Menu"
             aria-expanded={isDropdownOpen}
           >
-            <svg
-              width="24"
-              height="16"
-              viewBox="0 0 24 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-6 w-6"
+            <button
+              className="z-20 flex cursor-pointer flex-col items-center gap-1 *:h-[3px] *:w-6 *:rounded *:bg-blue-800"
+              aria-label="Menu"
             >
-              <rect width="24" height="2" rx="1" fill="#001354" />
-              <rect y="7" width="24" height="2" rx="1" fill="#001354" />
-              <rect y="14" width="24" height="2" rx="1" fill="#001354" />
-            </svg>
+              <p></p>
+              <p></p>
+              <p></p>
+            </button>
           </DropdownMenuTrigger>
-
-          <DropdownMenuContent className="ml-2 text-center font-medium text-primary-first sm:hidden">
+          <DropdownMenuContent className="menu ml-2 flex w-[280px] flex-col items-end p-3 pl-5 text-[25px] font-semibold text-primary-first sm:hidden">
+            {user.token && (
+              <>
+                <Link
+                  className="place-self-start text-nowrap text-lg"
+                  to={"/myProfile"}
+                  onClick={handleItemClick}
+                >
+                  <img src={userIcon} alt="" className="user" />
+                  <p className="flex flex-col text-[18px]">
+                    <span>{user.username}</span>
+                    <span className="font-medium text-Grey-first">
+                      {user.email}
+                    </span>
+                  </p>
+                </Link>
+              </>
+            )}
             {location.pathname !== "/" && (
-              <Link
-                to="/"
-                className="block w-full py-2 hover:text-primary-third"
-                onClick={handleItemClick}
-              >
+              <Link to="/" onClick={handleItemClick}>
                 الرئيسية
+                <img src={homeIcon} alt="" className="" />
               </Link>
             )}
-            <Link
-              to="/FindTeam"
-              className="block w-full py-2 hover:text-primary-third"
-              onClick={handleItemClick}
-            >
+            <Link to="/FindTeam" onClick={handleItemClick}>
               البحث عن تيم
+              <img src={findIcon} alt="" className="" />
             </Link>
-            <Link
-              to="/createTeam"
-              className="block w-full py-2 hover:text-primary-third"
-              onClick={handleItemClick}
-            >
+            <Link to="/createTeam" onClick={handleItemClick}>
               انشاء تيم
+              <img src={scenariosIcon} alt="" />
             </Link>
-            <Link
-              to="/findPartner"
-              className="block py-2 hover:text-primary-third"
-              onClick={handleItemClick}
-            >
+            <Link to="/findPartner" onClick={handleItemClick}>
               ابحث عن شريك
+              <img src={partnerIcon} alt="" />
             </Link>
-            <div>
-              {user?.token ? (
-                <>
-                  <DropdownMenu>
-                    <DropdownMenuTrigger className="flex items-center gap-1 outline-none">
-                      <img src={notificationsIcon} alt="" />
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent className="flex flex-col items-center gap-3 p-3 font-medium text-primary-first"></DropdownMenuContent>
-                  </DropdownMenu>
-                  <ProfileDropDown username={user.username || ""} />
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className="block py-2 hover:text-primary-third"
-                    onClick={handleItemClick}
-                  >
-                    تسجيل دخول
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="block py-2 hover:text-primary-third"
-                    onClick={handleItemClick}
-                  >
-                    انشاء حساب
-                  </Link>
-                </>
-              )}
-            </div>
+            {user?.token ? (
+              <>
+                <Link to={"/myTeam"} onClick={handleItemClick}>
+                  التيم الخاص بي
+                  <img src={teamsIcon} alt="" />
+                </Link>
+                <button
+                  onClick={() => {
+                    dispatch(logout());
+                    handleItemClick();
+                  }}
+                >
+                  تسجيل خروج
+                  <img src={logoutIcon} alt="" />
+                </button>
+              </>
+            ) : (
+              <>
+                <Link to="/login" className="" onClick={handleItemClick}>
+                  تسجيل دخول
+                  <img src={loginIcon} alt="" className="rotate-180" />
+                </Link>
+                <Link to="/signup" className="" onClick={handleItemClick}>
+                  انشاء حساب
+                  <img src={signupIcon} alt="" className="rotate-180" />
+                </Link>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
@@ -118,9 +130,6 @@ const Header = () => {
       <nav className="hidden items-center gap-5 font-bold text-primary-first sm:flex">
         <NavLink to={"/"} className="outline-none hover:text-primary-third">
           الرئيسية
-        </NavLink>
-        <NavLink to={"/about"} className="hover:text-primary-third">
-          عن سكرو
         </NavLink>
         <DropdownMenu
           open={isTeamsDropdownOpen}
@@ -164,7 +173,7 @@ const Header = () => {
         {user?.token ? (
           <div className="flex items-center gap-5">
             <Notifications />
-            <ProfileDropDown username={user.username || ""} />
+            <ProfileDropDown username={user.username!} email={user.email!} />
           </div>
         ) : (
           <div className="flex items-center gap-5">
@@ -185,39 +194,3 @@ const Header = () => {
 };
 
 export default Header;
-
-const ProfileDropDown = ({ username }: { username: string }) => {
-  const dispatch = useAppDispatch();
-
-  return (
-    <DropdownMenu>
-      <DropdownMenuTrigger className="outline-none">
-        <div className="flex items-center gap-1">
-          <img
-            src="src/assets/profile/Vector.svg"
-            alt=""
-            className="bg-svg h-8 w-8 rounded-full"
-          />
-          {username}
-          <img src="/src/assets/profile/menu.svg" alt="" className="size-3" />
-        </div>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="flex w-[153px] flex-col items-end gap-3 p-5 text-xs font-semibold text-primary-first">
-        <Link className="hover:text-primary-third" to={"/myProfile"}>
-          عرض الملف الشخصي
-        </Link>
-        <Link className="hover:text-primary-third" to={"/myTeam"}>
-          التيم الخاص بي
-        </Link>
-        <button
-          onClick={() => {
-            dispatch(logout());
-          }}
-          className="hover:text-red-500"
-        >
-          تسجيل خروج
-        </button>
-      </DropdownMenuContent>
-    </DropdownMenu>
-  );
-};

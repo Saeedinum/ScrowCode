@@ -21,9 +21,11 @@ const Google = ({ type }: { type: "sign" | "login" }) => {
   return (
     <>
       <button
+        disabled
         dir="rtl"
         onClick={() => login()}
-        className="my-5 flex w-[calc(100%-2rem)] cursor-pointer items-center justify-center gap-[10px] text-nowrap rounded-[8px] border-[1px] border-solid border-[#002ABA] bg-[#002ABA] py-[7px] text-primary-fourth duration-300 hover:bg-primary-first hover:text-primary-fourth sm:my-8 sm:w-[503px]"
+        title="we are working on this"
+        className="my-5 flex inputlabel cursor-pointer items-center justify-center gap-[10px] text-nowrap rounded-[8px] border-[1px] border-solid border-[#002ABA] bg-[#002ABA] py-[7px] text-primary-fourth duration-300 hover:bg-primary-first hover:text-primary-fourth disabled:cursor-auto disabled:bg-gray-600 sm:my-8 "
       >
         {type === "login" && <p>تسجيل الدخول عن طريق جوجل</p>}
         {type === "sign" && <p>انشاء حسابك عن طريق جوجل</p>}

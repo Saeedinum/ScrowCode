@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { getTracks, login, reset, loginWithGoogle } from "../authSlice";
+import { getTracks, login, reset, loginWithGoogle, signup } from "../authSlice";
 
 import {
   TpersonalInformation,
@@ -57,10 +57,19 @@ export const authAPI = createApi({
           phone: userData.phone,
         },
       }),
-      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+      async onQueryStarted(args, { queryFulfilled, dispatch }): Promise<void> {
         try {
-          const { data } = await queryFulfilled;
-          dispatch(login(data.token));
+          const data = await queryFulfilled;
+          if (data.data.status === "success") {
+            localStorage.setItem("token", data.data.token);
+            dispatch(
+              signup({
+                PersonalInformation: {
+                  ...args,
+                },
+              }),
+            );
+          }
         } catch (error) {
           console.error("Request failed:", error);
         }
@@ -109,17 +118,19 @@ export const authAPI = createApi({
       }),
       async onQueryStarted(_, { queryFulfilled, dispatch }) {
         try {
-          const { data : {data : {user : {Username , fullName} , _id} , token } } = await queryFulfilled;
-          dispatch(
-            login({
-              token: token,
-              username: Username,
-              fullName: fullName,
-              id: _id,
-            }),
-          );
+          const data = await queryFulfilled;
+          if ("data" in data) {
+            dispatch(
+              login({
+                token: data.data.token,
+                username: data.data.data.user.Username,
+                fullName: data.data.data.user.fullName,
+                email: data.data.data.user.Email,
+              }),
+            );
+          }
         } catch (error) {
-          console.error("Request failed:", error);
+          console.error("invalid email or password");
         }
       },
     }),

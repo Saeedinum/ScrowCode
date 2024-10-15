@@ -27,14 +27,29 @@ const Login = () => {
     register,
     handleSubmit,
     watch,
+    setError,
     formState: { errors },
   } = useForm<TLoginData>({
     resolver: zodResolver(schema),
   });
 
   const onSubmit = async (data: TLoginData) => {
-      await loginUser(data);
-      navigate("/");
+    try {
+      const response = await loginUser(data);
+      if ("data" in response.data) {
+        navigate("/");
+      }
+    } catch (error) {
+      setError("email", {
+        type: "server",
+        message: "invalid email or password",
+      });
+      setError(
+        "password",
+        { type: "server", message: "invalid" },
+        { shouldFocus: true },
+      );
+    }
   };
 
   return (
@@ -163,14 +178,11 @@ const Login = () => {
               ) : (
                 " تسجيل الدخول"
               )}
+              <p className="absolute -bottom-7 left-[50%] flex translate-x-[-50%] flex-wrap gap-4 text-center text-red-500">
+                {errors.email?.type === "server" && errors.email.message}
+              </p>
             </button>
           </form>
-        </div>
-        <div className="mt-10 flex gap-2 text-center font-bold text-primary-first">
-          <p className="">تم الانشاء عن طريق تيم سكرو</p>
-          <Link to={"/contact"} className="text-Grey-first underline">
-            تواصل معنا
-          </Link>
         </div>
       </section>
     </main>

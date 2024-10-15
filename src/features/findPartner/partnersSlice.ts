@@ -1,14 +1,29 @@
-// import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Tpartner } from "@/types";
 
+const initialState: Tpartner[] = [];
 
-// const initialState = {};
+export const partnersSlice = createSlice({
+  name: "partners",
+  initialState,
+  reducers: {
+    getPartners(_, action: PayloadAction<Tpartner[]>) {
+      return action.payload;
+    },
 
-// export const partnersSlice = createSlice({
-//   name: "partners",
-//   initialState,
-//   reducers: {},
-// });
+    requestPartnerLocally(state, action: PayloadAction<string>) {
+      const index = state.findIndex((e) => e.id === action.payload);
+      state[index] = { ...state[index], status: "pending" };
+    },
 
-// export const {} = partnersSlice.actions;
+    unrequestPartnerLocally(state, action: PayloadAction<string>) {
+      const index = state.findIndex((e) => e.id === action.payload);
+      state[index] = { ...state[index], status: "available" };
+    },
+  },
+});
 
-// export default partnersSlice.reducer;
+export const { getPartners, requestPartnerLocally, unrequestPartnerLocally } =
+  partnersSlice.actions;
+
+export default partnersSlice.reducer;

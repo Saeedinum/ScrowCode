@@ -9,6 +9,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -28,9 +29,9 @@ const DetailsDialog = ({
       </DialogTrigger>
       <DialogContent dir="rtl" className="flex min-w-fit flex-col items-center">
         <DialogHeader className="">
-          <p className="flex gap-2 text-[20px] font-[500] text-primary-first">
+          <DialogTitle className="flex gap-2 text-[20px] font-[500] text-primary-first">
             <span>{team.name.arabic}</span> -<span> {team.name.english} </span>
-          </p>
+          </DialogTitle>
           <div className="flex justify-center gap-1">
             {team.status === "available" && (
               <>
@@ -52,7 +53,6 @@ const DetailsDialog = ({
             )}
           </div>
         </DialogHeader>
-
         <span className="h-[1px] w-[calc(50%)] place-self-center bg-Grey-first"></span>
 
         <div className="flex flex-col gap-3 px-10 font-semibold text-primary-first">
@@ -108,10 +108,13 @@ const DetailsDialog = ({
               اسماء الفريق
             </p>
             <div className="flex flex-col items-start">
-              {team.tracks.map((track) => (
-                <div className="flex flex-col">
-                  {track.members.map((member) => (
-                    <div className="mt-[2px] flex items-center gap-1">
+              {team.tracks.map((track, index) => (
+                <div key={index} className="flex flex-col">
+                  {track.members.map((member, index) => (
+                    <div
+                      key={index}
+                      className="mt-[2px] flex items-center gap-1"
+                    >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
                         viewBox="0 0 24 24"

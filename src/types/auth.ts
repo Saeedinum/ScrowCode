@@ -6,7 +6,7 @@ import {
 
 export type User = {
   token: string | null;
-  id: string | null;
+  email: string | null;
   fullName: string | null;
   username: string | null;
 };

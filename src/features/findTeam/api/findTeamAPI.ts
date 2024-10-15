@@ -36,13 +36,10 @@ export const findTeamAPI = createApi({
                 max: 8,
                 current: item.numOfMember,
               },
-
               tracks: getTracksFromMembers(item.member, item.requirement),
-
               supervisor: item.doctorName,
               assistantSupervisor: item.doctorviceName,
             };
-
             return team as Tteam;
           }),
           ...[...response.pendingIsent, ...response.pendingSentMe].map(
@@ -60,13 +57,10 @@ export const findTeamAPI = createApi({
                   max: 8,
                   current: item.numOfMember,
                 },
-
                 tracks: getTracksFromMembers(item.member, item.requirement),
-
                 supervisor: item.doctorName,
                 assistantSupervisor: item.doctorviceName,
               };
-
               return team as Tteam;
             },
           ),

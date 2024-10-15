@@ -1,11 +1,19 @@
-import { useEffect } from "react";
-import {jwtDecode} from "jwt-decode";
+import { useEffect, useState } from "react";
+import { jwtDecode } from "jwt-decode";
 import { useAppDispatch } from "@/store/hooks";
 import { decrypt } from "@/utils/crypto";
 import { login } from "@/features/auth/authSlice";
 
-const useRetrieveUser = () => {
+type User = {
+  token: string;
+  username: string;
+  email: string;
+  fullName: string;
+};
+
+const useRetrieveUser = (): User | void => {
   const dispatch = useAppDispatch();
+  const [user, setUser] = useState<undefined | User>();
 
   useEffect(() => {
     try {
@@ -23,27 +31,35 @@ const useRetrieveUser = () => {
       }
       const token = decrypt(encryptedToken);
       const username = decrypt(encryptedUsername);
-      const id = decrypt(encryptedId);
+      const email = decrypt(encryptedId);
       const fullName = decrypt(encryptedFullName);
-      if (!token || !username || !id || !fullName) {
+      if (!token || !username || !email || !fullName) {
         throw new Error("Decryption failed or missing user data");
       }
-      if (jwtDecode(token))
+      if (jwtDecode(token)) {
         dispatch(
           login({
             username: username,
-            id: id,
+            email: email,
             fullName: fullName,
             token: token,
           }),
         );
+        setUser({
+          token: token,
+          username: username,
+          email: email,
+          fullName: fullName,
+        });
+      }
     } catch (error) {
-      console.error("Failed to retrieve or decrypt user data:", error);
       localStorage.clear();
     }
   }, [dispatch]);
 
-  return {};
+  if (user) {
+    return user;
+  }
 };
 
 export default useRetrieveUser;

@@ -62,10 +62,15 @@
 @layer base {
   * {
     @apply border-border;
-    @apply font-cairo;
   }
   body {
     @apply bg-background text-foreground;
+  }
+  .inputfield {
+    @apply h-[52px] block w-[350px] sm:w-[400px] lg:w-[450px] xl:w-[550px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] outline-none placeholder:text-sm placeholder:text-Grey-third;
+  }
+  .inputlabel {
+    @apply relative w-[350px] sm:w-[400px] lg:w-[450px] xl:w-[550px]
   }
 }
 
@@ -86,9 +91,8 @@
   background: black;
 }
 
-
 .bg-svg {
-  background-image: url('/src/assets/profile/Vector.svg');
+  background-image: url("/src/assets/profile/Vector.svg");
   background-size: cover;
   background-position: center;
 }

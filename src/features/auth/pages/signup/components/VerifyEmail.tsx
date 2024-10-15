@@ -4,7 +4,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import { useRef } from "react";
@@ -17,15 +16,19 @@ type Inputs = {
   otp: string[];
 };
 
-const VerifyEmail = ({ open }: { open: boolean }) => {
+const VerifyEmail = ({
+  open,
+  handleVerifyDialog,
+}: {
+  open: boolean;
+  handleVerifyDialog: (e: boolean) => void;
+}) => {
   const navigate = useNavigate();
   const { register, handleSubmit, setValue } = useForm<Inputs>();
-
   const inputsRef = useRef<HTMLInputElement[]>([]);
-
   const signupData = useAppSelector((state) => state.auth.signup);
 
-  const [verifyEmailStudent, { data: verifyEmailStudenttData, error: error2 }] =
+  const [verifyEmailStudent, { data: verifyEmailStudenttData }] =
     useVerifyEmailStudentMutation();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -36,10 +39,8 @@ const VerifyEmail = ({ open }: { open: boolean }) => {
       data: {
         ...signupData.UniversityInformation,
         ...signupData.TrackInformation,
-        department: "CS",
       },
     });
-    console.log(verifyEmailStudenttData, error2);
     if (verifyEmailStudenttData?.data.status == "success") {
       navigate("/");
     }
@@ -71,20 +72,37 @@ const VerifyEmail = ({ open }: { open: boolean }) => {
   };
 
   return (
-    <AlertDialog open={open}>
-      <AlertDialogTrigger></AlertDialogTrigger>
+    <AlertDialog open={open} onOpenChange={handleVerifyDialog}>
       <AlertDialogContent className="" dir="rtl">
         <AlertDialogHeader>
-          <AlertDialogTitle className="flex flex-col items-center justify-center text-2xl font-bold text-primary-first">
+          <AlertDialogTitle className="flex flex-col items-center justify-center text-xl font-bold text-primary-first lg:text-2xl">
             سنرسل لك رمز التأكيد الخاص بك
             <p className="flex flex-col items-center justify-center gap-0 text-[15px] font-semibold text-[#5D6A93]">
-              email@gmail.com
+              {signupData.PersonalInformation.email || ""}
             </p>
           </AlertDialogTitle>
           <section
             dir="ltr"
-            className="flex select-none flex-col items-center font-bold"
+            className="flex w-full select-none flex-col items-center font-bold"
           >
+            <button
+              type="button"
+              onClick={() => handleVerifyDialog(false)}
+              className="absolute right-2 top-2"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="#ff0000"
+                className="size-6"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                  clipRule="evenodd"
+                />
+              </svg>
+            </button>
             <form
               onSubmit={handleSubmit(onSubmit)}
               className="flex w-full flex-col items-center justify-between gap-5"
@@ -100,7 +118,7 @@ const VerifyEmail = ({ open }: { open: boolean }) => {
                     onKeyDown={(e) => handleKeyDown(e, index)}
                     type="text"
                     maxLength={1}
-                    className="h-[69px] w-[68px] rounded-[8px] border-2 border-primary-second px-[20px] py-[4px] text-[40px] text-primary-second outline-none focus:border-primary-second"
+                    className="md:border-1 size-[40px] rounded-[5px] border border-primary-second px-[20px] py-[4px] text-[40px] text-primary-second outline-none focus:border-primary-second md:size-[50px] lg:size-[68px]"
                   />
                 ))}
               </div>
@@ -112,10 +130,10 @@ const VerifyEmail = ({ open }: { open: boolean }) => {
               </button>
             </form>
             <p className="mt-8 text-[14px] text-Grey-first">
-              لم يصل لك الكود ؟
               <button type="button" className="text-primary-second">
                 اضغط لاعادة الارسال
               </button>
+              لم يصل لك الكود ؟
             </p>
           </section>
         </AlertDialogHeader>

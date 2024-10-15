@@ -73,7 +73,7 @@ const ContinueSigningIn = () => {
               required: "required",
             })}
             placeholder="username"
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-7 placeholder:text-sm placeholder:text-Grey-third ${errors.username ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] outline-none placeholder:pl-7 placeholder:text-sm placeholder:text-Grey-third ${errors.username ? "border-red-500" : ""} `}
           />
         </label>
 
@@ -102,7 +102,7 @@ const ContinueSigningIn = () => {
               required: "required",
             })}
             placeholder={errors.phone ? "eg: +201012345678" : " Phone number"}
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.phone ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.phone ? "border-red-500" : ""} `}
           />
         </label>
 
@@ -133,7 +133,7 @@ const ContinueSigningIn = () => {
               disabled: true,
             })}
             placeholder={errors.email ? "eg: example@gmail.com" : "Email"}
-            className={`h-[52px] w-full rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.email ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] outline-none placeholder:pl-6 placeholder:text-sm placeholder:text-Grey-third ${errors.email ? "border-red-500" : ""} `}
           />
         </label>
 

@@ -61,3 +61,33 @@ export type BACKEND_T_partners = {
   };
   _id: string;
 };
+
+export type BACKEND_T_error = {
+  errors: {
+    type: string;
+    value: string;
+    msg: string;
+    path: string;
+    location: string;
+  }[];
+};
+
+export type BACKEND_T_createTeamError = {
+  status: number;
+  data: {
+    errors:
+      | {
+          msg: string;
+          path:
+            | "projectNameArabic"
+            | "projectNameEnglish"
+            | "projectDescription";
+          value: string;
+        }[]
+      | {
+          msg: string;
+          path: "userName";
+          value: string[];
+        }[];
+  };
+};
