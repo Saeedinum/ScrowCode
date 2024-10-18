@@ -1,30 +1,20 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState } from "react"
+import { Link } from "react-router-dom"
 
-import { useAppDispatch } from "@/store/hooks";
+import { useAppDispatch } from "@/store/hooks"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
-import { logout } from "@/features/auth/authSlice";
+import { logout } from "@/features/auth/authSlice"
 
-import logoutIcon from "@/assets/header/logout.svg";
-import userIcon from "@/assets/header/user.svg";
-import teamsIcon from "@/assets/header/teams.png";
+import logoutIcon from "@/assets/header/logout.svg"
+import userIcon from "@/assets/header/user.svg"
+import teamsIcon from "@/assets/header/teams.png"
 
-const ProfileDropDown = ({
-  username,
-  email,
-}: {
-  username: string;
-  email: string;
-}) => {
-  const dispatch = useAppDispatch();
+const ProfileDropDown = ({ username, email }: { username: string; email: string }) => {
+  const dispatch = useAppDispatch()
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
 
   return (
     <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
@@ -35,29 +25,21 @@ const ProfileDropDown = ({
         </div>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="flex w-[200px] flex-col items-end gap-3 text-xs font-semibold text-primary-first">
-        <Link
-          className="flex gap-3 place-self-start text-nowrap"
-          to={"/myProfile"}
-          onClick={() => setIsDropdownOpen(false)}
-        >
+        <Link className="flex gap-3 place-self-start text-nowrap" to={"/myProfile"} onClick={() => setIsDropdownOpen(false)}>
           <img src={userIcon} alt="" className="size-[40px]" />
           <p className="flex flex-col text-sm">
             <span>{username}</span>
             <span className="font-medium text-Grey-first">{email}</span>
           </p>
         </Link>
-        <Link
-          className="flex gap-3 text-lg hover:text-primary-third"
-          to={"/myTeam"}
-          onClick={() => setIsDropdownOpen(false)}
-        >
+        <Link className="flex gap-3 text-lg hover:text-primary-third" to={"/myTeam"} onClick={() => setIsDropdownOpen(false)}>
           التيم الخاص بي
           <img src={teamsIcon} alt="" className="size-[35px]" />
         </Link>
         <button
           onClick={() => {
-            dispatch(logout());
-            setIsDropdownOpen(false);
+            dispatch(logout())
+            setIsDropdownOpen(false)
           }}
           className="flex gap-3 text-lg hover:text-red-500"
         >
@@ -66,6 +48,6 @@ const ProfileDropDown = ({
         </button>
       </DropdownMenuContent>
     </DropdownMenu>
-  );
-};
-export default ProfileDropDown;
+  )
+}
+export default ProfileDropDown

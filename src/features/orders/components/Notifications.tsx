@@ -1,36 +1,23 @@
-import notificationsIcon from "@/assets/global/notifications.svg";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from "@radix-ui/react-dialog";
+import notificationsIcon from "@/assets/global/notifications.svg"
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@radix-ui/react-dialog"
 
-import {
-  useGetOrdersOfStudentQuery,
-  useHandleOrderOfTeamMutation,
-} from "../api/ordersAPI";
-import { useAppSelector } from "@/store/hooks";
+import { useGetOrdersOfStudentQuery, useHandleOrderOfTeamMutation } from "../api/ordersAPI"
+import { useAppSelector } from "@/store/hooks"
 
 const Notifications = () => {
-  const token = useAppSelector((state) => state.auth.user.token);
+  const token = useAppSelector(state => state.auth.user.token)
   const { data } = useGetOrdersOfStudentQuery({
-    token: token,
-  });
-  const [handleOrderOfTeam] = useHandleOrderOfTeamMutation();
+    token: token
+  })
+  const [handleOrderOfTeam] = useHandleOrderOfTeamMutation()
 
   return (
     <Dialog>
       <DialogTrigger>
         <img src={notificationsIcon} alt="" />
       </DialogTrigger>
-      <DialogContent
-        className="absolute left-[calc(100%-30rem)] top-[60px] rounded-[8px] bg-[#ffffffbf] p-3 lg:w-[400px]"
-        dir="rtl"
-      >
-        <DialogTitle className="mb-5 flex text-end text-[20px] font-bold text-primary-first">
-          الاشعارات
-        </DialogTitle>
+      <DialogContent className="absolute left-[calc(100%-30rem)] top-[60px] rounded-[8px] bg-[#ffffffbf] p-3 lg:w-[400px]" dir="rtl">
+        <DialogTitle className="mb-5 flex text-end text-[20px] font-bold text-primary-first">الاشعارات</DialogTitle>
 
         {data?.data?.map((item: { _id: string; message: string }) => (
           <div key={item._id} className="my-3 flex flex-col">
@@ -41,8 +28,8 @@ const Notifications = () => {
                   handleOrderOfTeam({
                     token: token!,
                     id: item._id,
-                    status: "accept",
-                  });
+                    status: "accept"
+                  })
                 }}
                 className="h-[28px] w-[68px] rounded-[8px] bg-primary-first text-primary-fourth"
               >
@@ -53,8 +40,8 @@ const Notifications = () => {
                   handleOrderOfTeam({
                     token: token!,
                     id: item._id,
-                    status: "reject",
-                  });
+                    status: "reject"
+                  })
                 }}
                 className="h-[28px] w-[68px] rounded-[8px] border border-primary-first bg-primary-fourth text-primary-first"
               >
@@ -65,7 +52,7 @@ const Notifications = () => {
         ))}
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default Notifications;
+export default Notifications

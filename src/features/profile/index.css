@@ -11,15 +11,14 @@
   position: absolute;
   inset: 0;
   padding: var(--b);
-  background: repeating-conic-gradient(var(--c1) 0 25%, var(--c2) 0 50%) 0 0 /
-    var(--s) var(--s) round;
+  background: repeating-conic-gradient(var(--c1) 0 25%, var(--c2) 0 50%) 0 0 / var(--s) var(--s) round;
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
 }
 
-.dot-before>p::before {
+.dot-before > p::before {
   content: "";
   display: inline-block;
   width: 4px;

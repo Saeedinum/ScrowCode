@@ -1,19 +1,19 @@
-import ReactDOM from "react-dom/client";
+import ReactDOM from "react-dom/client"
 
-import Router from "./router/Router";
+import Router from "./router/Router"
 
-import { store } from "./store/store";
-import { Provider } from "react-redux";
+import { store } from "./store/store"
+import { Provider } from "react-redux"
 
-import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeProvider } from "@/components/theme-provider"
 
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { Oauth } from "./config/Oauth";
+import { GoogleOAuthProvider } from "@react-oauth/google"
+import { Oauth } from "./config/Oauth"
 
-import "../src/styles/index.css";
+import "../src/styles/index.css"
 
-import { Analytics } from "@vercel/analytics/react";
-import { SpeedInsights } from "@vercel/speed-insights/react";
+import { Analytics } from "@vercel/analytics/react"
+import { SpeedInsights } from "@vercel/speed-insights/react"
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
@@ -26,5 +26,5 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
         </GoogleOAuthProvider>
       </ThemeProvider>
     </Provider>
-  </>,
-);
+  </>
+)

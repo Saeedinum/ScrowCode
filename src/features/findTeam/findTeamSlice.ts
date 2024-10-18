@@ -1,29 +1,28 @@
-import { Tteam } from "@/types";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { Tteam } from "@/types"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
-const initialState: Tteam[] = [];
+const initialState: Tteam[] = []
 
 export const teamsSlice = createSlice({
   name: "teams",
   initialState,
   reducers: {
     getTeam(_, action: PayloadAction<Tteam[]>) {
-      return action.payload;
+      return action.payload
     },
 
     joindTeamLocally(state, action: PayloadAction<string>) {
-      const index = state.findIndex((e) => e.id === action.payload);
-      state[index] = { ...state[index], status: "pending" };
+      const index = state.findIndex(e => e.id === action.payload)
+      state[index] = { ...state[index], status: "pending" }
     },
 
     unJoindTeamLocally(state, action: PayloadAction<string>) {
-      const index = state.findIndex((e) => e.id === action.payload);
-      state[index] = { ...state[index], status: "available" };
-    },
-  },
-});
+      const index = state.findIndex(e => e.id === action.payload)
+      state[index] = { ...state[index], status: "available" }
+    }
+  }
+})
 
-export const { getTeam, joindTeamLocally, unJoindTeamLocally } =
-  teamsSlice.actions;
+export const { getTeam, joindTeamLocally, unJoindTeamLocally } = teamsSlice.actions
 
-export default teamsSlice.reducer;
+export default teamsSlice.reducer

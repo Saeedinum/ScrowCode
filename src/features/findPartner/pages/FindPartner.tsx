@@ -1,94 +1,81 @@
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react"
+import { Link } from "react-router-dom"
 
-import searchIcon from "@/assets/search/search.svg";
-import avialableIocn from "@/assets/global/available.svg";
-import waitingIocn from "@/assets/global/waiting.svg";
-import notavialableIocn from "@/assets/global/notAvailable.svg";
-import contactIocn from "@/assets/global/contact.svg";
-import useIcon from "@/assets/header/user.svg";
+import searchIcon from "@/assets/search/search.svg"
+import avialableIocn from "@/assets/global/available.svg"
+import waitingIocn from "@/assets/global/waiting.svg"
+import notavialableIocn from "@/assets/global/notAvailable.svg"
+import contactIocn from "@/assets/global/contact.svg"
+import useIcon from "@/assets/header/user.svg"
 
-import { Tpartner } from "@/types";
+import { Tpartner } from "@/types"
 
-import { useToast } from "@/hooks/use-toast";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useToast } from "@/hooks/use-toast"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
 
-import {
-  useGetStudentsQuery,
-  useSendOrderToStudentMutation,
-} from "../api/findPartnerAPI";
+import { useGetStudentsQuery, useSendOrderToStudentMutation } from "../api/findPartnerAPI"
 
-import {
-  getPartners,
-  requestPartnerLocally,
-  unrequestPartnerLocally,
-} from "../partnersSlice";
+import { getPartners, requestPartnerLocally, unrequestPartnerLocally } from "../partnersSlice"
 
-import FindPartnerSkeleton from "../components/FindPartnerSkeleton";
+import FindPartnerSkeleton from "../components/FindPartnerSkeleton"
 
 const FindPartner = () => {
-  const { toast } = useToast();
-  const dispatch = useAppDispatch();
-  const { token } = useAppSelector((state) => state.auth.user);
-  const partners = useAppSelector((state) => state.partners);
+  const { toast } = useToast()
+  const dispatch = useAppDispatch()
+  const { token } = useAppSelector(state => state.auth.user)
+  const partners = useAppSelector(state => state.partners)
 
-  const { data, isLoading } = useGetStudentsQuery({ token });
-  const [sendOrderToStudent] = useSendOrderToStudentMutation();
+  const { data, isLoading } = useGetStudentsQuery({ token })
+  const [sendOrderToStudent] = useSendOrderToStudentMutation()
 
-  const [filtredPartners, setFiltredPartners] = useState<Tpartner[]>([]);
+  const [filtredPartners, setFiltredPartners] = useState<Tpartner[]>([])
 
   const handleSearch = (text: string) => {
     if (!text) {
-      setFiltredPartners(partners);
-      return;
+      setFiltredPartners(partners)
+      return
     }
-    const filteredData = partners.filter((team) =>
-      team.name.toLowerCase().includes(text.toLowerCase()),
-    );
-    setFiltredPartners(filteredData);
-  };
+    const filteredData = partners.filter(team => team.name.toLowerCase().includes(text.toLowerCase()))
+    setFiltredPartners(filteredData)
+  }
 
   const handleRequestPartner = async (token: string, teamID: string) => {
     try {
-      dispatch(requestPartnerLocally(teamID));
+      dispatch(requestPartnerLocally(teamID))
       await sendOrderToStudent({
         token: token,
-        teamID: teamID,
-      }).unwrap();
+        teamID: teamID
+      }).unwrap()
     } catch (error) {
-      console.error("Failed to join team:", error);
+      console.error("Failed to join team:", error)
       toast({
         title: "Request failed",
         description: "Please try again later",
-        variant: "destructive",
-      });
-      dispatch(unrequestPartnerLocally(teamID));
+        variant: "destructive"
+      })
+      dispatch(unrequestPartnerLocally(teamID))
     }
-  };
+  }
 
   useEffect(() => {
     if (!isLoading && data) {
-      dispatch(getPartners(data));
+      dispatch(getPartners(data))
     }
-  }, [isLoading, data, dispatch]);
+  }, [isLoading, data, dispatch])
 
   useEffect(() => {
-    setFiltredPartners(partners);
-  }, [partners]);
+    setFiltredPartners(partners)
+  }, [partners])
 
   return (
     <main className="flex flex-col items-center">
-      <h1 className="mt-10 text-[32px] font-[700] text-primary-first">
-        ابحث عن شريكك
-      </h1>
-      <p className="text-[15px] font-[500] text-Grey-first">
-        ابحث عن الشريك المناسب لك بما يناسب فريقك
-      </p>
+      <h1 className="mt-10 text-[32px] font-[700] text-primary-first">ابحث عن شريكك</h1>
+      <p className="text-[15px] font-[500] text-Grey-first">ابحث عن الشريك المناسب لك بما يناسب فريقك</p>
       <div className="mt-10 flex h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">
         <input
           dir="ltr"
           type="text"
-          onChange={(e) => handleSearch(e.target.value)}
+          onChange={e => handleSearch(e.target.value)}
           placeholder="only English"
           className="flex-grow bg-transparent text-center font-mono outline-none placeholder:font-[500] placeholder:text-[#666666]"
         />
@@ -105,20 +92,12 @@ const FindPartner = () => {
               <div
                 key={partner.id}
                 className={`relative flex h-[460px] w-[350px] flex-col items-center justify-start rounded-[10px] border-[1px] px-12 pt-[71px] ${
-                  partner.status === "notAvailable"
-                    ? "border-red-500"
-                    : partner.status === "pending"
-                      ? "border-yellow-500"
-                      : "border-green-700"
+                  partner.status === "notAvailable" ? "border-red-500" : partner.status === "pending" ? "border-yellow-500" : "border-green-700"
                 } `}
               >
                 <img
                   className={`absolute -top-[50px] h-[125px] w-[121px] content-center rounded-[15px] border-[2px] border-solid bg-white object-cover text-center font-bold text-primary-first ${
-                    partner.status === "notAvailable"
-                      ? "border-red-500"
-                      : partner.status === "pending"
-                        ? "border-yellow-500"
-                        : "border-green-700"
+                    partner.status === "notAvailable" ? "border-red-500" : partner.status === "pending" ? "border-yellow-500" : "border-green-700"
                   } `}
                   src={partner.imageURL || useIcon}
                   alt={partner.name}
@@ -127,9 +106,7 @@ const FindPartner = () => {
                   {partner.name}
                 </h2>
 
-                <p className="text-nowrap font-[500] text-primary-first">
-                  {partner.track}
-                </p>
+                <p className="text-nowrap font-[500] text-primary-first">{partner.track}</p>
 
                 <div className="mt-1 flex w-full items-center justify-center gap-4">
                   <div className="flex gap-1">
@@ -139,29 +116,19 @@ const FindPartner = () => {
                   <div className="flex gap-1">
                     {partner.status === "available" && (
                       <>
-                        <span className="text-[ #00D03A] text-nowrap">
-                          متاح
-                        </span>
+                        <span className="text-[ #00D03A] text-nowrap">متاح</span>
                         <img src={avialableIocn} alt="" className="w-[15px]" />
                       </>
                     )}
                     {partner.status === "notAvailable" && (
                       <>
-                        <span className="text-nowrap text-[#FF0000]">
-                          غير متاح
-                        </span>
-                        <img
-                          src={notavialableIocn}
-                          alt=""
-                          className="w-[15px]"
-                        />
+                        <span className="text-nowrap text-[#FF0000]">غير متاح</span>
+                        <img src={notavialableIocn} alt="" className="w-[15px]" />
                       </>
                     )}
                     {partner.status === "pending" && (
                       <>
-                        <span className="text-nowrap text-[#FFA800]">
-                          قيد الانتظار
-                        </span>
+                        <span className="text-nowrap text-[#FFA800]">قيد الانتظار</span>
                         <img src={waitingIocn} alt="" className="w-[15px]" />
                       </>
                     )}
@@ -174,9 +141,7 @@ const FindPartner = () => {
                   <p className="place-content-end text-primary-first" dir="rtl">
                     المهارات
                   </p>
-                  <p className="text-[#95A3D5]">
-                    {partner.skills.map((skill) => `${skill.name}, `)}
-                  </p>
+                  <p className="text-[#95A3D5]">{partner.skills.map(skill => `${skill.name}, `)}</p>
                 </div>
 
                 <div className="mb-6 mt-auto flex flex-row gap-5 text-nowrap">
@@ -206,7 +171,7 @@ const FindPartner = () => {
         </section>
       )}
     </main>
-  );
-};
+  )
+}
 
-export default FindPartner;
+export default FindPartner

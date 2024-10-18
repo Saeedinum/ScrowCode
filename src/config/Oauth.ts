@@ -6,9 +6,5 @@ export const Oauth = {
   auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
   client_secret: import.meta.env.VITE_OAUTH_CLIENT_SECRET,
   redirect_uris: ["http://localhost:5173/"],
-  javascript_origins: [
-    "http://localhost:3000",
-    "http://localhost:5173",
-    "http://localhost",
-  ],
-};
+  javascript_origins: ["http://localhost:3000", "http://localhost:5173", "http://localhost"]
+}

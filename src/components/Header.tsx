@@ -1,57 +1,45 @@
-import { useState } from "react";
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { useState } from "react"
+import { Link, NavLink, useLocation } from "react-router-dom"
 
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
 
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import ProfileDropDown from "./ProfileDropDown";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import ProfileDropDown from "./ProfileDropDown"
 
-import { logout } from "@/features/auth/authSlice";
-import Notifications from "@/features/orders/components/Notifications";
+import { logout } from "@/features/auth/authSlice"
+import Notifications from "@/features/orders/components/Notifications"
 
-import Logo from "@/assets/global/logo.svg";
-import homeIcon from "@/assets/header/home.svg";
-import findIcon from "@/assets/header/find.svg";
-import loginIcon from "@/assets/header/login.svg";
-import logoutIcon from "@/assets/header/logout.svg";
-import scenariosIcon from "@/assets/header/scenarios.svg";
-import signupIcon from "@/assets/header/signup.svg";
-import userIcon from "@/assets/header/user.svg";
-import teamsIcon from "@/assets/header/teams.png";
-import partnerIcon from "@/assets/header/partner.png";
+import Logo from "@/assets/global/logo.svg"
+import homeIcon from "@/assets/header/home.svg"
+import findIcon from "@/assets/header/find.svg"
+import loginIcon from "@/assets/header/login.svg"
+import logoutIcon from "@/assets/header/logout.svg"
+import scenariosIcon from "@/assets/header/scenarios.svg"
+import signupIcon from "@/assets/header/signup.svg"
+import userIcon from "@/assets/header/user.svg"
+import teamsIcon from "@/assets/header/teams.png"
+import partnerIcon from "@/assets/header/partner.png"
 
-import "./HeaderStyle.css";
+import "./HeaderStyle.css"
 
 const Header = () => {
-  const dispatch = useAppDispatch();
-  const location = useLocation();
-  const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch()
+  const location = useLocation()
+  const user = useAppSelector(state => state.auth.user)
 
-  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false);
-  const [isTeamsDropdownOpen, setIsTeamsDropdownOpen] =
-    useState<boolean>(false);
+  const [isDropdownOpen, setIsDropdownOpen] = useState<boolean>(false)
+  const [isTeamsDropdownOpen, setIsTeamsDropdownOpen] = useState<boolean>(false)
 
   const handleItemClick = () => {
-    setIsDropdownOpen(false);
-  };
+    setIsDropdownOpen(false)
+  }
 
   return (
     <header className="relative top-0 z-50 flex items-center justify-between bg-white p-4 px-12 text-base font-bold text-primary-first shadow-black sm:sticky sm:drop-shadow-lg lg:pl-20">
       <div dir="rtl" className="sm:hidden">
         <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
-          <DropdownMenuTrigger
-            className="flex flex-col gap-[1px] outline-none"
-            aria-label="Menu"
-            aria-expanded={isDropdownOpen}
-          >
-            <button
-              className="z-20 flex cursor-pointer flex-col items-center gap-1 *:h-[3px] *:w-6 *:rounded *:bg-blue-800"
-              aria-label="Menu"
-            >
+          <DropdownMenuTrigger className="flex flex-col gap-[1px] outline-none" aria-label="Menu" aria-expanded={isDropdownOpen}>
+            <button className="z-20 flex cursor-pointer flex-col items-center gap-1 *:h-[3px] *:w-6 *:rounded *:bg-blue-800" aria-label="Menu">
               <p></p>
               <p></p>
               <p></p>
@@ -60,17 +48,11 @@ const Header = () => {
           <DropdownMenuContent className="menu ml-2 flex w-[280px] flex-col items-end p-3 pl-5 text-[25px] font-semibold text-primary-first sm:hidden">
             {user.token && (
               <>
-                <Link
-                  className="place-self-start text-nowrap text-lg"
-                  to={"/myProfile"}
-                  onClick={handleItemClick}
-                >
+                <Link className="place-self-start text-nowrap text-lg" to={"/myProfile"} onClick={handleItemClick}>
                   <img src={userIcon} alt="" className="user" />
                   <p className="flex flex-col text-[18px]">
                     <span>{user.username}</span>
-                    <span className="font-medium text-Grey-first">
-                      {user.email}
-                    </span>
+                    <span className="font-medium text-Grey-first">{user.email}</span>
                   </p>
                 </Link>
               </>
@@ -101,8 +83,8 @@ const Header = () => {
                 </Link>
                 <button
                   onClick={() => {
-                    dispatch(logout());
-                    handleItemClick();
+                    dispatch(logout())
+                    handleItemClick()
                   }}
                 >
                   تسجيل خروج
@@ -131,36 +113,18 @@ const Header = () => {
         <NavLink to={"/"} className="outline-none hover:text-primary-third">
           الرئيسية
         </NavLink>
-        <DropdownMenu
-          open={isTeamsDropdownOpen}
-          onOpenChange={setIsTeamsDropdownOpen}
-        >
+        <DropdownMenu open={isTeamsDropdownOpen} onOpenChange={setIsTeamsDropdownOpen}>
           <DropdownMenuTrigger className="flex items-center gap-1 outline-none">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              className="size-4"
-            >
-              <path
-                fillRule="evenodd"
-                d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z"
-                clipRule="evenodd"
-              />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="size-4">
+              <path fillRule="evenodd" d="M12.53 16.28a.75.75 0 0 1-1.06 0l-7.5-7.5a.75.75 0 0 1 1.06-1.06L12 14.69l6.97-6.97a.75.75 0 1 1 1.06 1.06l-7.5 7.5Z" clipRule="evenodd" />
             </svg>
             التيمات
           </DropdownMenuTrigger>
           <DropdownMenuContent className="flex flex-col items-center gap-3 p-3 font-medium text-primary-first">
-            <Link
-              onClick={() => setIsTeamsDropdownOpen(false)}
-              to={"/FindTeam"}
-            >
+            <Link onClick={() => setIsTeamsDropdownOpen(false)} to={"/FindTeam"}>
               البحث عن تيم
             </Link>
-            <Link
-              onClick={() => setIsTeamsDropdownOpen(false)}
-              to={"/createTeam"}
-            >
+            <Link onClick={() => setIsTeamsDropdownOpen(false)} to={"/createTeam"}>
               انشاء تيم
             </Link>
           </DropdownMenuContent>
@@ -180,17 +144,14 @@ const Header = () => {
             <Link to={"/login"} className="hover:text-primary-third">
               تسجيل دخول
             </Link>
-            <Link
-              to={"/signup"}
-              className="cursor-pointer rounded-lg bg-primary-first px-[12px] py-1 text-primary-fourth"
-            >
+            <Link to={"/signup"} className="cursor-pointer rounded-lg bg-primary-first px-[12px] py-1 text-primary-fourth">
               انشاء حساب
             </Link>
           </div>
         )}
       </div>
     </header>
-  );
-};
+  )
+}
 
-export default Header;
+export default Header
