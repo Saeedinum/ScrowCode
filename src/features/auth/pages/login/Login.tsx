@@ -1,73 +1,58 @@
-import { Link, useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useLoginUserMutation } from "../../api/authAPI";
+import { Link, useNavigate } from "react-router-dom"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useLoginUserMutation } from "../../api/authAPI"
 
-import background from "/src/assets//auth//login.png";
-import logo from "/src/assets/global/logo.svg";
-import { TLoginData } from "@/types/auth";
-import Google from "../../google/Google";
+import background from "/src/assets//auth//login.png"
+import logo from "/src/assets/global/logo.svg"
+import { TLoginData } from "@/types/auth"
+import Google from "../../google/Google"
 
 const schema = z.object({
-  email: z
-    .string()
-    .min(1, { message: "Email is required" })
-    .email({ message: "Please enter a valid email" }),
-  password: z
-    .string()
-    .min(8, { message: "Password must be at least 8 characters long" }),
-});
+  email: z.string().min(1, { message: "Email is required" }).email({ message: "Please enter a valid email" }),
+  password: z.string().min(8, { message: "Password must be at least 8 characters long" })
+})
 
 const Login = () => {
-  const navigate = useNavigate();
-  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const navigate = useNavigate()
+  const [loginUser, { isLoading }] = useLoginUserMutation()
 
   const {
     register,
     handleSubmit,
     watch,
     setError,
-    formState: { errors },
+    formState: { errors }
   } = useForm<TLoginData>({
-    resolver: zodResolver(schema),
-  });
+    resolver: zodResolver(schema)
+  })
 
   const onSubmit = async (data: TLoginData) => {
     try {
-      const response = await loginUser(data);
+      const response = await loginUser(data)
       if ("data" in response.data) {
-        navigate("/");
+        navigate("/")
       }
     } catch (error) {
       setError("email", {
         type: "server",
-        message: "invalid email or password",
-      });
-      setError(
-        "password",
-        { type: "server", message: "invalid" },
-        { shouldFocus: true },
-      );
+        message: "invalid email or password"
+      })
+      setError("password", { type: "server", message: "invalid" }, { shouldFocus: true })
     }
-  };
+  }
 
   return (
-    <main className="relative flex max-h-screen w-screen select-none justify-start overflow-hidden">
+    <main className="relative flex max-h-screen select-none">
       <section className="relative hidden h-screen w-[40%] items-center justify-center overflow-hidden bg-Grey-fourth text-primary-first lg:flex">
-        <img src={background} alt="" />
+        <img src={background} alt="f" />
       </section>
-      <section
-        dir="rtl"
-        className="flex flex-grow flex-col items-center justify-start p-5 pt-4 sm:p-7"
-      >
+      <section dir="rtl" className="flex flex-grow flex-col items-center justify-start p-5 pt-4 max-sm:w-screen sm:p-7">
         <div className="flex w-full items-center justify-between">
           <p className="flex flex-col items-center font-bold text-[#6679BE] sm:flex-row">
             ليس لديك حساب ؟
-            <Link
-              to={"/signup"}
-              className="pl-1 text-primary-first underline decoration-2 underline-offset-4"
-            >
+            <Link to={"/signup"} className="pl-1 text-primary-first underline decoration-2 underline-offset-4">
               انشاء حساب
             </Link>
           </p>
@@ -77,18 +62,11 @@ const Login = () => {
         </div>
         <div className="flex w-full flex-col items-center p-10 pt-5 font-bold sm:px-16">
           <h1 className="text-[32px] text-primary-first">تسجيل الدخول</h1>
-          <p className="text-[14px] text-[#6679BE]">
-            سجل دخولك الان لتكون تيمك علي سكرو
-          </p>
+          <p className="text-[14px] text-[#6679BE]">سجل دخولك الان لتكون تيمك علي سكرو</p>
           <hr className="m-2 h-[2px] w-[15rem] bg-[#6679BE]" />
           <Google type={"login"} />
-          <p className="text-[13px] text-Grey-third sm:mt-2">
-            أو سجل الدخول عن طريق بريدك الالكتروني
-          </p>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex w-full max-w-[500px] flex-col gap-5"
-          >
+          <p className="text-[13px] text-Grey-third sm:mt-2">أو سجل الدخول عن طريق بريدك الالكتروني</p>
+          <form onSubmit={handleSubmit(onSubmit)} className="flex w-full max-w-[500px] flex-col gap-5">
             <label htmlFor="email" className="relative max-w-[500px]">
               <span className="ml-1 text-primary-first">البريد الالكتروني</span>
               <svg
@@ -112,7 +90,7 @@ const Login = () => {
                 id="email"
                 type="text"
                 {...register("email", {
-                  required: "required",
+                  required: "required"
                 })}
                 placeholder="بريدك الالكتروني هنا"
                 className={`h-[52px] w-full max-w-[500px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-6 placeholder:text-sm placeholder:text-Grey-third ${errors.email ? "border-red-500" : ""}`}
@@ -140,7 +118,7 @@ const Login = () => {
                 type="password"
                 id="password"
                 {...register("password", {
-                  required: "required",
+                  required: "required"
                 })}
                 placeholder="كلمة المرور هنا"
                 className={`h-[52px] w-full max-w-[500px] rounded-[8px] border-[1px] border-solid border-[#B4B4B4] bg-[#F9F9F9] px-[13px] py-[14px] outline-none placeholder:pr-6 placeholder:text-sm placeholder:text-Grey-third ${errors.password ? "border-red-500" : ""}`}
@@ -151,25 +129,17 @@ const Login = () => {
               <Link to={"/forgetPassword"} className="text-sm hover:underline">
                 هل نسيت الرقم السري؟
               </Link>
-              <label
-                htmlFor="remember"
-                className="flex cursor-pointer items-center"
-              >
+              <label htmlFor="remember" className="flex cursor-pointer items-center">
                 <input
                   type="checkbox"
                   name="remember"
                   id="remember"
                   className="peer relative h-4 w-4 cursor-pointer appearance-none rounded-[4px] border border-gray-300 transition duration-200 checked:border-primary-first checked:bg-primary-first focus:outline-none"
                 />
-                <span className="mr-2 text-sm peer-checked:text-primary-first">
-                  تذكرني
-                </span>
+                <span className="mr-2 text-sm peer-checked:text-primary-first">تذكرني</span>
               </label>
             </div>
-            <button
-              type="submit"
-              className="relative h-[39px] rounded-[8px] bg-primary-first py-[7px] text-primary-fourth hover:bg-gradient-to-r hover:from-[#001354] hover:to-[#002ABA]"
-            >
+            <button type="submit" className="relative h-[39px] rounded-[8px] bg-primary-first py-[7px] text-primary-fourth hover:bg-gradient-to-r hover:from-[#001354] hover:to-[#002ABA]">
               {isLoading ? (
                 <p
                   className="text-surface absolute left-[48%] top-[9px] inline-block h-6 w-6 animate-spin rounded-full border-4 border-solid border-primary-third border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
@@ -178,15 +148,13 @@ const Login = () => {
               ) : (
                 " تسجيل الدخول"
               )}
-              <p className="absolute -bottom-7 left-[50%] flex translate-x-[-50%] flex-wrap gap-4 text-center text-red-500">
-                {errors.email?.type === "server" && errors.email.message}
-              </p>
+              <p className="absolute -bottom-7 left-[50%] flex translate-x-[-50%] flex-wrap gap-4 text-center text-red-500">{errors.email?.type === "server" && errors.email.message}</p>
             </button>
           </form>
         </div>
       </section>
     </main>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login
