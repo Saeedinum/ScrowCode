@@ -4,7 +4,7 @@ import { useAppSelector } from "../store/hooks"
 
 import NotFound from "../pages/NotFound/NotFound"
 
-import Header from "../components/Header"
+import Header from "../components/header/Header"
 
 import Home from "../pages/home/Home"
 import Login from "../features/auth/pages/login/Login"
