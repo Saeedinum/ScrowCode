@@ -45,7 +45,7 @@ const Router = () => {
             { path: "about", element: <About /> },
             {
               path: "CreateTeam",
-              element: auth?.token != undefined ? <CreateTeam /> : <Navigate to="/login" />
+              element: auth?.token != undefined ? auth.hasTeam ? <Navigate to="/" /> : <CreateTeam /> : <Navigate to="/login" />
             },
             {
               path: "FindTeam",
@@ -57,7 +57,7 @@ const Router = () => {
             },
             {
               path: "myTeam",
-              element: auth?.token != undefined ? <Team /> : <Navigate to="/login" />
+              element: auth?.token != undefined ? auth.hasTeam ? <Team /> : <Navigate to="/" /> : <Navigate to="/login" />
             },
             {
               path: "myprofile",

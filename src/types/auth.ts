@@ -5,6 +5,7 @@ export type User = {
   email: string | null
   fullName: string | null
   username: string | null
+  hasTeam: boolean
 }
 
 export type Reset = {

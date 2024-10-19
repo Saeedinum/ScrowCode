@@ -113,7 +113,8 @@ export const authAPI = createApi({
                 token: data.data.token,
                 username: data.data.data.user.Username,
                 fullName: data.data.data.user.fullName,
-                email: data.data.data.user.Email
+                email: data.data.data.user.Email ,
+                hasTeam: ! data.data.data.Available
               })
             )
           }

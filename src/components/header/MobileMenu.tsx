@@ -16,8 +16,9 @@ import teamsIcon from "@/assets/header/teams.png"
 import partnerIcon from "@/assets/header/partner.png"
 import arrow from "@/assets/header/arrow.png"
 
+import { User } from "@/types/auth"
 
-const MobileMenu = ({ token, username, email }: { token: string; username: string; email: string }) => {
+const MobileMenu = ({ user }: { user: User }) => {
   const dispatch = useAppDispatch()
   const location = useLocation()
 
@@ -27,15 +28,15 @@ const MobileMenu = ({ token, username, email }: { token: string; username: strin
         <DrawerTrigger className="z-20 flex cursor-pointer flex-col items-center gap-1 *:h-[3px] *:w-6 *:rounded *:bg-blue-800" aria-label="Menu">
           <p></p> <p></p> <p></p>
         </DrawerTrigger>
-        <DrawerContent className="menu -top-[10vh] h-[60vh] w-screen border-none bg-transparent outline-none backdrop-blur-3xl">
+        <DrawerContent className="menu -top-[10vh] h-[60vh] w-screen border-none bg-transparent outline-none backdrop-blur-3xl sm:hidden">
           <DrawerTitle className="bg-red-500"></DrawerTitle>
-          {token && (
+          {user.token && (
             <DrawerClose asChild>
               <Link className="flex items-center place-self-start text-nowrap text-lg" to={"/myProfile"}>
                 <img src={userIcon} alt="" className="user" />
                 <p className="flex flex-col">
-                  <span className="text-[24px] font-bold">{username}</span>
-                  <span className="text-lg font-medium text-Grey-first">{email}</span>
+                  <span className="text-[24px] font-bold">{user.username}</span>
+                  <span className="text-lg font-medium text-Grey-first">{user.email}</span>
                 </p>
               </Link>
             </DrawerClose>
@@ -54,26 +55,32 @@ const MobileMenu = ({ token, username, email }: { token: string; username: strin
               <img src={findIcon} alt="" className="" />
             </Link>
           </DrawerClose>
-          <DrawerClose asChild>
-            <Link to="/createTeam">
-              انشاء تيم
-              <img src={scenariosIcon} alt="" />
-            </Link>
-          </DrawerClose>
+          {!user.hasTeam && (
+            <DrawerClose asChild>
+              <Link to="/createTeam">
+                انشاء تيم
+                <img src={scenariosIcon} alt="" />
+              </Link>
+            </DrawerClose>
+          )}
+
           <DrawerClose asChild>
             <Link to="/findPartner">
               ابحث عن شريك
               <img src={partnerIcon} alt="" />
             </Link>
           </DrawerClose>
-          {token ? (
+          {user.token ? (
             <>
-              <DrawerClose asChild>
-                <Link to={"/myTeam"}>
-                  التيم الخاص بي
-                  <img src={teamsIcon} alt="" />
-                </Link>
-              </DrawerClose>
+              {user.hasTeam && (
+                <DrawerClose asChild>
+                  <Link to={"/myTeam"}>
+                    التيم الخاص بي
+                    <img src={teamsIcon} alt="" />
+                  </Link>
+                </DrawerClose>
+              )}
+
               <DrawerClose asChild>
                 <button
                   onClick={() => {
