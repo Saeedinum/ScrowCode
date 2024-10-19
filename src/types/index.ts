@@ -1,106 +1,106 @@
 export type TCreateTeamData = {
-  projectArabicName: string;
-  projectEnglishName: string;
-  category: string;
-  projectDescription: string;
+  projectArabicName: string
+  projectEnglishName: string
+  category: string
+  projectDescription: string
   teamMembers: {
-    arabicName: string;
-    username: string;
-  }[];
+    arabicName: string
+    username: string
+  }[]
   requirement: {
-    trackID: string;
-    number: number;
-  }[];
-  supervisor: string;
-  assistantSupervisor: string;
-};
+    trackID: string
+    number: number
+  }[]
+  supervisor: string
+  assistantSupervisor: string
+}
 
 export type TEditTeamData = {
-  projectArabicName: string;
-  projectEnglishName: string;
-  category: string;
-  projectDescription: string;
-  teamMembers: string[];
-  deletedMembers: string[];
+  projectArabicName: string
+  projectEnglishName: string
+  category: string
+  projectDescription: string
+  teamMembers: string[]
+  deletedMembers: string[]
   requirement: {
-    trackID: string;
-    number: number;
-  }[];
-  supervisor: string;
-  assistantSupervisor: string;
-  requirementAdded: string[];
-  requirementDelete: string[];
-};
+    trackID: string
+    number: number
+  }[]
+  supervisor: string
+  assistantSupervisor: string
+  requirementAdded: string[]
+  requirementDelete: string[]
+}
 
 export type TEditProfileData = {
-  arabicName: string;
-  username: string;
+  arabicName: string
+  username: string
 
-  linkedin: string;
-  github: string;
-  behance: string;
+  linkedin: string
+  github: string
+  behance: string
 
-  university: string;
-  college: string;
-  level: number;
-  department: string;
-  universityEmail: string;
+  university: string
+  college: string
+  level: number
+  department: string
+  universityEmail: string
 
-  track: string;
-  skills: string[];
-};
+  track: string
+  skills: string[]
+}
 
 export type Tpartner = {
-  id: string;
-  imageURL?: string;
-  name: string;
-  track: string;
-  status: "available" | "notAvailable" | "pending";
+  id: string
+  imageURL?: string
+  name: string
+  track: string
+  status: "available" | "notAvailable" | "pending"
   skills: {
-    name: string;
-    id: string;
-  }[];
-};
+    name: string
+    id: string
+  }[]
+}
 
 export type Tteam = {
-  id: string;
+  id: string
   name: {
-    english: string;
-    arabic: string;
-  };
-  category: string;
-  status: "available" | "notAvailable" | "pending";
-  description: string;
+    english: string
+    arabic: string
+  }
+  category: string
+  status: "available" | "notAvailable" | "pending"
+  description: string
   members: {
-    max: 8;
-    current: number;
-  };
+    max: 8
+    current: number
+  }
   tracks: {
-    id: string;
-    name: string;
-    maxmembers: number;
+    id: string
+    name: string
+    maxmembers: number
     members: {
-      id: string;
-      name: string;
-      imageURL: string;
-    }[];
-  }[];
-  supervisor: string;
-  assistantSupervisor: string;
-};
+      id: string
+      name: string
+      imageURL: string
+    }[]
+  }[]
+  supervisor: string
+  assistantSupervisor: string
+}
 
 export const emptyTeam: Tteam & { admin: false } = {
   id: "",
   name: {
     english: "",
-    arabic: "",
+    arabic: ""
   },
   category: "",
   status: "available",
   description: "",
   members: {
     max: 8,
-    current: 0,
+    current: 0
   },
   tracks: [
     {
@@ -111,37 +111,37 @@ export const emptyTeam: Tteam & { admin: false } = {
         {
           id: "",
           name: "",
-          imageURL: "",
-        },
-      ],
-    },
+          imageURL: ""
+        }
+      ]
+    }
   ],
   supervisor: "",
   assistantSupervisor: "",
-  admin: false,
-};
+  admin: false
+}
 
 export type TpersonalInformation = {
-  arabicName: string;
-  username: string;
-  phone: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+  arabicName: string
+  username: string
+  phone: string
+  email: string
+  password: string
+  confirmPassword: string
+}
 
 export type TuniversityInformation = {
-  university: string;
-  college: string;
-  level: number;
-  department: string;
-  universityEmail: string;
-};
+  university: string
+  college: string
+  level: number
+  department: string
+  universityEmail: string
+}
 
 export type TtrackInformation = {
-  track: string;
-  skills: string[];
-  linkedin: string;
-  github: string;
-  behance: string;
-};
+  track: string
+  skills: string[]
+  linkedin: string
+  github: string
+  behance: string
+}

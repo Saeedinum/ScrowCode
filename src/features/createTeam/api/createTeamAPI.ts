@@ -1,17 +1,14 @@
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { TCreateTeamData } from "../../../types";
-import { Ttracks } from "@/types/auth";
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
+import { TCreateTeamData } from "../../../types"
+import { Ttracks } from "@/types/auth"
 
 export const createTeamAPI = createApi({
   reducerPath: "createTeamAPI",
   baseQuery: fetchBaseQuery({
-    baseUrl: import.meta.env.VITE_API_BASE_URL,
+    baseUrl: import.meta.env.VITE_API_BASE_URL
   }),
-  endpoints: (builder) => ({
-    createTeam: builder.mutation<
-      void,
-      { data: TCreateTeamData; token: string }
-    >({
+  endpoints: builder => ({
+    createTeam: builder.mutation<void, { data: TCreateTeamData; token: string }>({
       query: ({ data, token }) => ({
         url: "team",
         method: "POST",
@@ -23,20 +20,20 @@ export const createTeamAPI = createApi({
           userName: data.teamMembers,
           requirement: data.requirement,
           doctorName: data.supervisor,
-          doctorviceName: data.assistantSupervisor,
+          doctorviceName: data.assistantSupervisor
         },
         headers: {
-          Authorization: token,
-        },
-      }),
+          Authorization: token
+        }
+      })
     }),
     getTracks: builder.query<Ttracks[], void>({
       query: () => "track",
       transformResponse: (response: { data: Ttracks[] }) => {
-        return response.data;
-      },
-    }),
-  }),
-});
+        return response.data
+      }
+    })
+  })
+})
 
-export const { useCreateTeamMutation, useGetTracksQuery } = createTeamAPI;
+export const { useCreateTeamMutation, useGetTracksQuery } = createTeamAPI

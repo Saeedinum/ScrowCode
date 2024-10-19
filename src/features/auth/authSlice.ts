@@ -1,17 +1,17 @@
-import initializeUser from "@/hooks/useInitializeUser";
-import { Reset, Signup, Ttracks, User } from "@/types/auth";
-import { Tprofile, Tuser } from "@/types/google";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import initializeUser from "@/hooks/useInitializeUser"
+import { Reset, Signup, Ttracks, User } from "@/types/auth"
+import { Tprofile, Tuser } from "@/types/google"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 
 export type AuthState = {
-  user: User;
-  reset: Reset;
-  signup: Signup;
-  tracks: Ttracks[];
+  user: User
+  reset: Reset
+  signup: Signup
+  tracks: Ttracks[]
   google: {
-    user: Tuser | null;
-    profile: Tprofile | null;
-  };
+    user: Tuser | null
+    profile: Tprofile | null
+  }
 }
 
 const initialState: AuthState = {
@@ -20,11 +20,12 @@ const initialState: AuthState = {
     email: null,
     fullName: null,
     username: null,
+    hasTeam: false
   },
   reset: {
     email: null,
     otp: null,
-    newPassword: null,
+    newPassword: null
   },
   signup: {
     PersonalInformation: {
@@ -33,63 +34,55 @@ const initialState: AuthState = {
       phone: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      confirmPassword: ""
     },
     UniversityInformation: {
       university: "",
       college: "",
       level: 0,
       department: "",
-      universityEmail: "",
+      universityEmail: ""
     },
     TrackInformation: {
       track: "",
       skills: [],
       linkedin: "",
       github: "",
-      behance: "",
-    },
+      behance: ""
+    }
   },
   google: {
     user: null,
-    profile: null,
+    profile: null
   },
-  tracks: [],
-};
+  tracks: []
+}
 
 export const authslice = createSlice({
   name: "auth",
   initialState,
   reducers: {
     login: (state, action: PayloadAction<User>) => {
-      state.user = action.payload;
-      initializeUser(
-        action.payload.token!,
-        action.payload.fullName!,
-        action.payload.email!,
-        action.payload.username!,
-      );
+      state.user = action.payload
+      initializeUser(action.payload.token!, action.payload.fullName!, action.payload.email!, action.payload.username!, action.payload.hasTeam!)
     },
 
-    loginWithGoogle: (
-      state,
-      action: PayloadAction<{ user: Tuser; profile: Tprofile }>,
-    ) => {
-      state.google.profile = action.payload.profile;
-      state.google.user = action.payload.user;
-      localStorage.setItem("token", action.payload.user.access_token);
+    loginWithGoogle: (state, action: PayloadAction<{ user: Tuser; profile: Tprofile }>) => {
+      state.google.profile = action.payload.profile
+      state.google.user = action.payload.user
+      localStorage.setItem("token", action.payload.user.access_token)
     },
 
     logout: () => {
-      localStorage.clear();
-      return initialState;
+      localStorage.clear()
+      return initialState
     },
 
     reset: (state, action: PayloadAction<Reset>) => {
       state.reset = {
         ...state.reset,
-        ...action.payload,
-      };
+        ...action.payload
+      }
     },
 
     signup: (state, action: PayloadAction<Partial<Signup>>) => {
@@ -98,31 +91,30 @@ export const authslice = createSlice({
         PersonalInformation: action.payload.PersonalInformation
           ? {
               ...state.signup.PersonalInformation,
-              ...action.payload.PersonalInformation,
+              ...action.payload.PersonalInformation
             }
           : state.signup.PersonalInformation,
         UniversityInformation: action.payload.UniversityInformation
           ? {
               ...state.signup.UniversityInformation,
-              ...action.payload.UniversityInformation,
+              ...action.payload.UniversityInformation
             }
           : state.signup.UniversityInformation,
         TrackInformation: action.payload.TrackInformation
           ? {
               ...state.signup.TrackInformation,
-              ...action.payload.TrackInformation,
+              ...action.payload.TrackInformation
             }
-          : state.signup.TrackInformation,
-      };
+          : state.signup.TrackInformation
+      }
     },
 
     getTracks: (state, action: PayloadAction<Ttracks[]>) => {
-      state.tracks = action.payload;
-    },
-  },
-});
+      state.tracks = action.payload
+    }
+  }
+})
 
-export const { login, logout, reset, signup, getTracks, loginWithGoogle } =
-  authslice.actions;
+export const { login, logout, reset, signup, getTracks, loginWithGoogle } = authslice.actions
 
-export default authslice.reducer;
+export default authslice.reducer
