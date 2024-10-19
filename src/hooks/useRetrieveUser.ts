@@ -4,11 +4,14 @@ import { useAppDispatch } from "@/store/hooks"
 import { decrypt } from "@/utils/crypto"
 import { login } from "@/features/auth/authSlice"
 
+// I'm currently using local storage as a temporary solution for authentication until the backend supports HTTP-Only cookies for better security.
+
 type User = {
   token: string
   username: string
   email: string
   fullName: string
+  hasTeam: boolean
 }
 
 const useRetrieveUser = (): User | void => {
@@ -21,6 +24,8 @@ const useRetrieveUser = (): User | void => {
       const encryptedUsername = localStorage.getItem("SECRET_KEY")
       const encryptedId = localStorage.getItem("DB_PASSWORD")
       const encryptedFullName = localStorage.getItem("AWS_ACCESS_KEY_ID")
+      const hasTeam = localStorage.getItem("hasTeam")
+
       if (!encryptedToken || !encryptedUsername || !encryptedId || !encryptedFullName) {
         throw new Error("Missing encrypted user data")
       }
@@ -37,14 +42,16 @@ const useRetrieveUser = (): User | void => {
             username: username,
             email: email,
             fullName: fullName,
-            token: token
+            token: token,
+            hasTeam: hasTeam === "true"
           })
         )
         setUser({
           token: token,
           username: username,
           email: email,
-          fullName: fullName
+          fullName: fullName,
+          hasTeam: hasTeam === "true"
         })
       }
     } catch (error) {

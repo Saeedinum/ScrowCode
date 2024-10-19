@@ -19,7 +19,8 @@ const initialState: AuthState = {
     token: null,
     email: null,
     fullName: null,
-    username: null
+    username: null,
+    hasTeam: false
   },
   reset: {
     email: null,
@@ -63,7 +64,7 @@ export const authslice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload
-      initializeUser(action.payload.token!, action.payload.fullName!, action.payload.email!, action.payload.username!)
+      initializeUser(action.payload.token!, action.payload.fullName!, action.payload.email!, action.payload.username!, action.payload.hasTeam!)
     },
 
     loginWithGoogle: (state, action: PayloadAction<{ user: Tuser; profile: Tprofile }>) => {
