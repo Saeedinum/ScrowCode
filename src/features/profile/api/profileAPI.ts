@@ -1,51 +1,51 @@
-import { TEditTeamData, Tteam } from "@/types";
-import { Ttracks } from "@/types/auth";
-import { BACKEND_T_profile, BACKEND_T_teams } from "@/types/backend";
-import { getTracksFromMembers } from "@/utils/teamStructure";
-import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
+import { TEditTeamData, Tteam } from "@/types"
+import { Ttracks } from "@/types/auth"
+import { BACKEND_T_profile, BACKEND_T_teams } from "@/types/backend"
+import { getTracksFromMembers } from "@/utils/teamStructure"
+import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
 
 export const profileAPI = createApi({
   reducerPath: "profileAPI",
   baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL }),
   tagTypes: ["profile"],
-  endpoints: (builder) => ({
+  endpoints: builder => ({
     getMyTeam: builder.query({
       query: ({ token }: { token: string; tracks: Ttracks[] }) => ({
         url: "team/myteam",
         method: "GET",
         headers: {
-          authorization: token,
-        },
+          authorization: token
+        }
       }),
       transformResponse: (
         response: {
-          data: BACKEND_T_teams;
-          message: string;
+          data: BACKEND_T_teams
+          message: string
         },
         _,
-        { tracks },
+        { tracks }
       ) => {
-        const item = response.data;
+        const item = response.data
         const team = {
           id: item._id,
           name: {
             english: item.projectNameEnglish,
-            arabic: item.projectNameArabic,
+            arabic: item.projectNameArabic
           },
           category: item.projectCategory,
           status: item.completed ? "notAvailable" : "available",
           description: item.projectDescription,
           members: {
             max: 8,
-            current: item.numOfMember,
+            current: item.numOfMember
           },
           tracks: getTracksFromMembers(item.member, item.requirement, tracks),
           supervisor: item.doctorName,
           assistantSupervisor: item.doctorviceName,
-          admin: response.message === "the status of leader is true",
-        };
-        return team as Tteam & { admin: boolean };
-      },
+          admin: response.message === "the status of leader is true"
+        }
+        return team as Tteam & { admin: boolean }
+      }
     }),
 
     chooseLeader: builder.mutation({
@@ -53,21 +53,13 @@ export const profileAPI = createApi({
         url: `team/chooseleader/${id}`,
         method: "POST",
         headers: {
-          authorization: token,
-        },
-      }),
+          authorization: token
+        }
+      })
     }),
 
     updateTeam: builder.mutation({
-      query: ({
-        token,
-        id,
-        data,
-      }: {
-        token: string;
-        id: string;
-        data: TEditTeamData;
-      }) => ({
+      query: ({ token, id, data }: { token: string; id: string; data: TEditTeamData }) => ({
         url: `team/${id}`,
         method: "PUT",
         body: {
@@ -79,12 +71,12 @@ export const profileAPI = createApi({
           projectCategory: data.category,
           doctorName: data.supervisor,
           doctorviceName: data.assistantSupervisor,
-          memberDelete: data.deletedMembers,
+          memberDelete: data.deletedMembers
         },
         headers: {
-          authorization: token,
-        },
-      }),
+          authorization: token
+        }
+      })
     }),
 
     sendToDoctor: builder.mutation({
@@ -92,9 +84,9 @@ export const profileAPI = createApi({
         url: `team/sendToHead/${id}`,
         method: "POST",
         headers: {
-          authorization: token,
-        },
-      }),
+          authorization: token
+        }
+      })
     }),
 
     getMyProfile: builder.query({
@@ -102,11 +94,10 @@ export const profileAPI = createApi({
         url: id ? `student/profile/${id}` : "student/mybaseInfo",
         method: "GET",
         headers: {
-          authorization: token,
-        },
+          authorization: token
+        }
       }),
-      transformResponse: (response: { data: BACKEND_T_profile }) =>
-        response.data,
+      transformResponse: (response: { data: BACKEND_T_profile }) => response.data
     }),
 
     updateMyProfile: builder.mutation({
@@ -115,18 +106,11 @@ export const profileAPI = createApi({
         method: "PUT",
         body: data,
         headers: {
-          authorization: token,
-        },
-      }),
-    }),
-  }),
-});
+          authorization: token
+        }
+      })
+    })
+  })
+})
 
-export const {
-  useGetMyTeamQuery,
-  useChooseLeaderMutation,
-  useSendToDoctorMutation,
-  useUpdateTeamMutation,
-  useGetMyProfileQuery,
-  useUpdateMyProfileMutation,
-} = profileAPI;
+export const { useGetMyTeamQuery, useChooseLeaderMutation, useSendToDoctorMutation, useUpdateTeamMutation, useGetMyProfileQuery, useUpdateMyProfileMutation } = profileAPI

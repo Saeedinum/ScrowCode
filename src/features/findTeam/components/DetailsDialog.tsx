@@ -1,27 +1,12 @@
-import { Tteam } from "@/types";
+import { Tteam } from "@/types"
 
-import avialableIocn from "@/assets/global/available.svg";
-import waitingIocn from "@/assets/global/waiting.svg";
-import notavialableIocn from "@/assets/global/notAvailable.svg";
+import avialableIocn from "@/assets/global/available.svg"
+import waitingIocn from "@/assets/global/waiting.svg"
+import notavialableIocn from "@/assets/global/notAvailable.svg"
 
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
-const DetailsDialog = ({
-  team,
-  token,
-  handlejoin,
-}: {
-  team: Tteam;
-  token: string;
-  handlejoin: ({ teamID, token }: { teamID: string; token: string }) => void;
-}) => {
+const DetailsDialog = ({ team, token, handlejoin }: { team: Tteam; token: string; handlejoin: ({ teamID, token }: { teamID: string; token: string }) => void }) => {
   return (
     <Dialog>
       <DialogTrigger className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first outline-none">
@@ -69,9 +54,7 @@ const DetailsDialog = ({
               </p>
               <p className="flex flex-col">
                 وصف المشروع
-                <span className="text-[15px] font-[400] text-[#95A3D5]">
-                  {team.description}
-                </span>
+                <span className="text-[15px] font-[400] text-[#95A3D5]">{team.description}</span>
               </p>
             </div>
           </div>
@@ -87,16 +70,12 @@ const DetailsDialog = ({
               <p className="flex gap-1">
                 <span>اسم المشرف الرئيسي</span>
                 <span className="text-[#95A3D5]">(عضو هيئة تدريس):</span>
-                <span className="font-semibold text-primary-first">
-                  {team.supervisor}
-                </span>
+                <span className="font-semibold text-primary-first">{team.supervisor}</span>
               </p>
               <p className="flex gap-1">
                 <span>اسم المشرف المساعد </span>
                 <span className="text-[#95A3D5]">(معيد أو مدرس مساعد):</span>
-                <span className="font-semibold text-primary-first">
-                  {team.assistantSupervisor}
-                </span>
+                <span className="font-semibold text-primary-first">{team.assistantSupervisor}</span>
               </p>
             </div>
           </div>
@@ -111,16 +90,8 @@ const DetailsDialog = ({
               {team.tracks.map((track, index) => (
                 <div key={index} className="flex flex-col">
                   {track.members.map((member, index) => (
-                    <div
-                      key={index}
-                      className="mt-[2px] flex items-center gap-1"
-                    >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill=""
-                        className="ml-1 size-6 fill-Grey-first"
-                      >
+                    <div key={index} className="mt-[2px] flex items-center gap-1">
+                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="" className="ml-1 size-6 fill-Grey-first">
                         <path
                           fillRule="evenodd"
                           d="M18.685 19.097A9.723 9.723 0 0 0 21.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 0 0 3.065 7.097A9.716 9.716 0 0 0 12 21.75a9.716 9.716 0 0 0 6.685-2.653Zm-12.54-1.285A7.486 7.486 0 0 1 12 15a7.486 7.486 0 0 1 5.855 2.812A8.224 8.224 0 0 1 12 20.25a8.224 8.224 0 0 1-5.855-2.438ZM15.75 9a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z"
@@ -128,9 +99,7 @@ const DetailsDialog = ({
                         />
                       </svg>
                       <span className="ml-2 font-semibold">{member.name}</span>
-                      <span className="text-xs font-normal text-[#95A3D5]">
-                        {track.name}
-                      </span>
+                      <span className="text-xs font-normal text-[#95A3D5]">{track.name}</span>
                     </div>
                   ))}
                 </div>
@@ -140,10 +109,7 @@ const DetailsDialog = ({
         </div>
         <DialogFooter>
           {team.status === "pending" ? (
-            <button
-              type="submit"
-              className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first"
-            >
+            <button type="submit" className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] border-[1px] border-primary-first px-[28px] py-2 text-sm font-[400] text-primary-first">
               الغاء الطلب
             </button>
           ) : (
@@ -153,8 +119,8 @@ const DetailsDialog = ({
               onClick={() => {
                 handlejoin({
                   token: token,
-                  teamID: team.id,
-                });
+                  teamID: team.id
+                })
               }}
               className="flex h-[28px] w-[123px] items-center justify-center rounded-[8px] bg-primary-first px-[28px] py-2 text-sm font-[700] text-primary-fourth duration-100 hover:bg-primary-second disabled:bg-[#5D6A93]"
             >
@@ -164,7 +130,7 @@ const DetailsDialog = ({
         </DialogFooter>
       </DialogContent>
     </Dialog>
-  );
-};
+  )
+}
 
-export default DetailsDialog;
+export default DetailsDialog
