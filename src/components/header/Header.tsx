@@ -5,13 +5,12 @@ import { useAppSelector } from "@/store/hooks"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import ProfileDropDown from "./ProfileDropDown"
+import MobileMenu from "./MobileMenu"
 
 import Notifications from "@/features/orders/components/Notifications"
 
 import Logo from "@/assets/global/logo.svg"
 
-import "../HeaderStyle.css"
-import MobileMenu from "./MobileMenu"
 
 const Header = () => {
   const user = useAppSelector(state => state.auth.user)

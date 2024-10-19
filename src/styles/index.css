@@ -72,7 +72,39 @@
   .inputlabel {
     @apply relative w-[350px] sm:w-[400px] lg:w-[450px] xl:w-[550px];
   }
+
+  .menu a , .menu button {
+    @apply flex mt-6 gap-5  text-2xl text-primary-first   w-full  justify-center p-5 
+  }
+  .menu img {
+    @apply w-[35px] flex 
+  }
+  .menu .user {
+    @apply w-[100px]
+  }
+
+
 }
+
+
+/* .menu img {
+  width: 35px;
+  display: flex;
+}
+
+.menu a,
+.menu button {
+  display: flex;
+  margin-top: 24px;
+  gap: 20px;
+  
+}
+
+.menu .user {
+  width: 50px;
+} */
+
+
 
 ::-webkit-scrollbar {
   width: 10px;
