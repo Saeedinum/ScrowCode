@@ -11,7 +11,7 @@ const Footer = () => {
           <Link to={"/"} className="hover:text-primary-third">
             الرئيسية
           </Link>
-          <Link to={"/about"} className="hover:text-primary-third">
+          <Link to={"/"} className="hover:text-primary-third">
             عن سكرو
           </Link>
           <Link to={"/FindTeam"} className="hover:text-primary-third">

@@ -15,7 +15,6 @@ const CreateTeam = lazy(() => import("../features/createTeam/pages/CreateTeam"))
 const FindTeam = lazy(() => import("../features/findTeam/pages/FindTeam"))
 const FindPartner = lazy(() => import("../features/findPartner/pages/FindPartner"))
 const ForgetPassword = lazy(() => import("../features/auth/pages/forget/ForgetPassword"))
-const About = lazy(() => import("@/pages/about/About"))
 const Team = lazy(() => import("../features/profile/pages/Team"))
 const Profile = lazy(() => import("../features/profile/pages/Profile"))
 const PersonalInformation = lazy(() => import("../features/auth/pages/signup/components/PersonalInformation"))
@@ -45,7 +44,6 @@ const Router = () => {
           ),
           children: [
             { index: true, element: <Home /> },
-            { path: "about", element: <About /> },
             {
               path: "CreateTeam",
               element: auth?.token != undefined ? auth.hasTeam ? <Navigate to="/" /> : <CreateTeam /> : <Navigate to="/login" />
