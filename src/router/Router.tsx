@@ -1,25 +1,26 @@
+import { lazy, Suspense } from "react"
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom"
 import { User } from "@/types/auth"
 import { useAppSelector } from "../store/hooks"
 
-import NotFound from "../pages/NotFound/NotFound"
-
-import Header from "../components/header/Header"
+import useRetrieveUser from "@/hooks/useRetrieveUser"
 
 import Home from "../pages/home/Home"
-import Login from "../features/auth/pages/login/Login"
-import SignUp from "../features/auth/pages/signup/SignUp"
-import CreateTeam from "../features/createTeam/pages/CreateTeam"
-import FindTeam from "../features/findTeam/pages/FindTeam"
-import FindPartner from "../features/findPartner/pages/FindPartner"
-import ForgetPassword from "../features/auth/pages/forget/ForgetPassword"
-import About from "@/pages/about/About"
-import useRetrieveUser from "@/hooks/useRetrieveUser"
-import Team from "@/features/profile/pages/Team"
-import Profile from "@/features/profile/pages/Profile"
-import PersonalInformation from "@/features/auth/pages/signup/components/PersonalInformation"
-import UniversityInformation from "@/features/auth/pages/signup/components/UniversityInformation"
-import TrackInformation from "@/features/auth/pages/signup/components/TrackInformation"
+import Header from "../components/header/Header"
+
+const NotFound = lazy(() => import("../pages/NotFound/NotFound"))
+const Login = lazy(() => import("@/features/auth/pages/login/Login"))
+const SignUp = lazy(() => import("../features/auth/pages/signup/SignUp"))
+const CreateTeam = lazy(() => import("../features/createTeam/pages/CreateTeam"))
+const FindTeam = lazy(() => import("../features/findTeam/pages/FindTeam"))
+const FindPartner = lazy(() => import("../features/findPartner/pages/FindPartner"))
+const ForgetPassword = lazy(() => import("../features/auth/pages/forget/ForgetPassword"))
+const About = lazy(() => import("@/pages/about/About"))
+const Team = lazy(() => import("../features/profile/pages/Team"))
+const Profile = lazy(() => import("../features/profile/pages/Profile"))
+const PersonalInformation = lazy(() => import("../features/auth/pages/signup/components/PersonalInformation"))
+const UniversityInformation = lazy(() => import("../features/auth/pages/signup/components/UniversityInformation"))
+const TrackInformation = lazy(() => import("../features/auth/pages/signup/components/TrackInformation"))
 
 import { Toaster } from "@/components/ui/toaster"
 
@@ -36,7 +37,9 @@ const Router = () => {
           element: (
             <>
               <Header />
-              <Outlet />
+              <Suspense>
+                <Outlet />
+              </Suspense>
               <Toaster />
             </>
           ),
@@ -71,11 +74,22 @@ const Router = () => {
         },
         {
           path: "/login",
-          element: auth?.token == undefined ? <Login /> : <Navigate to="/" />
+          element:
+            auth?.token == undefined ? (
+              <Suspense>
+                <Login />
+              </Suspense>
+            ) : (
+              <Navigate to="/" />
+            )
         },
         {
           path: "/signup",
-          element: <SignUp />,
+          element: (
+            <Suspense>
+              <SignUp />
+            </Suspense>
+          ),
           children: [
             {
               index: true,
