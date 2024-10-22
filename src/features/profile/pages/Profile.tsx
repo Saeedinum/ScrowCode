@@ -73,7 +73,7 @@ const Profile = () => {
           <div className="flex gap-5">
             <div className="flex flex-col items-center">
               <img
-                src="/src/assets/global/userProfileIcon.png"
+                src="/src/assets/global/userProfileIcon.webp"
                 alt=""
                 className="rounded-[8px] lg:h-[147px] lg:w-[156px]"
               />

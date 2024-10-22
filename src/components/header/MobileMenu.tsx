@@ -1,10 +1,10 @@
 import { Link, useLocation } from "react-router-dom"
 
 import { useAppDispatch } from "@/store/hooks"
+import { logout } from "@/features/auth/authSlice"
 
 import { Drawer, DrawerClose, DrawerContent, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer"
 
-import { logout } from "@/features/auth/authSlice"
 import homeIcon from "@/assets/header/home.svg"
 import findIcon from "@/assets/header/find.svg"
 import loginIcon from "@/assets/header/login.svg"
@@ -12,9 +12,9 @@ import logoutIcon from "@/assets/header/logout.svg"
 import scenariosIcon from "@/assets/header/scenarios.svg"
 import signupIcon from "@/assets/header/signup.svg"
 import userIcon from "@/assets/header/user.svg"
-import teamsIcon from "@/assets/header/teams.png"
-import partnerIcon from "@/assets/header/partner.png"
-import arrow from "@/assets/header/arrow.png"
+import teamsIcon from "@/assets/header/teams.webp"
+import partnerIcon from "@/assets/header/partner.webp"
+import arrow from "@/assets/header/arrow.webp"
 
 import { User } from "@/types/auth"
 

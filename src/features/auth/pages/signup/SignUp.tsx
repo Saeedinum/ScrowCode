@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from "react-router-dom"
-import background from "/src/assets//auth//login.png"
+import background from "/src/assets//auth//login.webp"
 import logo from "/src/assets/global/logo.svg"
 import { useAppSelector } from "@/store/hooks"
 import { useEffect, useState } from "react"
