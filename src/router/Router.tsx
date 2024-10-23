@@ -5,21 +5,21 @@ import { useAppSelector } from "../store/hooks"
 
 import useRetrieveUser from "@/hooks/useRetrieveUser"
 
-import Home from "../pages/home/Home"
 import Header from "../components/header/Header"
+import Home from "../pages/home/Home"
 
-const NotFound = lazy(() => import("../pages/NotFound/NotFound"))
-const Login = lazy(() => import("@/features/auth/pages/login/Login"))
-const SignUp = lazy(() => import("../features/auth/pages/signup/SignUp"))
+const UniversityInformation = lazy(() => import("../features/auth/pages/signup/components/UniversityInformation"))
+const PersonalInformation = lazy(() => import("../features/auth/pages/signup/components/PersonalInformation"))
+const TrackInformation = lazy(() => import("../features/auth/pages/signup/components/TrackInformation"))
+const ForgetPassword = lazy(() => import("../features/auth/pages/forget/ForgetPassword"))
+const FindPartner = lazy(() => import("../features/findPartner/pages/FindPartner"))
 const CreateTeam = lazy(() => import("../features/createTeam/pages/CreateTeam"))
 const FindTeam = lazy(() => import("../features/findTeam/pages/FindTeam"))
-const FindPartner = lazy(() => import("../features/findPartner/pages/FindPartner"))
-const ForgetPassword = lazy(() => import("../features/auth/pages/forget/ForgetPassword"))
-const Team = lazy(() => import("../features/profile/pages/Team"))
+const SignUp = lazy(() => import("../features/auth/pages/signup/SignUp"))
 const Profile = lazy(() => import("../features/profile/pages/Profile"))
-const PersonalInformation = lazy(() => import("../features/auth/pages/signup/components/PersonalInformation"))
-const UniversityInformation = lazy(() => import("../features/auth/pages/signup/components/UniversityInformation"))
-const TrackInformation = lazy(() => import("../features/auth/pages/signup/components/TrackInformation"))
+const Login = lazy(() => import("@/features/auth/pages/login/Login"))
+const Team = lazy(() => import("../features/profile/pages/Team"))
+const Error = lazy(() => import("../pages/error/Error"))
 
 import { Toaster } from "@/components/ui/toaster"
 
@@ -42,6 +42,7 @@ const Router = () => {
               <Toaster />
             </>
           ),
+          errorElement: <Error type="error" />,
           children: [
             { index: true, element: <Home /> },
             {
@@ -68,7 +69,8 @@ const Router = () => {
               path: "profile/:id",
               element: <Profile />
             }
-          ]
+          ],
+         
         },
         {
           path: "/login",
@@ -104,7 +106,7 @@ const Router = () => {
           ]
         },
         { path: "forgetPassword", element: <ForgetPassword /> },
-        { path: "*", element: <NotFound /> }
+        { path: "*", element: <Error type="notFound" /> }
       ])}
     />
   )
