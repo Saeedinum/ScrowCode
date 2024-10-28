@@ -4,8 +4,6 @@ import { useAppDispatch } from "@/store/hooks"
 import { decrypt } from "@/utils/crypto"
 import { login } from "@/features/auth/authSlice"
 
-// I'm currently using local storage as a temporary solution for authentication until the backend supports HTTP-Only cookies for better security.
-
 type User = {
   token: string
   username: string

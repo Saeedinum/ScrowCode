@@ -10,7 +10,7 @@ import { logout } from "@/features/auth/authSlice"
 
 import logoutIcon from "@/assets/header/logout.svg"
 import userIcon from "@/assets/header/user.svg"
-import teamsIcon from "@/assets/header/teams.png"
+import teamsIcon from "@/assets/header/teams.webp"
 
 const ProfileDropDown = ({ user }: { user: User }) => {
   const dispatch = useAppDispatch()

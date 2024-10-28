@@ -11,7 +11,7 @@ import { TCreateTeamData } from "@/types"
 import { Ttracks } from "@/types/auth"
 import { BACKEND_T_createTeamError } from "@/types/backend"
 
-import background from "@/assets/create/create.png"
+import background from "@/assets/create/create.webp"
 import Track from "../components/Track"
 
 import "../index.css"

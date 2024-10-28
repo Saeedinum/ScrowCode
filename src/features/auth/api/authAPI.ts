@@ -6,7 +6,7 @@ import { Tprofile, Tuser } from "@/types/google"
 
 export const authAPI = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL, credentials: "include" }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL }),
   endpoints: builder => ({
     getTracks: builder.query({
       query: () => "track",

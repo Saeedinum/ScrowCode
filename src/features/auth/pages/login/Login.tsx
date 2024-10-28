@@ -4,7 +4,7 @@ import { z } from "zod"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useLoginUserMutation } from "../../api/authAPI"
 
-import background from "/src/assets//auth//login.png"
+import background from "/src/assets//auth//login.webp"
 import logo from "/src/assets/global/logo.svg"
 import { TLoginData } from "@/types/auth"
 import Google from "../../google/Google"
