@@ -3,7 +3,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { personalInformationSchema } from "@/schema/signup";
 import { TpersonalInformation } from "@/types";
 import { useSignupUserMutation } from "@/features/auth/api/authAPI";
-import Google from "@/features/auth/google/Google";
 import useCheckUsername from "@/hooks/useCheckUsername";
 
 import emailIcon from "@/assets/auth/signup/email.svg";
@@ -74,7 +73,6 @@ const PersonalInformation = () => {
       dir="rtl"
       className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center lg:px-20"
     >
-      <Google type="sign" />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="flex w-full flex-col items-center gap-5"

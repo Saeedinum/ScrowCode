@@ -7,7 +7,6 @@ import { useLoginUserMutation } from "../../api/authAPI"
 import background from "/src/assets//auth//login.webp"
 import logo from "/src/assets/global/logo.svg"
 import { TLoginData } from "@/types/auth"
-import Google from "../../google/Google"
 
 const schema = z.object({
   email: z.string().min(1, { message: "Email is required" }).email({ message: "Please enter a valid email" }),
@@ -64,7 +63,6 @@ const Login = () => {
           <h1 className="text-[32px] text-primary-first">تسجيل الدخول</h1>
           <p className="text-[14px] text-[#6679BE]">سجل دخولك الان لتكون تيمك علي سكرو</p>
           <hr className="m-2 h-[2px] w-[15rem] bg-[#6679BE]" />
-          <Google type={"login"} />
           <p className="text-[13px] text-Grey-third sm:mt-2">أو سجل الدخول عن طريق بريدك الالكتروني</p>
           <form onSubmit={handleSubmit(onSubmit)} className="flex w-full max-w-[500px] flex-col gap-5">
             <label htmlFor="email" className="relative max-w-[500px]">
