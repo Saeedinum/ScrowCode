@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-rou
 import { User } from "@/types/auth"
 import { useAppSelector } from "../store/hooks"
 
-// import useRetrieveUser from "@/hooks/useRetrieveUser"
+import useRetrieveUser from "@/hooks/useRetrieveUser"
 
 import Header from "../components/header/Header"
 import Home from "../pages/home/Home"
@@ -25,7 +25,7 @@ import { Toaster } from "@/components/ui/toaster"
 
 const Router = () => {
   const auth: User = useAppSelector(state => state.auth.user)
-  // useRetrieveUser()
+  useRetrieveUser()
 
   return (
     <RouterProvider

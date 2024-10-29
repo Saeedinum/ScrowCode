@@ -1,4 +1,3 @@
-import initializeUser from "@/hooks/useInitializeUser"
 import { Reset, Signup, Ttracks, User } from "@/types/auth"
 import { Tprofile, Tuser } from "@/types/google"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
@@ -64,7 +63,9 @@ export const authslice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload
-      initializeUser(action.payload.token!, action.payload.fullName!, action.payload.email!, action.payload.username!, action.payload.hasTeam!)
+     if (action.payload.token) {
+       localStorage.setItem("token", action.payload.token)
+     }
     },
 
     logout: () => {
