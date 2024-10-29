@@ -22,11 +22,7 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
     const otpCode = data.otp.join("")
     await verifyEmailStudent({
       code: otpCode,
-      token: localStorage.getItem("token")!,
-      data: {
-        ...signupData.UniversityInformation,
-        ...signupData.TrackInformation
-      }
+      token: localStorage.getItem("token")!
     })
     if (verifyEmailStudenttData?.data.status == "success") {
       navigate("/")

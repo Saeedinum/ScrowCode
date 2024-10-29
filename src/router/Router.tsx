@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-rou
 import { User } from "@/types/auth"
 import { useAppSelector } from "../store/hooks"
 
-import useRetrieveUser from "@/hooks/useRetrieveUser"
+// import useRetrieveUser from "@/hooks/useRetrieveUser"
 
 import Header from "../components/header/Header"
 import Home from "../pages/home/Home"
@@ -25,7 +25,6 @@ import { Toaster } from "@/components/ui/toaster"
 
 const Router = () => {
   const auth: User = useAppSelector(state => state.auth.user)
-  const signup = useAppSelector(state => state.auth.signup)
   // useRetrieveUser()
 
   return (
@@ -93,15 +92,15 @@ const Router = () => {
           children: [
             {
               index: true,
-              element: signup.PersonalInformation.email !== "" ? <Navigate to={"/signup/university"} /> : <PersonalInformation />
+              element:  <PersonalInformation />
             },
             {
               path: "/signup/university",
-              element: signup.PersonalInformation.email === "" ? <Navigate to={"/signup"} /> : <UniversityInformation />
+              element:  <UniversityInformation />
             },
             {
               path: "/signup/track",
-              element: signup.UniversityInformation.universityEmail === "" ? <Navigate to={"/signup"} /> : <TrackInformation />
+              element:  <TrackInformation />
             }
           ]
         },
