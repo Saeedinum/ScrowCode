@@ -22,10 +22,12 @@ const Team = lazy(() => import("../features/profile/pages/Team"))
 const Error = lazy(() => import("../pages/error/Error"))
 
 import { Toaster } from "@/components/ui/toaster"
+import useOffline from "@/hooks/useOffline"
 
 const Router = () => {
   const auth: User = useAppSelector(state => state.auth.user)
   useRetrieveUser()
+  useOffline()
 
   return (
     <RouterProvider
