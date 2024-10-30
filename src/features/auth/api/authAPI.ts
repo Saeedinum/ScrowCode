@@ -1,12 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-import { getTracks, login, reset, loginWithGoogle, signup } from "../authSlice"
+import { getTracks, login, reset } from "../authSlice"
 
 import { TpersonalInformation, TuniversityInformation, TtrackInformation } from "@/types"
-import { Tprofile, Tuser } from "@/types/google"
 
 export const authAPI = createApi({
   reducerPath: "api",
-  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL, credentials: "include" }),
+  baseQuery: fetchBaseQuery({ baseUrl: import.meta.env.VITE_API_BASE_URL }),
   endpoints: builder => ({
     getTracks: builder.query({
       query: () => "track",
@@ -16,32 +15,8 @@ export const authAPI = createApi({
       }
     }),
 
-    googleSignup: builder.query({
-      query: (user: Tuser) => ({
-        url: `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${user.access_token}`,
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${user.access_token}`,
-          Accept: "application/json"
-        }
-      }),
-      async onQueryStarted(arg, { queryFulfilled, dispatch }) {
-        try {
-          const { data }: { data: Tprofile } = await queryFulfilled
-          dispatch(
-            loginWithGoogle({
-              user: arg,
-              profile: data
-            })
-          )
-        } catch (error) {
-          console.error("Request failed:", error)
-        }
-      }
-    }),
-
     signupUser: builder.mutation({
-      query: (userData: TpersonalInformation) => ({
+      query: (userData: TpersonalInformation & TuniversityInformation & TtrackInformation) => ({
         url: "authen/signup",
         method: "POST",
         body: {
@@ -50,44 +25,27 @@ export const authAPI = createApi({
           password: userData.password,
           passwordConfirm: userData.confirmPassword,
           Username: userData.username,
-          phone: userData.phone
+          phone: userData.phone,
+          university: userData.university,
+          college: userData.college,
+          universityemail: userData.universityEmail,
+          department: userData.department,
+          level: userData.level,
+          trackId: [userData.track],
+          skillId: userData.skills,
+          linkedin: userData.linkedin,
+          github: userData.github,
+          behance: userData.behance
         }
-      }),
-      async onQueryStarted(args, { queryFulfilled, dispatch }): Promise<void> {
-        try {
-          const data = await queryFulfilled
-          if (data.data.status === "success") {
-            localStorage.setItem("token", data.data.token)
-            dispatch(
-              signup({
-                PersonalInformation: {
-                  ...args
-                }
-              })
-            )
-          }
-        } catch (error) {
-          console.error("Request failed:", error)
-        }
-      }
+      })
     }),
 
     verifyEmailStudent: builder.mutation({
-      query: ({ token, code, data }: { token: string; code: string; data: TuniversityInformation & TtrackInformation }) => ({
+      query: ({ token, code }: { token: string; code: string }) => ({
         url: "authen/verifyEmailStudent",
         method: "POST",
         body: {
-          code: code,
-          university: data.university,
-          college: data.college,
-          universityemail: data.universityEmail,
-          department: data.department,
-          level: data.level,
-          trackId: [data.track],
-          skillId: data.skills,
-          linkedin: data.linkedin,
-          github: data.github,
-          behance: data.behance
+          code: code
         },
         headers: {
           Authorization: token
@@ -192,6 +150,5 @@ export const {
   useForgetpassMutation,
   useResetpasswordMutation,
   useVerifycodeMutation,
-  useGoogleSignupQuery,
   useCheckUsernameMutation
 } = authAPI

@@ -1,32 +1,33 @@
+import { lazy, Suspense } from "react"
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom"
 import { User } from "@/types/auth"
 import { useAppSelector } from "../store/hooks"
 
-import NotFound from "../pages/NotFound/NotFound"
+import useRetrieveUser from "@/hooks/useRetrieveUser"
 
 import Header from "../components/header/Header"
-
 import Home from "../pages/home/Home"
-import Login from "../features/auth/pages/login/Login"
-import SignUp from "../features/auth/pages/signup/SignUp"
-import CreateTeam from "../features/createTeam/pages/CreateTeam"
-import FindTeam from "../features/findTeam/pages/FindTeam"
-import FindPartner from "../features/findPartner/pages/FindPartner"
-import ForgetPassword from "../features/auth/pages/forget/ForgetPassword"
-import About from "@/pages/about/About"
-import useRetrieveUser from "@/hooks/useRetrieveUser"
-import Team from "@/features/profile/pages/Team"
-import Profile from "@/features/profile/pages/Profile"
-import PersonalInformation from "@/features/auth/pages/signup/components/PersonalInformation"
-import UniversityInformation from "@/features/auth/pages/signup/components/UniversityInformation"
-import TrackInformation from "@/features/auth/pages/signup/components/TrackInformation"
+
+const UniversityInformation = lazy(() => import("../features/auth/pages/signup/components/UniversityInformation"))
+const PersonalInformation = lazy(() => import("../features/auth/pages/signup/components/PersonalInformation"))
+const TrackInformation = lazy(() => import("../features/auth/pages/signup/components/TrackInformation"))
+const ForgetPassword = lazy(() => import("../features/auth/pages/forget/ForgetPassword"))
+const FindPartner = lazy(() => import("../features/findPartner/pages/FindPartner"))
+const CreateTeam = lazy(() => import("../features/createTeam/pages/CreateTeam"))
+const FindTeam = lazy(() => import("../features/findTeam/pages/FindTeam"))
+const SignUp = lazy(() => import("../features/auth/pages/signup/SignUp"))
+const Profile = lazy(() => import("../features/profile/pages/Profile"))
+const Login = lazy(() => import("@/features/auth/pages/login/Login"))
+const Team = lazy(() => import("../features/profile/pages/Team"))
+const Error = lazy(() => import("../pages/error/Error"))
 
 import { Toaster } from "@/components/ui/toaster"
+import useOffline from "@/hooks/useOffline"
 
 const Router = () => {
   const auth: User = useAppSelector(state => state.auth.user)
-  const signup = useAppSelector(state => state.auth.signup)
   useRetrieveUser()
+  useOffline()
 
   return (
     <RouterProvider
@@ -35,14 +36,16 @@ const Router = () => {
           path: "/",
           element: (
             <>
-              <Header />
-              <Outlet />
-              <Toaster />
+              <Suspense>
+                <Header />
+                <Outlet />
+                <Toaster />
+              </Suspense>
             </>
           ),
+          errorElement: <Error type="error" />,
           children: [
             { index: true, element: <Home /> },
-            { path: "about", element: <About /> },
             {
               path: "CreateTeam",
               element: auth?.token != undefined ? auth.hasTeam ? <Navigate to="/" /> : <CreateTeam /> : <Navigate to="/login" />
@@ -71,28 +74,46 @@ const Router = () => {
         },
         {
           path: "/login",
-          element: auth?.token == undefined ? <Login /> : <Navigate to="/" />
+          element:
+            auth?.token == undefined ? (
+              <Suspense>
+                <Login />
+              </Suspense>
+            ) : (
+              <Navigate to="/" />
+            )
         },
         {
           path: "/signup",
-          element: <SignUp />,
+          element: (
+            <Suspense>
+              <SignUp />
+            </Suspense>
+          ),
           children: [
             {
               index: true,
-              element: signup.PersonalInformation.email !== "" ? <Navigate to={"/signup/university"} /> : <PersonalInformation />
+              element: <PersonalInformation />
             },
             {
               path: "/signup/university",
-              element: signup.PersonalInformation.email === "" ? <Navigate to={"/signup"} /> : <UniversityInformation />
+              element: <UniversityInformation />
             },
             {
               path: "/signup/track",
-              element: signup.UniversityInformation.universityEmail === "" ? <Navigate to={"/signup"} /> : <TrackInformation />
+              element: <TrackInformation />
             }
           ]
         },
-        { path: "forgetPassword", element: <ForgetPassword /> },
-        { path: "*", element: <NotFound /> }
+        {
+          path: "forgetPassword",
+          element: (
+            <Suspense>
+              <ForgetPassword />
+            </Suspense>
+          )
+        },
+        { path: "*", element: <Error type="notFound" /> }
       ])}
     />
   )

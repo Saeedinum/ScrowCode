@@ -1,12 +1,13 @@
-import { useState } from "react"
+import { lazy, useState } from "react"
 import { Link, NavLink } from "react-router-dom"
 
 import { useAppSelector } from "@/store/hooks"
 
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import Notifications from "@/features/orders/components/Notifications"
-import ProfileDropDown from "./ProfileDropDown"
-import MobileMenu from "./MobileMenu"
+
+const Notifications = lazy(() => import("@/features/orders/components/Notifications"))
+const ProfileDropDown = lazy(() => import("./ProfileDropDown"))
+const MobileMenu = lazy(() => import("./MobileMenu"))
 
 import Logo from "@/assets/global/logo.svg"
 

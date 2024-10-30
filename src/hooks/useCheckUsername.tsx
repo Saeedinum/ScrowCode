@@ -19,15 +19,7 @@ function useCheckUsername<T extends FieldValues>(username: string, setError: Use
       const { success } = zValidation.safeParse({ username })
 
       if (success) {
-        try {
-          checkUsername({ username })
-        } catch (error) {
-          setError("username" as Path<T>, {
-            type: "custom",
-            message: "username already used"
-          })
-          setStatus("unValid")
-        }
+        checkUsername({ username })
       } else {
         if (username.length < 6) {
           setError("username" as Path<T>, {
@@ -36,11 +28,9 @@ function useCheckUsername<T extends FieldValues>(username: string, setError: Use
           })
           setStatus("empty")
           setUi(
-            <>
-              <p dir="ltr" className="absolute right-4 top-[39px] font-medium text-red-400">
-                6-16 characters
-              </p>
-            </>
+            <p dir="ltr" className="absolute right-4 top-[39px] font-medium text-red-400">
+              6-16 characters
+            </p>
           )
         } else {
           setError("username" as Path<T>, {
@@ -49,11 +39,9 @@ function useCheckUsername<T extends FieldValues>(username: string, setError: Use
           })
           setStatus("unValid")
           setUi(
-            <>
-              <p dir="ltr" className="absolute right-4 top-[39px] font-medium text-red-400">
-                not available
-              </p>
-            </>
+            <p dir="ltr" className="absolute right-4 top-[39px] font-medium text-red-400">
+              not available
+            </p>
           )
         }
       }
@@ -87,7 +75,7 @@ function useCheckUsername<T extends FieldValues>(username: string, setError: Use
           role="status"
         ></p>
       )
-    } else if (data === "creative") {
+    } else if (data === "false") {
       setStatus("valid")
       clearErrors("username" as Path<T>)
       setUi(
@@ -99,8 +87,26 @@ function useCheckUsername<T extends FieldValues>(username: string, setError: Use
           />
         </svg>
       )
+    } else if (data === "true") {
+      setStatus("unValid")
+      setError("username" as Path<T>, {
+        type: "custom",
+        message: "username already used"
+      })
+      setUi(
+        <>
+          <p className="absolute right-12 top-[39px] font-medium text-red-600">username already used</p>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="absolute right-5 top-[40px] size-6 fill-red-600 font-bold">
+            <path
+              fillRule="evenodd"
+              d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+              clipRule="evenodd"
+            />
+          </svg>
+        </>
+      )
     }
-  }, [data, isLoading, isError, clearErrors])
+  }, [data, isLoading, isError, clearErrors, setError])
 
   return { status, ui }
 }

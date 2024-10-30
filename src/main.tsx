@@ -15,6 +15,12 @@ import "../src/styles/index.css"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/react"
 
+if (process.env.NODE_ENV === "production") {
+  console.log = function () {}
+  console.warn = function () {}
+  console.error = function () {}
+}
+
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <>
     <Analytics />

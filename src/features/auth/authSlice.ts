@@ -1,4 +1,3 @@
-import initializeUser from "@/hooks/useInitializeUser"
 import { Reset, Signup, Ttracks, User } from "@/types/auth"
 import { Tprofile, Tuser } from "@/types/google"
 import { createSlice, PayloadAction } from "@reduxjs/toolkit"
@@ -31,7 +30,7 @@ const initialState: AuthState = {
     PersonalInformation: {
       arabicName: "",
       username: "",
-      phone: "",
+      phone: "+20",
       email: "",
       password: "",
       confirmPassword: ""
@@ -45,7 +44,7 @@ const initialState: AuthState = {
     },
     TrackInformation: {
       track: "",
-      skills: [],
+      skills: [""],
       linkedin: "",
       github: "",
       behance: ""
@@ -64,13 +63,9 @@ export const authslice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload
-      initializeUser(action.payload.token!, action.payload.fullName!, action.payload.email!, action.payload.username!, action.payload.hasTeam!)
-    },
-
-    loginWithGoogle: (state, action: PayloadAction<{ user: Tuser; profile: Tprofile }>) => {
-      state.google.profile = action.payload.profile
-      state.google.user = action.payload.user
-      localStorage.setItem("token", action.payload.user.access_token)
+     if (action.payload.token) {
+       localStorage.setItem("token", action.payload.token)
+     }
     },
 
     logout: () => {
@@ -100,12 +95,6 @@ export const authslice = createSlice({
               ...action.payload.UniversityInformation
             }
           : state.signup.UniversityInformation,
-        TrackInformation: action.payload.TrackInformation
-          ? {
-              ...state.signup.TrackInformation,
-              ...action.payload.TrackInformation
-            }
-          : state.signup.TrackInformation
       }
     },
 
@@ -115,6 +104,6 @@ export const authslice = createSlice({
   }
 })
 
-export const { login, logout, reset, signup, getTracks, loginWithGoogle } = authslice.actions
+export const { login, logout, reset, signup, getTracks } = authslice.actions
 
 export default authslice.reducer
