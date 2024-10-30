@@ -1,56 +1,50 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { universityInformationSchema } from "@/schema/signup";
-import { TuniversityInformation } from "@/types";
-import { signup } from "@/features/auth/authSlice";
-import { useAppDispatch } from "@/store/hooks";
-import { useNavigate } from "react-router-dom";
-import { useGetTracksQuery } from "@/features/auth/api/authAPI";
+import { useForm } from "react-hook-form"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { universityInformationSchema } from "@/schema/signup"
+import { TuniversityInformation } from "@/types"
+import { signup } from "@/features/auth/authSlice"
+import { useAppDispatch, useAppSelector } from "@/store/hooks"
+import { useNavigate } from "react-router-dom"
+import { useGetTracksQuery } from "@/features/auth/api/authAPI"
 
 const UniversityInformation = () => {
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
+  const dispatch = useAppDispatch()
+  const navigate = useNavigate()
+
+  const UniversityInformation = useAppSelector(state => state.auth.signup.UniversityInformation)
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<TuniversityInformation>({
     resolver: zodResolver(universityInformationSchema),
-  });
+    defaultValues: {
+      ...UniversityInformation
+    }
+  })
 
   const onSubmit = async (data: TuniversityInformation) => {
     dispatch(
       signup({
-        UniversityInformation: data,
-      }),
-    );
-    navigate("/signup/track", { replace: true });
-  };
+        UniversityInformation: data
+      })
+    )
+    navigate("/signup/track", { replace: true })
+  }
 
   useGetTracksQuery(undefined, {
     refetchOnMountOrArgChange: false,
     refetchOnReconnect: false,
-    refetchOnFocus: false,
-  });
+    refetchOnFocus: false
+  })
 
   return (
-    <section
-      dir="rtl"
-      className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center lg:px-20"
-    >
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="flex w-full flex-col items-center gap-7"
-      >
+    <section dir="rtl" className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center lg:px-20">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col items-center gap-7">
         <label htmlFor="university" className="inputlabel">
           <span className="ml-2 text-primary-first">الجامعة االملتحق بها</span>
-          <select
-            id="university"
-            className={`inputfield px-[13px] py-[14px] placeholder:pr-1`}
-            {...register("university")}
-          >
+          <select id="university" className={`inputfield px-[13px] py-[14px] placeholder:pr-1`} {...register("university")}>
             <option value="Suez canal university">جامعة قناة السويس</option>
           </select>
         </label>
@@ -59,13 +53,11 @@ const UniversityInformation = () => {
           <select
             id="collage"
             {...register("college", {
-              required: "required",
+              required: "required"
             })}
             className={`inputfield px-[13px] py-[14px] placeholder:pr-1`}
           >
-            <option value="computer and information">
-              كلية الحاسبات والمعلومات
-            </option>
+            <option value="computer and information">كلية الحاسبات والمعلومات</option>
           </select>
         </label>
         <label htmlFor="level" className="inputlabel">
@@ -74,7 +66,7 @@ const UniversityInformation = () => {
             defaultValue="1"
             id="level"
             {...register("level", {
-              valueAsNumber: true,
+              valueAsNumber: true
             })}
             className={`inputfield px-[13px] py-[14px] placeholder:pl-1`}
           >
@@ -86,11 +78,7 @@ const UniversityInformation = () => {
         </label>
         <label htmlFor="department" className="inputlabel">
           <span className="ml-2 text-primary-first">القسم</span>
-          <select
-            id="department"
-            {...register("department", {})}
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-1`}
-          >
+          <select id="department" {...register("department", {})} className={`inputfield px-[13px] py-[14px] placeholder:pl-1`}>
             <option value="Bio">BioInformatics</option>
             <option value="Software">Software</option>
             <option value="CS">Computer Science </option>
@@ -107,7 +95,7 @@ const UniversityInformation = () => {
             id="universityEmail"
             type="text"
             {...register("universityEmail", {
-              required: "required",
+              required: "required"
             })}
             dir="ltr"
             placeholder="eg: ugs.1234@ci.suez.edu.eg"
@@ -115,27 +103,24 @@ const UniversityInformation = () => {
           />
         </label>
         <button
+          type="button"
+          onClick={() => navigate("/signup", { replace: true })}
+          className="inputlabel flex h-[39px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth"
+        >
+          الخطوة السابقة
+        </button>
+        <button
           type="submit"
           className="inputlabel flex h-[39px] items-center justify-center gap-2 rounded-[8px] bg-primary-second py-[7px] text-primary-fourth duration-500 hover:bg-primary-first max-sm:mb-10"
         >
           الخطوة التالية
-          <svg
-            width="16"
-            height="15"
-            viewBox="0 0 16 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0.833008 7.5H14.1663M14.1663 7.5L8.16634 1.5M14.1663 7.5L8.16634 13.5"
-              stroke="white"
-              strokeWidth="2"
-            />
+          <svg width="16" height="15" viewBox="0 0 16 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M0.833008 7.5H14.1663M14.1663 7.5L8.16634 1.5M14.1663 7.5L8.16634 13.5" stroke="white" strokeWidth="2" />
           </svg>
         </button>
       </form>
     </section>
-  );
-};
+  )
+}
 
-export default UniversityInformation;
+export default UniversityInformation

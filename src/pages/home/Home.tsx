@@ -1,4 +1,4 @@
-import { useRef, lazy } from "react"
+import { useRef, lazy, Suspense } from "react"
 
 import useSmoothScroll from "@/hooks/useSmoothScroll"
 
@@ -10,11 +10,11 @@ import officeWorker from "@/assets/home/officeWorker.webp"
 import Vector from "@/assets/home/Vector.webp"
 import downloadIcon from "@/assets/home/download.svg"
 
-
 const Footer = lazy(() => import("./components/Footer"))
 const Start = lazy(() => import("./components/Start"))
 
 import "./index.css"
+import { Helmet } from "react-helmet"
 
 const Home = () => {
   const smoothScroll = useSmoothScroll(500)
@@ -24,6 +24,10 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>سكرو كود</title>
+        <meta name="description" content="سكرو كود" />
+      </Helmet>
       <main dir="rtl" className="flex max-w-full flex-col">
         <section className="relative flex items-center justify-center overflow-x-clip">
           <img src={backgroundleft} rel="preload" alt="background image" className="absolute left-0 top-0 z-0 max-lg:w-[40%] lg:-top-24" />
@@ -81,10 +85,13 @@ const Home = () => {
           </div>
           <img src={Vector} alt="" className="absolute bottom-0 left-1/2 w-[70%] translate-x-[-50%] sm:w-[50%]" />
         </section>
-
-        <Start startSection={startSection} />
+        <Suspense>
+          <Start startSection={startSection} />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   )
 }

@@ -18,6 +18,7 @@ import { useGetStudentsQuery, useSendOrderToStudentMutation } from "../api/findP
 import { getPartners, requestPartnerLocally, unrequestPartnerLocally } from "../partnersSlice"
 
 import FindPartnerSkeleton from "../components/FindPartnerSkeleton"
+import { Helmet } from "react-helmet"
 
 const FindPartner = () => {
   const { toast } = useToast()
@@ -69,6 +70,10 @@ const FindPartner = () => {
 
   return (
     <main className="flex flex-col items-center">
+      <Helmet>
+        <title>ابحث عن شريكك</title>
+        <meta name="description" content="ابحث عن الشريك المناسب لك بما يناسب فريقك" />
+      </Helmet>
       <h1 className="mt-10 text-[32px] font-[700] text-primary-first">ابحث عن شريكك</h1>
       <p className="text-[15px] font-[500] text-Grey-first">ابحث عن الشريك المناسب لك بما يناسب فريقك</p>
       <div className="mt-10 flex h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">

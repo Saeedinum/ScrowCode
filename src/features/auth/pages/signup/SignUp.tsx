@@ -1,11 +1,10 @@
 import { Link, Outlet, useLocation } from "react-router-dom"
 import background from "/src/assets//auth//login.webp"
 import logo from "/src/assets/global/logo.svg"
-import { useAppSelector } from "@/store/hooks"
 import { useEffect, useState } from "react"
+import { Helmet } from "react-helmet"
 
 const SignUp = () => {
-  const google = useAppSelector(state => state.auth.google)
   const [backgroundStep, setBackgroundStep] = useState<number>()
   const { pathname } = useLocation()
 
@@ -21,6 +20,10 @@ const SignUp = () => {
 
   return (
     <main className="relative flex select-none justify-start">
+      <Helmet>
+        <title>انشاء حساب</title>
+        <meta name="description" content="انشاء حساب" />
+      </Helmet>
       <section dir="rtl" className="relative flex max-h-screen w-[calc(40%)] flex-col items-center justify-center bg-Grey-fourth text-primary-first max-md:hidden">
         <img src={background} alt="" className="" />
         <img src={background} alt="" className="bg-Grey-fourth" />
@@ -51,19 +54,12 @@ const SignUp = () => {
           <Link to={"/"}>
             <img src={logo} alt="logo" />
           </Link>
-          {google.profile ? (
-            <div className="flex items-center gap-1 text-primary-first">
-              <img src={google.profile.picture} alt="profile" className="w-10 rounded-full" onError={() => console.error("Image failed to load")} />
-              {google.profile.name}
-            </div>
-          ) : (
-            <p className="flex flex-col items-center font-bold text-[#6679BE] sm:flex-row">
-              <Link to={"/login"} className="pl-1 text-primary-first underline decoration-2 underline-offset-4">
-                تسجيل الدخول
-              </Link>
-              لديك حساب بالفعل؟
-            </p>
-          )}
+          <p className="flex flex-col items-center font-bold text-[#6679BE] sm:flex-row">
+            <Link to={"/login"} className="pl-1 text-primary-first underline decoration-2 underline-offset-4">
+              تسجيل الدخول
+            </Link>
+            لديك حساب بالفعل؟
+          </p>
         </div>
 
         <h1 className="mt-2 text-[32px] text-primary-first">مرحبا بك في سكرو</h1>

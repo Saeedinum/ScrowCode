@@ -22,11 +22,12 @@ const Team = lazy(() => import("../features/profile/pages/Team"))
 const Error = lazy(() => import("../pages/error/Error"))
 
 import { Toaster } from "@/components/ui/toaster"
+import useOffline from "@/hooks/useOffline"
 
 const Router = () => {
   const auth: User = useAppSelector(state => state.auth.user)
-  const signup = useAppSelector(state => state.auth.signup)
   useRetrieveUser()
+  useOffline()
 
   return (
     <RouterProvider
@@ -35,11 +36,11 @@ const Router = () => {
           path: "/",
           element: (
             <>
-              <Header />
               <Suspense>
+                <Header />
                 <Outlet />
+                <Toaster />
               </Suspense>
-              <Toaster />
             </>
           ),
           errorElement: <Error type="error" />,
@@ -69,8 +70,7 @@ const Router = () => {
               path: "profile/:id",
               element: <Profile />
             }
-          ],
-         
+          ]
         },
         {
           path: "/login",
@@ -93,19 +93,26 @@ const Router = () => {
           children: [
             {
               index: true,
-              element: signup.PersonalInformation.email !== "" ? <Navigate to={"/signup/university"} /> : <PersonalInformation />
+              element: <PersonalInformation />
             },
             {
               path: "/signup/university",
-              element: signup.PersonalInformation.email === "" ? <Navigate to={"/signup"} /> : <UniversityInformation />
+              element: <UniversityInformation />
             },
             {
               path: "/signup/track",
-              element: signup.UniversityInformation.universityEmail === "" ? <Navigate to={"/signup"} /> : <TrackInformation />
+              element: <TrackInformation />
             }
           ]
         },
-        { path: "forgetPassword", element: <ForgetPassword /> },
+        {
+          path: "forgetPassword",
+          element: (
+            <Suspense>
+              <ForgetPassword />
+            </Suspense>
+          )
+        },
         { path: "*", element: <Error type="notFound" /> }
       ])}
     />

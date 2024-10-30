@@ -15,6 +15,7 @@ import background from "@/assets/create/create.webp"
 import Track from "../components/Track"
 
 import "../index.css"
+import { Helmet } from "react-helmet"
 
 const CreateTeam = () => {
   const user = useAppSelector(state => state.auth.user)
@@ -98,6 +99,10 @@ const CreateTeam = () => {
   }
   return (
     <main className="max-w-screen relative flex select-none justify-start overflow-hidden">
+      <Helmet>
+        <title>إنشاء تيم</title>
+        <meta name="description" content="إنشاء تيم" />
+      </Helmet>
       <section className="relative hidden max-h-[1400px] flex-col items-start justify-center bg-Grey-fourth text-primary-first lg:flex">
         <img src={background} alt="" className="" />
         <img src={background} alt="" className="bg-Grey-fourth" />

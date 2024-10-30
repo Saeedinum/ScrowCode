@@ -15,6 +15,7 @@ import waitingIocn from "@/assets/global/waiting.svg"
 import notavialableIocn from "@/assets/global/notAvailable.svg"
 
 import { useToast } from "@/hooks/use-toast"
+import { Helmet } from "react-helmet"
 
 const FindTeam = () => {
   const dispatch = useAppDispatch()
@@ -68,6 +69,10 @@ const FindTeam = () => {
 
   return (
     <main className="flex flex-col items-center">
+      <Helmet>
+        <title>ابحث عن التيم</title>
+        <meta name="description" content="ابحث عن التيم" />
+      </Helmet>
       <h1 className="mt-10 text-[32px] font-[700] text-primary-first">ابحث عن التيم</h1>
       <p className="text-[15px] font-[500] text-Grey-first">ابحث عن الفريق المناسب لك بما يناسب افكارك ومستواك</p>
       <div className="mt-10 flex h-10 w-[382px] items-center justify-end gap-2 rounded-[100px] bg-Grey-fourth p-3 px-7">
