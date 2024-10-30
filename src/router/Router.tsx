@@ -68,8 +68,7 @@ const Router = () => {
               path: "profile/:id",
               element: <Profile />
             }
-          ],
-         
+          ]
         },
         {
           path: "/login",
@@ -92,19 +91,26 @@ const Router = () => {
           children: [
             {
               index: true,
-              element:  <PersonalInformation />
+              element: <PersonalInformation />
             },
             {
               path: "/signup/university",
-              element:  <UniversityInformation />
+              element: <UniversityInformation />
             },
             {
               path: "/signup/track",
-              element:  <TrackInformation />
+              element: <TrackInformation />
             }
           ]
         },
-        { path: "forgetPassword", element: <ForgetPassword /> },
+        {
+          path: "forgetPassword",
+          element: (
+            <Suspense>
+              <ForgetPassword />
+            </Suspense>
+          )
+        },
         { path: "*", element: <Error type="notFound" /> }
       ])}
     />

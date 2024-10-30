@@ -1,4 +1,4 @@
-import { useRef, lazy } from "react"
+import { useRef, lazy, Suspense } from "react"
 
 import useSmoothScroll from "@/hooks/useSmoothScroll"
 
@@ -9,7 +9,6 @@ import dots from "@/assets/home/dots.webp"
 import officeWorker from "@/assets/home/officeWorker.webp"
 import Vector from "@/assets/home/Vector.webp"
 import downloadIcon from "@/assets/home/download.svg"
-
 
 const Footer = lazy(() => import("./components/Footer"))
 const Start = lazy(() => import("./components/Start"))
@@ -81,10 +80,13 @@ const Home = () => {
           </div>
           <img src={Vector} alt="" className="absolute bottom-0 left-1/2 w-[70%] translate-x-[-50%] sm:w-[50%]" />
         </section>
-
-        <Start startSection={startSection} />
+        <Suspense>
+          <Start startSection={startSection} />
+        </Suspense>
       </main>
-      <Footer />
+      <Suspense>
+        <Footer />
+      </Suspense>
     </>
   )
 }

@@ -24,7 +24,7 @@ const ForgetPassword = () => {
         <ResetPassword />
       )}
       <div className="flex- absolute bottom-4 flex gap-1 text-center font-bold text-primary-first">
-        <Link to={"/contact"} className="text-Grey-first underline">
+        <Link to={"/"} className="text-Grey-first underline">
           تواصل معنا
         </Link>
         <p className="">تم الانشاء عن طريق تيم سكرو</p>
