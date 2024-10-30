@@ -34,11 +34,11 @@ const Router = () => {
           path: "/",
           element: (
             <>
-              <Header />
               <Suspense>
+                <Header />
                 <Outlet />
+                <Toaster />
               </Suspense>
-              <Toaster />
             </>
           ),
           errorElement: <Error type="error" />,

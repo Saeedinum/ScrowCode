@@ -14,6 +14,7 @@ const Footer = lazy(() => import("./components/Footer"))
 const Start = lazy(() => import("./components/Start"))
 
 import "./index.css"
+import { Helmet } from "react-helmet"
 
 const Home = () => {
   const smoothScroll = useSmoothScroll(500)
@@ -23,6 +24,10 @@ const Home = () => {
 
   return (
     <>
+      <Helmet>
+        <title>سكرو كود</title>
+        <meta name="description" content="سكرو كود" />
+      </Helmet>
       <main dir="rtl" className="flex max-w-full flex-col">
         <section className="relative flex items-center justify-center overflow-x-clip">
           <img src={backgroundleft} rel="preload" alt="background image" className="absolute left-0 top-0 z-0 max-lg:w-[40%] lg:-top-24" />

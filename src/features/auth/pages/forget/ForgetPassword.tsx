@@ -7,12 +7,17 @@ import ResetPassword from "./components/ResetPassword"
 import { useAppSelector } from "@/store/hooks"
 
 import logo from "@/assets/global/logo.svg"
+import { Helmet } from "react-helmet"
 
 const ForgetPassword = () => {
   const reset = useAppSelector(state => state.auth.reset)
 
   return (
     <main className="relative flex h-screen items-center justify-center">
+      <Helmet>
+        <title>نسيت كلمة المرور</title>
+        <meta name="description" content="نسيت كلمة المرور" />
+      </Helmet>
       <Link to={"/"} className="absolute left-4 top-4 lg:p-8 lg:pl-28">
         <img src={logo} alt="" />
       </Link>

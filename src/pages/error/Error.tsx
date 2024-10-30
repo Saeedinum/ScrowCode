@@ -1,10 +1,15 @@
 import { useRouteError } from "react-router-dom"
+import { Helmet } from "react-helmet"
 
 const Error = ({ type }: { type: "notFound" | "error" }) => {
   const error = useRouteError()
 
   return (
     <main className="flex h-screen flex-col items-center justify-center px-4 py-8 text-center">
+      <Helmet>
+        <title>Error</title>
+        {type === "notFound" ? <meta name="description" content="Page Not Found" /> : <meta name="description" content="Something Went Wrong" />}
+      </Helmet>
       {type === "notFound" ? (
         <div className="flex flex-col items-center">
           <h1 className="mt-4 text-3xl font-bold text-primary-first sm:text-4xl lg:text-5xl">Page Not Found</h1>
