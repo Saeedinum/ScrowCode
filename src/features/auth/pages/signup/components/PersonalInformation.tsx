@@ -21,7 +21,7 @@ const PersonalInformation = () => {
 
   const PersonalInformation = useAppSelector(state => state.auth.signup.PersonalInformation)
 
-  const { ProgressBar, checkPassword } = useGoodBass()
+  const { ProgressBar, checkPassword, guides } = useGoodBass()
 
   const {
     register,
@@ -54,7 +54,7 @@ const PersonalInformation = () => {
     <section dir="rtl" className="flex w-[calc(100%-5rem)] flex-grow flex-col items-center lg:px-20">
       <form onSubmit={handleSubmit(onSubmit)} className="flex w-full flex-col items-center gap-5">
         <label htmlFor="arabicName" className="inputlabel">
-          <span className="ml-1 text-primary-first">الاسم الرباعي باللغة العربية </span>
+          <span className="mb-2 block text-primary-first">الاسم الرباعي باللغة العربية </span>
           <input
             autoComplete="false"
             id="arabicName"
@@ -68,8 +68,8 @@ const PersonalInformation = () => {
         </label>
 
         <label htmlFor="username" className="inputlabel">
-          <span className="ml-2 text-primary-first">اسم المستخدم</span>
-          <img src={usernameIcon} alt="" className={`absolute left-3 top-[42px] ${watch().username ? "hidden" : ""} transition-all`} />
+          <span className="mb-2 block text-primary-first">اسم المستخدم</span>
+          <img src={usernameIcon} alt="" className={`absolute left-3 top-[50px] ${watch().username ? "hidden" : ""} transition-all`} />
           {ui}
           <input
             dir="ltr"
@@ -80,13 +80,13 @@ const PersonalInformation = () => {
               required: "required"
             })}
             placeholder="username"
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-7 ${(errors.username && errors.username?.message !== "less") || status === "unValid" ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${(errors.username && errors.username?.message !== "less") || status === "unValid" ? "border-red-500" : ""} `}
           />
         </label>
 
         <label htmlFor="phone" className="inputlabel">
-          <span className="ml-2 text-primary-first">رقم الهاتف</span>
-          <img src={phoneIcon} alt="" className={`absolute left-3 top-[42px] ${watch().phone ? "hidden" : ""} transition-all`} />
+          <span className="mb-2 block text-primary-first">رقم الهاتف</span>
+          <img src={phoneIcon} alt="" className={`absolute left-3 top-[50px] ${watch().phone ? "hidden" : ""} transition-all`} />
           <input
             dir="ltr"
             autoComplete="false"
@@ -101,8 +101,8 @@ const PersonalInformation = () => {
         </label>
 
         <label htmlFor="email" className="inputlabel">
-          <span className="ml-2 text-primary-first">البريد الالكتروني</span>
-          <img src={emailIcon} alt="" className={`absolute left-3 top-[42px] ${watch().email ? "hidden" : ""} fill-Grey-third transition-all`} />
+          <span className="mb-2 block text-primary-first">البريد الالكتروني</span>
+          <img src={emailIcon} alt="" className={`absolute left-3 top-[50px] ${watch().email ? "hidden" : ""} fill-Grey-third transition-all`} />
           <input
             dir="ltr"
             autoComplete="false"
@@ -112,33 +112,48 @@ const PersonalInformation = () => {
               required: "required"
             })}
             placeholder={errors.email ? "eg: example@gmail.com" : "Email"}
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.email ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.email ? "border-red-500" : ""} `}
           />
         </label>
 
         <label htmlFor="password" className="inputlabel">
-          <span className="ml-2 text-primary-first">كلمة المرور</span>
-          <img src={passwordIcon} alt=" " className={`absolute left-3 top-[42px] ${watch().password ? "hidden" : ""} transition-all`} />
-          <input
-            dir="ltr"
-            autoComplete="false"
-            id="password"
-            type="password"
-            {...register("password", {
-              required: "required",
-              onChange(event) {
-                checkPassword(event.target.value)
-              }
-            })}
-            placeholder="Password"
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.password ? "border-red-500" : ""} `}
-          />
-          {ProgressBar}
+          <div className="mb-2 flex justify-between">
+            <span className="mb-1 block text-primary-first">كلمة المرور</span>
+            <span dir="ltr" className="text-start text-sm text-Grey-first">
+              {Object.keys(guides).map((guide, index) => {
+                if (guides[guide as keyof typeof guides]) {
+                  return (
+                    <p key={index} className="text-sm">
+                      {guides[guide as keyof typeof guides]}
+                    </p>
+                  )
+                }
+              })}
+            </span>
+          </div>
+          <div className="relative">
+            <img src={passwordIcon} alt=" " className={`absolute left-3 top-1/2 -translate-y-1/2 transform ${watch().password ? "hidden" : ""} transition-all`} />
+            <input
+              dir="ltr"
+              autoComplete="false"
+              id="password"
+              type="password"
+              {...register("password", {
+                required: "required",
+                onChange(event) {
+                  checkPassword(event.target.value)
+                }
+              })}
+              placeholder="Password"
+              className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.password ? "border-red-500" : ""} `}
+            />
+            {ProgressBar}
+          </div>
         </label>
 
         <label htmlFor="confirmPassword" className="inputlabel">
-          <span className="ml-2 text-primary-first">تأكيد كلمة المرور</span>
-          <img src={passwordIcon} alt="passwordIcon" className={`absolute left-3 top-[42px] ${watch().confirmPassword ? "hidden" : ""} transition-all`} />
+          <span className="mb-2 block text-primary-first">تأكيد كلمة المرور</span>
+          <img src={passwordIcon} alt="passwordIcon" className={`absolute left-3 top-[50px] ${watch().confirmPassword ? "hidden" : ""} transition-all`} />
           <input
             dir="ltr"
             autoComplete="false"
@@ -148,7 +163,7 @@ const PersonalInformation = () => {
               required: "required"
             })}
             placeholder="Confirm Password"
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-6 ${errors.confirmPassword ? "border-red-500" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.confirmPassword ? "border-red-500" : ""} `}
           />
         </label>
 

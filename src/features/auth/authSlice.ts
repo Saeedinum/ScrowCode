@@ -63,9 +63,9 @@ export const authslice = createSlice({
   reducers: {
     login: (state, action: PayloadAction<User>) => {
       state.user = action.payload
-     if (action.payload.token) {
-       localStorage.setItem("token", action.payload.token)
-     }
+      if (action.payload.token) {
+        localStorage.setItem("token", action.payload.token)
+      }
     },
 
     logout: () => {
@@ -95,6 +95,12 @@ export const authslice = createSlice({
               ...action.payload.UniversityInformation
             }
           : state.signup.UniversityInformation,
+        TrackInformation: action.payload.TrackInformation
+          ? {
+              ...state.signup.TrackInformation,
+              ...action.payload.TrackInformation
+            }
+          : state.signup.TrackInformation
       }
     },
 
