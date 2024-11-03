@@ -15,6 +15,8 @@ import "../src/styles/index.css"
 import { Analytics } from "@vercel/analytics/react"
 import { SpeedInsights } from "@vercel/speed-insights/react"
 
+import { Toaster } from "react-hot-toast"
+
 if (process.env.NODE_ENV === "production") {
   console.log = function () {}
   console.warn = function () {}
@@ -29,6 +31,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
       <ThemeProvider defaultTheme="light" storageKey="vite-ui-theme">
         <GoogleOAuthProvider clientId={Oauth.client_id}>
           <Router />
+          <Toaster position="top-left" toastOptions={{ duration: 3000 }} />
         </GoogleOAuthProvider>
       </ThemeProvider>
     </Provider>

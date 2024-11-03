@@ -16,6 +16,7 @@ import linkedinIcon from "@/assets/global/linkedin.svg"
 import behanceIcon from "@/assets/global/behance.svg"
 
 import "../index.css"
+import toast from "react-hot-toast"
 
 const TrackInformation = () => {
   const navigate = useNavigate()
@@ -46,17 +47,21 @@ const TrackInformation = () => {
   })
 
   const onSubmit = async (data: TtrackInformation) => {
-    const response = await signupUser({
-      ...PersonalInformation,
-      ...UniversityInformation,
-      ...data
-    }).unwrap()
+    try {
+      const response = await signupUser({
+        ...PersonalInformation,
+        ...UniversityInformation,
+        ...data
+      }).unwrap()
 
-    if (response.status === "success") {
-      localStorage.setItem("token", response.token)
+      if (response.status === "success") {
+        localStorage.setItem("token", response.token)
+      }
+
+      handleVerifyDialog(true)
+    } catch {
+      toast.error("حدث خطأ ما تأكد من بياناتك و أعد المحاولة")
     }
-
-    handleVerifyDialog(true)
   }
 
   return (
