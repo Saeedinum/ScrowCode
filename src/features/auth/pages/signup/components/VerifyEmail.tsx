@@ -2,7 +2,7 @@ import { AlertDialog, AlertDialogContent, AlertDialogFooter, AlertDialogHeader, 
 
 import { useRef } from "react"
 import { useForm, SubmitHandler } from "react-hook-form"
-import { useVerifyEmailStudentMutation } from "@/features/auth/api/authAPI"
+import { useLoginUserMutation, useVerifyEmailStudentMutation } from "@/features/auth/api/authAPI"
 import { useAppSelector } from "@/store/hooks"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
@@ -18,6 +18,7 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
   const signupData = useAppSelector(state => state.auth.signup)
 
   const [verifyEmailStudent, { isLoading }] = useVerifyEmailStudentMutation()
+  const [loginUser, { isLoading: isLoggingIn }] = useLoginUserMutation()
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
     const otpCode = data.otp.join("")
@@ -30,8 +31,19 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
       }).unwrap()
 
       if (response.status === "success") {
-        navigate("/")
+        const userData = {
+          email: signupData.PersonalInformation.email,
+          password: signupData.PersonalInformation.password
+        }
+
         toast.success("تم تأكيد البريد الالكتروني بنجاح")
+        const loginResult = await loginUser(userData).unwrap()
+
+        if (loginResult.status === "success") {
+          toast.success(`مرحبًا بك يا ${signupData.PersonalInformation.arabicName.split(" ")[0] || "-"}`)
+        }
+
+        navigate("/")
       } else {
         throw Error(`Verification failed: ${response?.message || "No message provided"}`)
       }
@@ -89,12 +101,14 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
                   />
                 ))}
               </div>
-              <button type="submit" className="ml-auto mr-auto h-[39px] rounded-[8px] bg-[#002ABA] px-10 font-bold text-primary-fourth">
+              <button type="submit" disabled={isLoading || isLoggingIn} className="ml-auto mr-auto h-[39px] rounded-[8px] bg-[#002ABA] px-10 font-bold text-primary-fourth">
                 {isLoading ? (
                   <p
                     className="text-surface h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
                     role="status"
                   ></p>
+                ) : isLoggingIn ? (
+                  "جاري تسجيل الدخول..."
                 ) : (
                   "تأكيد"
                 )}
