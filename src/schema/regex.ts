@@ -1,5 +1,5 @@
-export const name = /^[\u0600-\u06FF\s]+$/
-export const username = /^(?!\d+$)[a-zA-Z0-9_-]{6,16}$/
+export const name = /^[\u0600-\u06FF]{2,}(?: [\u0600-\u06FF]{2,}){3}$/
+export const username = /^(?!\d+$)[a-zA-Z0-9]{6,16}$/
 export const email = /^[a-zA-Z0-9._%+-]+@(?:gmail\.com)$/i
 export const password = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/
 export const phone = /^(?:\+?20)?(10|11|12|15)[0-9]{8}$/
