@@ -9,15 +9,18 @@ import passwordIcon from "@/assets/auth/signup/password.svg"
 import phoneIcon from "@/assets/auth/signup/phone.svg"
 import usernameIcon from "@/assets/auth/signup/username.svg"
 import arrowIcon from "@/assets/global/rightArrow.svg"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 import useGoodBass from "@/hooks/useGoodBass"
 import { signup } from "@/features/auth/authSlice"
 
 import "../index.css"
+import { SignupStepsContextType } from "@/types/auth"
 
 const PersonalInformation = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
+  const { goToNextStep } = useOutletContext<SignupStepsContextType>()
 
   const PersonalInformation = useAppSelector(state => state.auth.signup.PersonalInformation)
 
@@ -47,6 +50,7 @@ const PersonalInformation = () => {
         }
       })
     )
+    goToNextStep()
     navigate("/signup/university", { replace: true })
   }
 

@@ -1,5 +1,5 @@
-import { useState } from "react"
-import { useNavigate } from "react-router-dom"
+import { useEffect, useState } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom"
 
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
@@ -17,9 +17,18 @@ import behanceIcon from "@/assets/global/behance.svg"
 
 import "../index.css"
 import toast from "react-hot-toast"
+import { SignupStepsContextType } from "@/types/auth"
 
 const TrackInformation = () => {
   const navigate = useNavigate()
+
+  const { currentStep } = useOutletContext<SignupStepsContextType>()
+
+  useEffect(() => {
+    if (currentStep < 3) {
+      navigate("/signup") // Redirect if accessed directly
+    }
+  }, [currentStep, navigate])
 
   const [signupUser, { isLoading }] = useSignupUserMutation()
 
@@ -120,7 +129,7 @@ const TrackInformation = () => {
               required: "required"
             })}
             placeholder={"github link"}
-            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.github ? "border-1 border-red-600" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-9 ${errors.github ? "border-1 border-red-600" : ""} `}
           />
           {errors.github && <span className="text-sm text-red-900">eg: https://github.com/example</span>}
         </label>
@@ -133,7 +142,7 @@ const TrackInformation = () => {
             type="text"
             {...register("linkedin")}
             placeholder={"linked in link"}
-            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.linkedin ? "border-1 border-red-600" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-9 ${errors.linkedin ? "border-1 border-red-600" : ""} `}
           />
           {errors.linkedin && <span className="text-sm text-red-900">eg: https://linkedin.com/in/example</span>}
         </label>
@@ -150,7 +159,7 @@ const TrackInformation = () => {
             type="text"
             {...register("behance")}
             placeholder={"behance link"}
-            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.behance ? "border-red-600" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-9 ${errors.behance ? "border-red-600" : ""} `}
           />
           {errors.behance && <span className="absolutebottom-0 max-w-fit text-sm text-red-900">eg: https://behance.net/example</span>}
         </label>

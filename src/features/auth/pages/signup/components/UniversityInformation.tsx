@@ -4,12 +4,22 @@ import { universityInformationSchema } from "@/schema/signup"
 import { TuniversityInformation } from "@/types"
 import { signup } from "@/features/auth/authSlice"
 import { useAppDispatch, useAppSelector } from "@/store/hooks"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useOutletContext } from "react-router-dom"
 import { useGetTracksQuery } from "@/features/auth/api/authAPI"
+import { SignupStepsContextType } from "@/types/auth"
+import { useEffect } from "react"
 
 const UniversityInformation = () => {
   const dispatch = useAppDispatch()
   const navigate = useNavigate()
+
+  const { currentStep, goToNextStep } = useOutletContext<SignupStepsContextType>()
+
+  useEffect(() => {
+    if (currentStep < 2) {
+      navigate("/signup") // Redirect if accessed directly
+    }
+  }, [currentStep, navigate])
 
   const UniversityInformation = useAppSelector(state => state.auth.signup.UniversityInformation)
 
@@ -30,6 +40,7 @@ const UniversityInformation = () => {
         UniversityInformation: data
       })
     )
+    goToNextStep()
     navigate("/signup/track", { replace: true })
   }
 

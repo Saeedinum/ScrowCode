@@ -20,6 +20,11 @@ export type Signup = {
   TrackInformation: TtrackInformation
 }
 
+export type SignupStepsContextType = {
+  currentStep: number
+  goToNextStep: () => void
+}
+
 export type skill = {
   // createdAt: string;
   name: string

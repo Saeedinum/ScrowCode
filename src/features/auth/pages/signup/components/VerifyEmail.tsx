@@ -27,13 +27,13 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
       const response = await verifyEmailStudent({
         code: otpCode,
         token: token
-      })
+      }).unwrap()
 
-      if (response.data.status === "success") {
-        toast.success("تم تأكيد البريد الالكتروني بنجاح")
+      if (response.status === "success") {
         navigate("/")
+        toast.success("تم تأكيد البريد الالكتروني بنجاح")
       } else {
-        throw Error(`Verification failed: ${response.data.message || "No message provided"}`)
+        throw Error(`Verification failed: ${response?.message || "No message provided"}`)
       }
     } catch {
       toast.error("حدث خطأ ما")
