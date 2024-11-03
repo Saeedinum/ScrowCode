@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { useVerifyEmailStudentMutation } from "@/features/auth/api/authAPI"
 import { useAppSelector } from "@/store/hooks"
 import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 
 type Inputs = {
   otp: string[]
@@ -16,16 +17,26 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
   const inputsRef = useRef<HTMLInputElement[]>([])
   const signupData = useAppSelector(state => state.auth.signup)
 
-  const [verifyEmailStudent, { data: verifyEmailStudenttData }] = useVerifyEmailStudentMutation()
+  const [verifyEmailStudent, { isLoading }] = useVerifyEmailStudentMutation()
 
   const onSubmit: SubmitHandler<Inputs> = async data => {
     const otpCode = data.otp.join("")
-    await verifyEmailStudent({
-      code: otpCode,
-      token: localStorage.getItem("token")!
-    })
-    if (verifyEmailStudenttData?.data.status == "success") {
-      navigate("/")
+    const token = localStorage.getItem("token")!
+
+    try {
+      const response = await verifyEmailStudent({
+        code: otpCode,
+        token: token
+      })
+
+      if (response.data.status === "success") {
+        toast.success("تم تأكيد البريد الالكتروني بنجاح")
+        navigate("/")
+      } else {
+        throw Error(`Verification failed: ${response.data.message || "No message provided"}`)
+      }
+    } catch {
+      toast.error("حدث خطأ ما")
     }
   }
 
@@ -79,7 +90,14 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
                 ))}
               </div>
               <button type="submit" className="ml-auto mr-auto h-[39px] rounded-[8px] bg-[#002ABA] px-10 font-bold text-primary-fourth">
-                تأكيد
+                {isLoading ? (
+                  <p
+                    className="text-surface h-4 w-4 animate-spin rounded-full border-2 border-solid border-white border-e-transparent align-[-0.125em] motion-reduce:animate-[spin_1.5s_linear_infinite] dark:text-white"
+                    role="status"
+                  ></p>
+                ) : (
+                  "تأكيد"
+                )}
               </button>
             </form>
             <p className="mt-8 text-[14px] text-Grey-first">
