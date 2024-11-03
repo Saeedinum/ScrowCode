@@ -5,8 +5,12 @@ import { useEffect, useState } from "react"
 import { Helmet } from "react-helmet"
 
 const SignUp = () => {
+  const [currentStep, setCurrentStep] = useState<number>(1)
   const [backgroundStep, setBackgroundStep] = useState<number>()
   const { pathname } = useLocation()
+
+  // Function to move to the next step
+  const goToNextStep = () => setCurrentStep(prev => prev + 1)
 
   useEffect(() => {
     if (pathname === "/signup") {
@@ -67,7 +71,7 @@ const SignUp = () => {
           ! انشئ حسابك الان لتسطيع الدخول في تيم بسرعه
           <span className="m-2 h-[1px] w-[calc(100%+2rem)] bg-[#6679BE]"></span>
         </p>
-        <Outlet />
+        <Outlet context={{ currentStep, goToNextStep }} />
       </section>
     </main>
   )

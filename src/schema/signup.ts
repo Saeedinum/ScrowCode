@@ -41,7 +41,7 @@ export const universityInformationSchema = z.object({
 export const trackInformationSchema = z.object({
   track: z.string(),
   skills: z.array(z.any()),
-  linkedin: z.string().regex(linkedinRegex, { message: "Please enter a valid LinkedIn URL" }),
   github: z.string().regex(githubRegex, { message: "Please enter a valid GitHub URL" }),
-  behance: z.string().regex(behanceRegex, { message: "Please enter a valid Behance URL" })
+  linkedin: z.string().regex(linkedinRegex, { message: "Please enter a valid LinkedIn URL" }).optional(),
+  behance: z.string().regex(behanceRegex, { message: "Please enter a valid Behance URL" }).optional()
 })
