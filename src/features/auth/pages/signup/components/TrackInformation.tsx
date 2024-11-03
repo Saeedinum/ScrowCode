@@ -52,7 +52,9 @@ const TrackInformation = () => {
       ...data
     }).unwrap()
 
-    console.log(response)
+    if (response.status === "success") {
+      localStorage.setItem("token", response.token)
+    }
 
     handleVerifyDialog(true)
   }
@@ -101,21 +103,7 @@ const TrackInformation = () => {
               ))}
           </div>
         </div>
-        <label htmlFor="linkedin" className="inputlabel">
-          <span className="ml-2 text-primary-first">LinkedIn </span>
-          <img src={linkedinIcon} alt="" className={`absolute left-3 top-[37px] ${watch().linkedin ? "hidden" : ""} transition-all`} />
-          <input
-            autoComplete="false"
-            id="linkedin"
-            type="text"
-            {...register("linkedin", {
-              required: "required"
-            })}
-            placeholder={"linked in link"}
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-8 ${errors.linkedin ? "border-1 border-red-600" : ""} `}
-          />
-          {errors.linkedin && <span className="text-sm text-red-900">eg: https://linkedin.com/in/example</span>}
-        </label>
+
         <label htmlFor="github" className="inputlabel">
           <span className="ml-2 text-primary-first">Github</span>
           <img src={githubIcon} alt="" className={`absolute left-3 top-[37px] ${watch().github ? "hidden" : ""} transition-all`} />
@@ -127,9 +115,22 @@ const TrackInformation = () => {
               required: "required"
             })}
             placeholder={"github link"}
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-8 ${errors.github ? "border-1 border-red-600" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.github ? "border-1 border-red-600" : ""} `}
           />
           {errors.github && <span className="text-sm text-red-900">eg: https://github.com/example</span>}
+        </label>
+        <label htmlFor="linkedin" className="inputlabel">
+          <span className="ml-2 text-primary-first">LinkedIn </span>
+          <img src={linkedinIcon} alt="" className={`absolute left-3 top-[37px] ${watch().linkedin ? "hidden" : ""} transition-all`} />
+          <input
+            autoComplete="false"
+            id="linkedin"
+            type="text"
+            {...register("linkedin")}
+            placeholder={"linked in link"}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.linkedin ? "border-1 border-red-600" : ""} `}
+          />
+          {errors.linkedin && <span className="text-sm text-red-900">eg: https://linkedin.com/in/example</span>}
         </label>
         <label htmlFor="behance" className="inputlabel">
           <span className="ml-2 text-primary-first">
@@ -142,11 +143,9 @@ const TrackInformation = () => {
             autoComplete="false"
             id="behance"
             type="text"
-            {...register("behance", {
-              required: "required"
-            })}
+            {...register("behance")}
             placeholder={"behance link"}
-            className={`inputfield px-[13px] py-[14px] placeholder:pl-8 ${errors.behance ? "border-red-600" : ""} `}
+            className={`inputfield px-[13px] py-[14px] placeholder-shown:pl-8 ${errors.behance ? "border-red-600" : ""} `}
           />
           {errors.behance && <span className="absolutebottom-0 max-w-fit text-sm text-red-900">eg: https://behance.net/example</span>}
         </label>
