@@ -45,7 +45,7 @@ const FindPartner = () => {
       dispatch(requestPartnerLocally(teamID))
       await sendOrderToStudent({
         token: token,
-        teamID: teamID
+        studentId: teamID
       }).unwrap()
     } catch (error) {
       console.error("Failed to join team:", error)
