@@ -47,11 +47,14 @@ const FindPartner = () => {
         token: token,
         studentId: teamID
       }).unwrap()
-    } catch (error) {
+    } catch (error: any) {
       console.error("Failed to join team:", error)
+
+      const errorMessage = error?.data?.message || error?.message || "Please try again later"
+
       toast({
-        title: "Request failed",
-        description: "Please try again later",
+        title: "Failed to join team",
+        description: errorMessage,
         variant: "destructive"
       })
       dispatch(unrequestPartnerLocally(teamID))
