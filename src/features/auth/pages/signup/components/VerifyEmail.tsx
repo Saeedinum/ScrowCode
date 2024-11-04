@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { useLoginUserMutation, useVerifyEmailStudentMutation } from "@/features/auth/api/authAPI"
 import { useAppSelector } from "@/store/hooks"
 import { useNavigate } from "react-router-dom"
-import toast from "react-hot-toast"
+import { toast } from "@/hooks/use-toast"
 
 type Inputs = {
   otp: string[]
@@ -36,19 +36,25 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
           password: signupData.PersonalInformation.password
         }
 
-        toast.success("تم تأكيد البريد الالكتروني بنجاح")
-        const loginResult = await loginUser(userData).unwrap()
+        toast({
+          title: "تم بنجاح",
+          description: "تم تأكيد البريد الالكتروني بنجاح",
+          variant: "default"
+        })
+        await loginUser(userData).unwrap()
 
-        if (loginResult.status === "success") {
-          toast.success(`مرحبًا بك يا ${signupData.PersonalInformation.arabicName.split(" ")[0] || "-"}`)
-        }
-
-        navigate("/")
+        setTimeout(() => {
+          navigate("/", { replace: true })
+        }, 1000)
       } else {
         throw Error(`Verification failed: ${response?.message || "No message provided"}`)
       }
     } catch {
-      toast.error("حدث خطأ ما")
+      toast({
+        title: "حدث خطأ ما",
+        description: "حدث خطأ اثناء التحقق من البريد الالكتروني",
+        variant: "destructive"
+      })
     }
   }
 

@@ -16,8 +16,8 @@ import linkedinIcon from "@/assets/global/linkedin.svg"
 import behanceIcon from "@/assets/global/behance.svg"
 
 import "../index.css"
-import toast from "react-hot-toast"
 import { SignupStepsContextType } from "@/types/auth"
+import { toast } from "@/hooks/use-toast"
 
 const TrackInformation = () => {
   const navigate = useNavigate()
@@ -69,7 +69,11 @@ const TrackInformation = () => {
 
       handleVerifyDialog(true)
     } catch {
-      toast.error("حدث خطأ ما تأكد من بياناتك و أعد المحاولة")
+      toast({
+        title: "حدث خطأ ما",
+        description: "ما تأكد من بياناتك و أعد المحاولة",
+        variant: "destructive"
+      })
     }
   }
 
