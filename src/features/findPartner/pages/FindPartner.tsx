@@ -20,6 +20,13 @@ import { getPartners, requestPartnerLocally, unrequestPartnerLocally } from "../
 import FindPartnerSkeleton from "../components/FindPartnerSkeleton"
 import { Helmet } from "react-helmet"
 
+interface ApiError {
+  data?: {
+    message?: string
+  }
+  message?: string
+}
+
 const FindPartner = () => {
   const { toast } = useToast()
   const dispatch = useAppDispatch()
@@ -48,10 +55,15 @@ const FindPartner = () => {
         studentId: teamID
       }).unwrap()
     } catch (error) {
+      const apiError = error as ApiError
+
       console.error("Failed to join team:", error)
+
+      const errorMessage = apiError?.data?.message || apiError?.message || "Please try again later"
+
       toast({
-        title: "Request failed",
-        description: "Please try again later",
+        title: "Failed to join team",
+        description: errorMessage,
         variant: "destructive"
       })
       dispatch(unrequestPartnerLocally(teamID))

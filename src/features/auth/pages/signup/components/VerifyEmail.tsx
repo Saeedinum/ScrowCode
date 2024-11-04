@@ -31,6 +31,9 @@ const VerifyEmail = ({ open, handleVerifyDialog }: { open: boolean; handleVerify
       }).unwrap()
 
       if (response.status === "success") {
+        // Set the new confirmed token
+        localStorage.setItem("token", response.token)
+
         const userData = {
           email: signupData.PersonalInformation.email,
           password: signupData.PersonalInformation.password
